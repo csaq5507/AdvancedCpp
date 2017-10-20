@@ -1,0 +1,66 @@
+[0;1;32mTranslationUnitDecl[0m[0;33m 0x313bf30[0m <[0;33m<invalid sloc>[0m> [0;33m<invalid sloc>[0m
+[0;34m|-[0m[0;1;32mTypedefDecl[0m[0;33m 0x313c4b8[0m <[0;33m<invalid sloc>[0m> [0;33m<invalid sloc>[0m implicit[0;1;36m __int128_t[0m [0;32m'__int128'[0m
+[0;34m| `-[0m[0;32mBuiltinType[0m[0;33m 0x313c1a0[0m [0;32m'__int128'[0m
+[0;34m|-[0m[0;1;32mTypedefDecl[0m[0;33m 0x313c518[0m <[0;33m<invalid sloc>[0m> [0;33m<invalid sloc>[0m implicit[0;1;36m __uint128_t[0m [0;32m'unsigned __int128'[0m
+[0;34m| `-[0m[0;32mBuiltinType[0m[0;33m 0x313c1c0[0m [0;32m'unsigned __int128'[0m
+[0;34m|-[0m[0;1;32mTypedefDecl[0m[0;33m 0x313c848[0m <[0;33m<invalid sloc>[0m> [0;33m<invalid sloc>[0m implicit[0;1;36m __NSConstantString[0m [0;32m'struct __NSConstantString_tag'[0m
+[0;34m| `-[0m[0;32mRecordType[0m[0;33m 0x313c600[0m [0;32m'struct __NSConstantString_tag'[0m
+[0;34m|   `-[0m[0;1;32mCXXRecord[0m[0;33m 0x313c568[0m[0;1;36m '__NSConstantString_tag'[0m
+[0;34m|-[0m[0;1;32mTypedefDecl[0m[0;33m 0x313c8d8[0m <[0;33m<invalid sloc>[0m> [0;33m<invalid sloc>[0m implicit[0;1;36m __builtin_ms_va_list[0m [0;32m'char *'[0m
+[0;34m| `-[0m[0;32mPointerType[0m[0;33m 0x313c8a0[0m [0;32m'char *'[0m
+[0;34m|   `-[0m[0;32mBuiltinType[0m[0;33m 0x313bfc0[0m [0;32m'char'[0m
+[0;34m|-[0m[0;1;32mTypedefDecl[0m[0;33m 0x313cbf8[0m <[0;33m<invalid sloc>[0m> [0;33m<invalid sloc>[0m implicit[0;1;36m __builtin_va_list[0m [0;32m'struct __va_list_tag [1]'[0m
+[0;34m| `-[0m[0;32mConstantArrayType[0m[0;33m 0x313cba0[0m [0;32m'struct __va_list_tag [1]'[0m 1 
+[0;34m|   `-[0m[0;32mRecordType[0m[0;33m 0x313c9c0[0m [0;32m'struct __va_list_tag'[0m
+[0;34m|     `-[0m[0;1;32mCXXRecord[0m[0;33m 0x313c928[0m[0;1;36m '__va_list_tag'[0m
+[0;34m|-[0m[0;1;32mCXXRecordDecl[0m[0;33m 0x3195c10[0m <[0;33mvec.cc:1:1[0m, [0;33mline:7:1[0m> [0;33mline:1:7[0m referenced class[0;1;36m Vec3[0m definition
+[0;34m| |-[0m[0;1;32mCXXRecordDecl[0m[0;33m 0x3195d30[0m <[0;33mcol:1[0m, [0;33mcol:7[0m> [0;33mcol:7[0m implicit referenced class[0;1;36m Vec3[0m
+[0;34m| |-[0m[0;1;32mFieldDecl[0m[0;33m 0x3195dd8[0m <[0;33mline:2:5[0m, [0;33mcol:9[0m> [0;33mcol:9[0m[0;1;36m x[0m [0;32m'int'[0m
+[0;34m| |-[0m[0;1;32mFieldDecl[0m[0;33m 0x3195e30[0m <[0;33mcol:5[0m, [0;33mcol:12[0m> [0;33mcol:12[0m[0;1;36m y[0m [0;32m'int'[0m
+[0;34m| |-[0m[0;1;32mFieldDecl[0m[0;33m 0x3195e88[0m <[0;33mcol:5[0m, [0;33mcol:15[0m> [0;33mcol:15[0m[0;1;36m z[0m [0;32m'int'[0m
+[0;34m| |-[0m[0;1;32mAccessSpecDecl[0m[0;33m 0x3195ef0[0m <[0;33mline:4:3[0m, [0;33mcol:9[0m> [0;33mcol:3[0m public
+[0;34m| |-[0m[0;1;32mCXXConstructorDecl[0m[0;33m 0x3195fc0[0m <[0;33mline:5:5[0m, [0;33mcol:20[0m> [0;33mcol:5[0m used[0;1;36m Vec3[0m [0;32m'void (void) noexcept'[0m
+[0;34m| | `-[0m[0;1;35mCompoundStmt[0m[0;33m 0x3196b00[0m <[0;33mcol:20[0m>
+[0;34m| |-[0m[0;1;32mCXXConstructorDecl[0m[0;33m 0x3196250[0m <[0;33mline:6:5[0m, [0;33mcol:51[0m> [0;33mcol:5[0m used[0;1;36m Vec3[0m [0;32m'void (int, int, int)'[0m
+[0;34m| | |-[0m[0;1;32mParmVarDecl[0m[0;33m 0x3196088[0m <[0;33mcol:10[0m, [0;33mcol:14[0m> [0;33mcol:14[0m used[0;1;36m x[0m [0;32m'int'[0m
+[0;34m| | |-[0m[0;1;32mParmVarDecl[0m[0;33m 0x31960f8[0m <[0;33mcol:17[0m, [0;33mcol:21[0m> [0;33mcol:21[0m used[0;1;36m y[0m [0;32m'int'[0m
+[0;34m| | |-[0m[0;1;32mParmVarDecl[0m[0;33m 0x3196168[0m <[0;33mcol:24[0m, [0;33mcol:28[0m> [0;33mcol:28[0m used[0;1;36m z[0m [0;32m'int'[0m
+[0;34m| | |-[0mCXXCtorInitializer [0;1;32mField[0m[0;33m 0x3195dd8[0m[0;1;36m 'x'[0m [0;32m'int'[0m
+[0;34m| | | `-[0m[0;1;35mImplicitCastExpr[0m[0;33m 0x31963b0[0m <[0;33mcol:35[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m <[0;31mLValueToRValue[0m>
+[0;34m| | |   `-[0m[0;1;35mDeclRefExpr[0m[0;33m 0x3196358[0m <[0;33mcol:35[0m> [0;32m'int'[0m[0;36m lvalue[0m[0;36m[0m [0;1;32mParmVar[0m[0;33m 0x3196088[0m[0;1;36m 'x'[0m [0;32m'int'[0m
+[0;34m| | |-[0mCXXCtorInitializer [0;1;32mField[0m[0;33m 0x3195e30[0m[0;1;36m 'y'[0m [0;32m'int'[0m
+[0;34m| | | `-[0m[0;1;35mImplicitCastExpr[0m[0;33m 0x3196448[0m <[0;33mcol:41[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m <[0;31mLValueToRValue[0m>
+[0;34m| | |   `-[0m[0;1;35mDeclRefExpr[0m[0;33m 0x31963f0[0m <[0;33mcol:41[0m> [0;32m'int'[0m[0;36m lvalue[0m[0;36m[0m [0;1;32mParmVar[0m[0;33m 0x31960f8[0m[0;1;36m 'y'[0m [0;32m'int'[0m
+[0;34m| | |-[0mCXXCtorInitializer [0;1;32mField[0m[0;33m 0x3195e88[0m[0;1;36m 'z'[0m [0;32m'int'[0m
+[0;34m| | | `-[0m[0;1;35mImplicitCastExpr[0m[0;33m 0x31964e0[0m <[0;33mcol:47[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m <[0;31mLValueToRValue[0m>
+[0;34m| | |   `-[0m[0;1;35mDeclRefExpr[0m[0;33m 0x3196488[0m <[0;33mcol:47[0m> [0;32m'int'[0m[0;36m lvalue[0m[0;36m[0m [0;1;32mParmVar[0m[0;33m 0x3196168[0m[0;1;36m 'z'[0m [0;32m'int'[0m
+[0;34m| | `-[0m[0;1;35mCompoundStmt[0m[0;33m 0x3196538[0m <[0;33mcol:50[0m, [0;33mcol:51[0m>
+[0;34m| |-[0m[0;1;32mCXXConstructorDecl[0m[0;33m 0x3196758[0m <[0;33mline:1:7[0m> [0;33mcol:7[0m implicit constexpr[0;1;36m Vec3[0m [0;32m'void (const class Vec3 &)'[0m inline noexcept-unevaluated 0x3196758
+[0;34m| | `-[0m[0;1;32mParmVarDecl[0m[0;33m 0x3196890[0m <[0;33mcol:7[0m> [0;33mcol:7[0m [0;32m'const class Vec3 &'[0m
+[0;34m| `-[0m[0;1;32mCXXConstructorDecl[0m[0;33m 0x3196928[0m <[0;33mcol:7[0m> [0;33mcol:7[0m implicit constexpr[0;1;36m Vec3[0m [0;32m'void (class Vec3 &&)'[0m inline noexcept-unevaluated 0x3196928
+[0;34m|   `-[0m[0;1;32mParmVarDecl[0m[0;33m 0x3196a60[0m <[0;33mcol:7[0m> [0;33mcol:7[0m [0;32m'class Vec3 &&'[0m
+[0;34m`-[0m[0;1;32mFunctionDecl[0m[0;33m 0x31965a0[0m <[0;33mline:9:1[0m, [0;33mline:15:1[0m> [0;33mline:9:5[0m[0;1;36m main[0m [0;32m'int (void)'[0m
+[0;34m  `-[0m[0;1;35mCompoundStmt[0m[0;33m 0x319d5a0[0m <[0;33mcol:12[0m, [0;33mline:15:1[0m>
+[0;34m    |-[0m[0;1;35mDeclStmt[0m[0;33m 0x3196b48[0m <[0;33mline:10:5[0m, [0;33mcol:12[0m>
+[0;34m    | `-[0m[0;1;32mVarDecl[0m[0;33m 0x31966c8[0m <[0;33mcol:5[0m, [0;33mcol:10[0m> [0;33mcol:10[0m[0;1;36m v0[0m [0;32m'class Vec3'[0m callinit
+[0;34m    |   `-[0m[0;1;35mCXXConstructExpr[0m[0;33m 0x3196b18[0m <[0;33mcol:10[0m> [0;32m'class Vec3'[0m[0;36m[0m[0;36m[0m [0;32m'void (void) noexcept'[0m
+[0;34m    |-[0m[0;1;35mDeclStmt[0m[0;33m 0x319d108[0m <[0;33mline:11:5[0m, [0;33mcol:14[0m>
+[0;34m    | `-[0m[0;1;32mFunctionDecl[0m[0;33m 0x319d050[0m parent 0x313bf30 <[0;33mcol:5[0m, [0;33mcol:13[0m> [0;33mcol:10[0m[0;1;36m v1[0m [0;32m'class Vec3 (void)'[0m
+[0;34m    |-[0m[0;1;35mDeclStmt[0m[0;33m 0x319d278[0m <[0;33mline:12:5[0m, [0;33mcol:21[0m>
+[0;34m    | `-[0m[0;1;32mVarDecl[0m[0;33m 0x319d130[0m <[0;33mcol:5[0m, [0;33mcol:20[0m> [0;33mcol:10[0m[0;1;36m v2[0m [0;32m'class Vec3'[0m callinit
+[0;34m    |   `-[0m[0;1;35mCXXConstructExpr[0m[0;33m 0x319d230[0m <[0;33mcol:10[0m, [0;33mcol:20[0m> [0;32m'class Vec3'[0m[0;36m[0m[0;36m[0m [0;32m'void (int, int, int)'[0m
+[0;34m    |     |-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d190[0m <[0;33mcol:13[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 1[0m
+[0;34m    |     |-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d1b0[0m <[0;33mcol:16[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 2[0m
+[0;34m    |     `-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d1d0[0m <[0;33mcol:19[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 3[0m
+[0;34m    |-[0m[0;1;35mDeclStmt[0m[0;33m 0x319d400[0m <[0;33mline:13:5[0m, [0;33mcol:21[0m>
+[0;34m    | `-[0m[0;1;32mVarDecl[0m[0;33m 0x319d2a0[0m <[0;33mcol:5[0m, [0;33mcol:20[0m> [0;33mcol:10[0m[0;1;36m v3[0m [0;32m'class Vec3'[0m listinit
+[0;34m    |   `-[0m[0;1;35mCXXConstructExpr[0m[0;33m 0x319d3b8[0m <[0;33mcol:10[0m, [0;33mcol:20[0m> [0;32m'class Vec3'[0m[0;36m[0m[0;36m[0m [0;32m'void (int, int, int)'[0m
+[0;34m    |     |-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d300[0m <[0;33mcol:13[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 1[0m
+[0;34m    |     |-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d320[0m <[0;33mcol:16[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 2[0m
+[0;34m    |     `-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d340[0m <[0;33mcol:19[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 3[0m
+[0;34m    `-[0m[0;1;35mDeclStmt[0m[0;33m 0x319d588[0m <[0;33mline:14:5[0m, [0;33mcol:24[0m>
+[0;34m      `-[0m[0;1;32mVarDecl[0m[0;33m 0x319d428[0m <[0;33mcol:5[0m, [0;33mcol:23[0m> [0;33mcol:10[0m[0;1;36m v4[0m [0;32m'class Vec3'[0m cinit
+[0;34m        `-[0m[0;1;35mCXXConstructExpr[0m[0;33m 0x319d540[0m <[0;33mcol:15[0m, [0;33mcol:23[0m> [0;32m'class Vec3'[0m[0;36m[0m[0;36m[0m [0;32m'void (int, int, int)'[0m
+[0;34m          |-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d488[0m <[0;33mcol:16[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 1[0m
+[0;34m          |-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d4a8[0m <[0;33mcol:19[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 2[0m
+[0;34m          `-[0m[0;1;35mIntegerLiteral[0m[0;33m 0x319d4c8[0m <[0;33mcol:22[0m> [0;32m'int'[0m[0;36m[0m[0;36m[0m[0;1;36m 3[0m
