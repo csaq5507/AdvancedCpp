@@ -4,5 +4,5 @@ project(AdvancedCpp LANGUAGES CXX)
 set(CMAKE_BUILD_TYPE Debug)
 
 add_subdirectory(
-        ex01
+        ex01/task3/
 )
