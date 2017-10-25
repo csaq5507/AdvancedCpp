@@ -1,0 +1,13 @@
+./.vcs_info_folder //contains our meta data ./ refers now to the folder defined at this line
+
+./serialized_graph.txt  //TODO implement invariant that the current root node is stored in the graph
+./user_files            //Containst the first version of each file
+./<graph_node_folder>
+	--> commit msg.txt
+	--> stage_file.txt  //contains files of this stage
+	--> diff_order      //contains diffs
+
+
+
+//TODO
+stage file contains relative path from root node
