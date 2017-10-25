@@ -3,6 +3,8 @@ project(AdvancedCpp LANGUAGES CXX)
 
 set(CMAKE_BUILD_TYPE Debug)
 
+
 add_subdirectory(
-        ex01/task3/
+        ex02/task1_and_2/
 )
+
