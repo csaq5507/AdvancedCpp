@@ -2,6 +2,7 @@
 
 #include "vcs_utility.h"
 #include "stage_file_entry.h"
+#include "DGraph.h"
 #include <experimental/filesystem>
 #include <string>
 #include <iostream>
@@ -17,34 +18,44 @@ const std::string user_files_dir_name("user_file_dir");
 const std::string stage_file_name("staged_files.txt");
 const std::string serialized_graph_file_name("serialized_graph.txt");
 
-
 enum file_status {
 	modified,
 	not_modified,
 	added
 };
 
-Vcs::Vcs(const fs::path& root_dir) : root_work_dir(root_dir), vcs_root_dir(root_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name) {}
+Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name) {}
 	
-bool Vcs::is_vcs_initialized() {return exists(vcs_root_dir);}
+bool Vcs::is_vcs_initialized() {
+	return exists(vcs_root_dir);
+}
 	
 bool Vcs::init_vcs() {
 	if (is_vcs_initialized()) return false;
 	create_directory(vcs_root_dir);
 	create_directory(user_file_dir);
-	
-	//later replace with create file from ivan
+	DGraph g{};
+	g.add_vertex();
+	create_directory(vcs_root_dir / fs::path(std::to_string(g.root_node)));
 	std::ofstream f(vcs_root_dir / serialized_graph_file_name);
-	f << "";
+	g.serialize(f);
 	return true;
 }
 
 void Vcs::commit(){
-	//ture -> first commit
+	//true -> first commit
+	//TODO add edge
 	if(fs::is_empty(vcs_root_dir / serialized_graph_file_name)){
 		cout << "okay" << endl;
+	} else {
+//		graph = DGraph::deserialize(this->graphPath);
 	}
+	//call_status for all added files copy file to user file dir
+	//create new node file
+	//create diffs ect.
+	//set current root node
 }
+
 //TODO test
 file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> prevStagedFiles) {
 	for (auto& e : prevStagedFiles) {
@@ -58,18 +69,22 @@ file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> pre
 	return added;
 }
 
-void Vcs::call_status(vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& result) {
-	call_status(this->root_work_dir, prevStagedFiles, result);
+void Vcs::call_status(vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& modifiedFiles, vector<fs::path>& addedFiles) {
+	call_status(fs::path("."), prevStagedFiles, modifiedFiles, addedFiles);
 }
-void Vcs::call_status(const fs::path& dir, vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& result) {
+void Vcs::call_status(const fs::path& dir, vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& modifiedFiles, vector<fs::path>& addedFiles) {
 	for (auto& p : fs::directory_iterator(dir)) {
 		auto path = p.path();
 		if(path == vcs_root_dir) continue;
 		if (fs::is_directory(path)) {
-			call_status(path, prevStagedFiles, result);
+			call_status(path, prevStagedFiles, modifiedFiles, addedFiles);
 		}else {
 			auto status = check_file_status(path, prevStagedFiles);
-			if(status == modified) result.push_back(path);
+			if(status == modified){
+				modifiedFiles.push_back(path);
+			} else if (status == added){
+				addedFiles.push_back(path);
+			}
 		}
 	}
 }
