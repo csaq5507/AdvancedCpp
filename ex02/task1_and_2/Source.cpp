@@ -2,21 +2,14 @@
 #include <experimental/filesystem>
 #include <string_view>
 #include <fstream>
+#include "vcs_utility.h"
 
 using namespace std;
 namespace fs = experimental::filesystem;
 
 int main(int argv, char** args) {
-	
-	auto path = fs::current_path();
-	cout << path << endl;
-	ofstream file(path / "t" / "t.txt");
-	file << "lest see" << endl;
-	//	if (!is_vcs_initialized(path)) {
-//	init_vcs(path);
-	  //	}
-	//call_status(path, getStagedFileFromRootDic(path));
-	
-
+	auto test = Vcs(fs::current_path());
+	test.init_vcs();
+	test.commit();
 	return 0;
 }

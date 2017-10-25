@@ -21,8 +21,7 @@ const std::string serialized_graph_file_name("serialized_graph.txt");
 enum file_status {
 	modified,
 	not_modified,
-	removed,
-	not_added
+	removed
 };
 
 Vcs::Vcs(const fs::path& root_dir) : root_work_dir(root_dir), vcs_root_dir(root_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name) {}
@@ -33,16 +32,38 @@ bool Vcs::init_vcs() {
 	if (is_vcs_initialized()) return false;
 	create_directory(vcs_root_dir);
 	create_directory(user_file_dir);
+	
 	//later replace with create file from ivan
 	std::ofstream f(vcs_root_dir / serialized_graph_file_name);
 	f << "";
 	return true;
 }
 
-/*
+void Vcs::commit(){
+	//ture -> first commit
+	if(fs::is_empty(vcs_root_dir / serialized_graph_file_name)){
+		cout << "okay" << endl;
+	}
+}
+
+void Vcs::call_status(fs::path& dir, vector<fs::path>& result, vector<StagedFileEntry> prevStagedFiles) {
+	
+	for (auto& p : fs::directory_iterator(dir)) {
+		auto path = p.path();
+		if(path == vcs_root_dir) continue;
+		if (fs::is_directory(path)) {
+			call_status(path, result, stageFileEntries);
+		}else {
+			auto status = check_file_status(path, prevStagedFiles);
+			if(status == modified) result.push_back(path);
+		}
+	}
+}
+
+
 //TODO test
-file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> stageFileEntries) {
-	for (auto& e : stageFileEntries) {
+file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> prevStagedFiles) {
+	for (auto& e : prevStagedFiles) {
 		if (e.path == fileToCheck) {
 			auto timeStamp = fs::last_write_time(fileToCheck);
 			std::time_t cftime = decltype(timeStamp)::clock::to_time_t(timeStamp);
@@ -50,10 +71,10 @@ file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> sta
 			return modified;
 		}
 	}
-	return not_added;
+	return removed;
 }
 
-
+/*
 //TODO Test
 file_status check_stagedFile_status(string timeStamp, fs::path& stagedFile) {
 	if (fs::exists(stagedFile)) {
