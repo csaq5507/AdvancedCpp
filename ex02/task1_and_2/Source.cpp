@@ -1,6 +1,5 @@
 #include <iostream>
 #include <experimental/filesystem>
-#include <string_view>
 #include <fstream>
 #include "vcs_utility.h"
 
@@ -11,5 +10,10 @@ int main(int argv, char** args) {
 	auto test = Vcs(fs::current_path());
 	test.init_vcs();
 	test.commit();
+	vector<fs::path> result;
+	test.call_status(vector<StagedFileEntry>(),result);
+	for(auto& e : result){
+		cout << e << endl;
+	}
 	return 0;
 }

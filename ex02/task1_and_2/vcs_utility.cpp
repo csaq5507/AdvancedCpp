@@ -1,7 +1,7 @@
 #pragma warning(disable : 4996)
 
 #include "vcs_utility.h"
-//#include "stage_file_entry.h"
+#include "stage_file_entry.h"
 #include <experimental/filesystem>
 #include <string>
 #include <iostream>
@@ -21,7 +21,6 @@ const std::string serialized_graph_file_name("serialized_graph.txt");
 enum file_status {
 	modified,
 	not_modified,
-	removed
 };
 
 Vcs::Vcs(const fs::path& root_dir) : root_work_dir(root_dir), vcs_root_dir(root_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name) {}
@@ -45,22 +44,6 @@ void Vcs::commit(){
 		cout << "okay" << endl;
 	}
 }
-
-void Vcs::call_status(fs::path& dir, vector<fs::path>& result, vector<StagedFileEntry> prevStagedFiles) {
-	
-	for (auto& p : fs::directory_iterator(dir)) {
-		auto path = p.path();
-		if(path == vcs_root_dir) continue;
-		if (fs::is_directory(path)) {
-			call_status(path, result, stageFileEntries);
-		}else {
-			auto status = check_file_status(path, prevStagedFiles);
-			if(status == modified) result.push_back(path);
-		}
-	}
-}
-
-
 //TODO test
 file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> prevStagedFiles) {
 	for (auto& e : prevStagedFiles) {
@@ -71,8 +54,27 @@ file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> pre
 			return modified;
 		}
 	}
-	return removed;
+	//added and modified have the same behaviour
+	return modified;
 }
+
+void Vcs::call_status(vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& result) {
+	call_status(this->root_work_dir, prevStagedFiles, result);
+}
+void Vcs::call_status(const fs::path& dir, vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& result) {
+	for (auto& p : fs::directory_iterator(dir)) {
+		auto path = p.path();
+		if(path == vcs_root_dir) continue;
+		if (fs::is_directory(path)) {
+			call_status(path, prevStagedFiles, result);
+		}else {
+			auto status = check_file_status(path, prevStagedFiles);
+			if(status == modified) result.push_back(path);
+		}
+	}
+}
+
+
 
 /*
 //TODO Test
