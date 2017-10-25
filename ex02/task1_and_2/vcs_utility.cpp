@@ -3,6 +3,7 @@
 #include "vcs_utility.h"
 #include "stage_file_entry.h"
 #include "DGraph.h"
+#include "backup_builder.h"
 #include <experimental/filesystem>
 #include <string>
 #include <iostream>
@@ -46,6 +47,8 @@ void Vcs::commit(){
 	//true -> first commit
 	//TODO add edge
 	DGraph graph{};
+	
+	backup_builder b(root_work_dir);
 	if(fs::is_empty(vcs_root_dir / serialized_graph_file_name)){
 		//TODO
 		//?
@@ -68,6 +71,7 @@ void Vcs::commit(){
 		stage_file_entries += string(e) + string("\n");
 		//TODO 
 		//copy files with function of ivan
+		b.initial_copy(e);
 	}
 	for(auto& e : modified) {
 		num_stage_files++;
