@@ -1,8 +1,8 @@
 #pragma warning(disable : 4996)
 
 #include "vcs_utility.h"
-#include "stage_file_entry.h"
-#include <experimental\filesystem>
+//#include "stage_file_entry.h"
+#include <experimental/filesystem>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -12,8 +12,10 @@
 using namespace std;
 namespace fs = std::experimental::filesystem;
 
-const std::string vcs_dic_name(".vcs_info_folder");
-const std::string stage_file_name(".staged_files.txt");
+const std::string vcs_dir_name(".vcs_info_dir");
+const std::string user_files_dir_name("user_file_dir");
+const std::string stage_file_name("staged_files.txt");
+const std::string serialized_graph_file_name("serialized_graph.txt");
 
 
 enum file_status {
@@ -23,38 +25,21 @@ enum file_status {
 	not_added
 };
 
-bool is_vcs_initialized(fs::path& p) {
-	return exists(p / vcs_dic_name);
-}
-
-/* stage file convention: first line contains "#Staged files"
-next lines contains the staged files and additional information in following order
-"file name"\t"timestamp"\n
-*/
-void create_stage_file(fs::path& p) {
-	auto f = p / stage_file_name;
-	if (exists(f)) remove(f);
-	std::ofstream stage_info_file(f);
-	stage_info_file << "#Staged files" << std::endl;
-	stage_info_file.close();
-}
-
-/* TODO: discusse with teammates how to handle error, only with bool and set glboal flag or throw exceptions*/
-bool init_vcs(fs::path& p) {
-	if (is_vcs_initialized(p)) return false;
-	auto vcs_dic = p / vcs_dic_name;
-	create_directory(vcs_dic);
-	//TODO add config files
-	create_stage_file(vcs_dic);
-
+Vcs::Vcs(const fs::path& root_dir) : root_work_dir(root_dir), vcs_root_dir(root_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name) {}
+	
+bool Vcs::is_vcs_initialized() {return exists(vcs_root_dir);}
+	
+bool Vcs::init_vcs() {
+	if (is_vcs_initialized()) return false;
+	create_directory(vcs_root_dir);
+	create_directory(user_file_dir);
+	//later replace with create file from ivan
+	std::ofstream f(vcs_root_dir / serialized_graph_file_name);
+	f << "";
 	return true;
 }
 
-fs::path getStagedFileFromRootDic(fs::path& rootDic) {
-	return rootDic / vcs_dic_name / stage_file_name;
-}
-
-
+/*
 //TODO test
 file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> stageFileEntries) {
 	for (auto& e : stageFileEntries) {
@@ -114,6 +99,7 @@ void call_status(fs::path& rootDir, fs::path& stagedFile) {
 	vector<StagedFileEntry> stageFileEntries = getStagedFilesEntry(getStagedFileFromRootDic(rootDir));
 	call_status(rootDir, stageFileEntries);
 }
+* */
 
 //TODO implement graph, boost needs too much kwonlage for realibale usage!!! see http://www.boost.org/doc/libs/1_60_0/libs/graph/doc/adjacency_list.html for proof
 
