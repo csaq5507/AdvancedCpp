@@ -10,7 +10,7 @@ static constexpr char delimiter('\t');
 using namespace std;
 
 template <typename T>
-void split(const string &input, const char delim, T res) {
+static void split(const string &input, const char delim, T res) {
 	istringstream stream(input);
 	string token;
 	while (getline(stream, token, delim)) {
@@ -18,7 +18,7 @@ void split(const string &input, const char delim, T res) {
 	}
 }
 
-vector<string> split(const string& s, const char delim) {
+static vector<string> split(const string& s, const char delim) {
 	vector<string> result;
 	split(s, delim, back_inserter(result));
 	return result;

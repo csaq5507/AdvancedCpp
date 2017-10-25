@@ -1,9 +1,22 @@
 #pragma once
 
-#include <experimental\filesystem>
+#include <experimental/filesystem>
+#include "stage_file_entry.h"
 
-/*convention is that the folder containing vcs information is called vcs_info_folder */
-bool is_vcs_initialized(std::experimental::filesystem::path& p);
-bool init_vcs(std::experimental::filesystem::path& p);
-std::experimental::filesystem::path getStagedFileFromRootDic(std::experimental::filesystem::path& rootDic);
-void call_status(std::experimental::filesystem::path& rootDir, std::experimental::filesystem::path& stagedFile);
+struct Vcs {
+	Vcs();
+	bool is_vcs_initialized();
+	bool init_vcs();
+	void commit();
+	//todo make private
+	void call_status(std::vector<StagedFileEntry> prevStagedFiles, std::vector<std::experimental::filesystem::path>& modifiedFiles,
+			std::vector<std::experimental::filesystem::path>& addedFiles);
+	//members
+	const std::experimental::filesystem::path root_work_dir;
+	const std::experimental::filesystem::path vcs_root_dir;
+	const std::experimental::filesystem::path user_file_dir;
+
+private:
+	void call_status(const std::experimental::filesystem::path& dir, std::vector<StagedFileEntry> prevStagedFiles,
+			std::vector<std::experimental::filesystem::path>& modifiedFiles, std::vector<std::experimental::filesystem::path>& addedFiles);
+};

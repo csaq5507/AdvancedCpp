@@ -2,7 +2,8 @@
 
 #include "vcs_utility.h"
 #include "stage_file_entry.h"
-#include <experimental\filesystem>
+#include "DGraph.h"
+#include <experimental/filesystem>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -12,52 +13,87 @@
 using namespace std;
 namespace fs = std::experimental::filesystem;
 
-const std::string vcs_dic_name(".vcs_info_folder");
-const std::string stage_file_name(".staged_files.txt");
-
+const std::string vcs_dir_name(".vcs_info_dir");
+const std::string user_files_dir_name("user_file_dir");
+const std::string stage_file_name("staged_files.txt");
+const std::string serialized_graph_file_name("serialized_graph.txt");
 
 enum file_status {
 	modified,
 	not_modified,
-	removed,
-	not_added
+	added
 };
 
-bool is_vcs_initialized(fs::path& p) {
-	return exists(p / vcs_dic_name);
+Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name) {}
+	
+bool Vcs::is_vcs_initialized() {
+	return exists(vcs_root_dir);
 }
-
-/* stage file convention: first line contains "#Staged files"
-next lines contains the staged files and additional information in following order
-"file name"\t"timestamp"\n
-*/
-void create_stage_file(fs::path& p) {
-	auto f = p / stage_file_name;
-	if (exists(f)) remove(f);
-	std::ofstream stage_info_file(f);
-	stage_info_file << "#Staged files" << std::endl;
-	stage_info_file.close();
-}
-
-/* TODO: discusse with teammates how to handle error, only with bool and set glboal flag or throw exceptions*/
-bool init_vcs(fs::path& p) {
-	if (is_vcs_initialized(p)) return false;
-	auto vcs_dic = p / vcs_dic_name;
-	create_directory(vcs_dic);
-	//TODO add config files
-	create_stage_file(vcs_dic);
-
+	
+bool Vcs::init_vcs() {
+	if (is_vcs_initialized()) return false;
+	create_directory(vcs_root_dir);
+	create_directory(user_file_dir);
+	DGraph g{};
+	g.add_vertex();
+	create_directory(vcs_root_dir / fs::path(std::to_string(g.root_node)));
+	std::ofstream f(vcs_root_dir / serialized_graph_file_name);
+	g.serialize(f);
 	return true;
 }
 
-fs::path getStagedFileFromRootDic(fs::path& rootDic) {
-	return rootDic / vcs_dic_name / stage_file_name;
+void Vcs::commit(){
+	//true -> first commit
+	//TODO add edge
+	DGraph graph{};
+	if(fs::is_empty(vcs_root_dir / serialized_graph_file_name)){
+		//TODO
+		//?
+		//can be deleted ?
+	} else {
+		std::ifstream f(vcs_root_dir / serialized_graph_file_name);
+		graph = DGraph::deserialize(f);
+		//graph = DGraph::deserialize(this->graphPath);
+	}
+	vector<fs::path> modified;
+	vector<fs::path> added;
+	call_status(vector<StagedFileEntry>(),modified, added);
+	
+	//variables to save data which must be written to stage_file
+	unsigned num_stage_files = 0;
+	std::string stage_file_entries("");
+	
+	for(auto& e : added){
+		num_stage_files++;
+		stage_file_entries += string(e) + string("\n");
+		//TODO 
+		//copy files with function of ivan
+	}
+	for(auto& e : modified) {
+		num_stage_files++;
+		stage_file_entries += string(e) + string("\n");
+		//TODO
+		//read previous version from "?"
+		//create diff files with function of ivan
+	}
+	//TODO 
+	//write this below into file stage_file.txt at the correct node folder
+	cout << "Num of files for stage x: " << num_stage_files << endl;
+	cout << endl;
+	cout << "Files to add to stage file x: " << endl;
+	cout << stage_file_entries;
+	
+	//create new node file
+	//set current root node
+	
+	//TODO
+	//Write graph back to file
+	//graph.serialize();
 }
 
-
 //TODO test
-file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> stageFileEntries) {
-	for (auto& e : stageFileEntries) {
+file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> prevStagedFiles) {
+	for (auto& e : prevStagedFiles) {
 		if (e.path == fileToCheck) {
 			auto timeStamp = fs::last_write_time(fileToCheck);
 			std::time_t cftime = decltype(timeStamp)::clock::to_time_t(timeStamp);
@@ -65,10 +101,32 @@ file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> sta
 			return modified;
 		}
 	}
-	return not_added;
+	return added;
+}
+
+void Vcs::call_status(vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& modifiedFiles, vector<fs::path>& addedFiles) {
+	call_status(fs::path("."), prevStagedFiles, modifiedFiles, addedFiles);
+}
+void Vcs::call_status(const fs::path& dir, vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& modifiedFiles, vector<fs::path>& addedFiles) {
+	for (auto& p : fs::directory_iterator(dir)) {
+		auto path = p.path();
+		if(path == vcs_root_dir) continue;
+		if (fs::is_directory(path)) {
+			call_status(path, prevStagedFiles, modifiedFiles, addedFiles);
+		}else {
+			auto status = check_file_status(path, prevStagedFiles);
+			if(status == modified){
+				modifiedFiles.push_back(path);
+			} else if (status == added){
+				addedFiles.push_back(path);
+			}
+		}
+	}
 }
 
 
+
+/*
 //TODO Test
 file_status check_stagedFile_status(string timeStamp, fs::path& stagedFile) {
 	if (fs::exists(stagedFile)) {
@@ -114,6 +172,7 @@ void call_status(fs::path& rootDir, fs::path& stagedFile) {
 	vector<StagedFileEntry> stageFileEntries = getStagedFilesEntry(getStagedFileFromRootDic(rootDir));
 	call_status(rootDir, stageFileEntries);
 }
+* */
 
 //TODO implement graph, boost needs too much kwonlage for realibale usage!!! see http://www.boost.org/doc/libs/1_60_0/libs/graph/doc/adjacency_list.html for proof
 
