@@ -21,6 +21,7 @@ const std::string serialized_graph_file_name("serialized_graph.txt");
 enum file_status {
 	modified,
 	not_modified,
+	added
 };
 
 Vcs::Vcs(const fs::path& root_dir) : root_work_dir(root_dir), vcs_root_dir(root_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name) {}
@@ -54,8 +55,7 @@ file_status check_file_status(fs::path& fileToCheck, vector<StagedFileEntry> pre
 			return modified;
 		}
 	}
-	//added and modified have the same behaviour
-	return modified;
+	return added;
 }
 
 void Vcs::call_status(vector<StagedFileEntry> prevStagedFiles, vector<fs::path>& result) {
