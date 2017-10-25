@@ -28,6 +28,10 @@ std::vector<std::string> split(const std::string &s, char delim) {
 //adjacent list
 DGraph::DGraph() : std::vector<std::vector<unsigned>>() {};
 
+unsigned DGraph::num_of_nodes(){
+	return this->size();
+}
+
 unsigned DGraph::add_vertex() {
 	this->push_back(std::vector<unsigned>());
 	this->root_node = this->size() - 1;
@@ -76,8 +80,8 @@ DGraph DGraph::deserialize(std::istream& s) {
 std::ostream& operator<<(std::ostream &os, const DGraph &m) {
 	os << m.root_node << std::endl;
 	for (unsigned i = 0; i < m.size(); i++) {
-		for (auto& e : m[i]) {
-			os << e << delimiter;
+		for(auto it = m[i].begin() ; it != m[i].end(); ++it){
+			os << *it << delimiter;
 		}
 		os << std::endl;
 	}

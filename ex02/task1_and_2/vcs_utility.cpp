@@ -45,15 +45,50 @@ bool Vcs::init_vcs() {
 void Vcs::commit(){
 	//true -> first commit
 	//TODO add edge
+	DGraph graph{};
 	if(fs::is_empty(vcs_root_dir / serialized_graph_file_name)){
-		cout << "okay" << endl;
+		//TODO
+		//?
+		//can be deleted ?
 	} else {
-//		graph = DGraph::deserialize(this->graphPath);
+		std::ifstream f(vcs_root_dir / serialized_graph_file_name);
+		graph = DGraph::deserialize(f);
+		//graph = DGraph::deserialize(this->graphPath);
 	}
-	//call_status for all added files copy file to user file dir
+	vector<fs::path> modified;
+	vector<fs::path> added;
+	call_status(vector<StagedFileEntry>(),modified, added);
+	
+	//variables to save data which must be written to stage_file
+	unsigned num_stage_files = 0;
+	std::string stage_file_entries("");
+	
+	for(auto& e : added){
+		num_stage_files++;
+		stage_file_entries += string(e) + string("\n");
+		//TODO 
+		//copy files with function of ivan
+	}
+	for(auto& e : modified) {
+		num_stage_files++;
+		stage_file_entries += string(e) + string("\n");
+		//TODO
+		//read previous version from "?"
+		//create diff files with function of ivan
+	}
+	//TODO 
+	//write this below into file stage_file.txt at the correct node folder
+	cout << "Num of files for stage x: " << num_stage_files << endl;
+	cout << endl;
+	cout << "Files to add to stage file x: " << endl;
+	cout << stage_file_entries;
+	
 	//create new node file
-	//create diffs ect.
 	//set current root node
+	
+	//TODO
+	//Write graph back to file
+	//graph.serialize();
 }
 
 //TODO test

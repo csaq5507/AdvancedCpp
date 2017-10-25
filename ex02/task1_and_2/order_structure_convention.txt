@@ -5,9 +5,16 @@
 ./<graph_node_folder>
 	--> commit msg.txt
 	--> stage_file.txt  //contains files of this stage
-	--> diff_order      //contains diffs
-
+	--> diffs
 
 
 //TODO
 stage file contains relative path from root node
+
+
+//HOW TO compile
+g++ -std=c++1z Source.cpp stage_file_entry.cpp vcs_utility.cpp DGraph.cpp -lstdc++fs
+
+
+//Pitfall for task 4
+Graph can contain edges to non existing nodes

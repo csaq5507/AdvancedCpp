@@ -17,6 +17,7 @@ public:
 	//TODO
 	void serialize(std::ofstream& f) ;
 	static DGraph deserialize(std::istream& s);
+	unsigned num_of_nodes();
 	unsigned root_node;
 };
 
