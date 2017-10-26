@@ -34,9 +34,7 @@ private:
 
 public:
 
-    backup_builder(const fs::path root_path)
-        { this->root_path = root_path; this->user_files = root_path / ".vcs_info_folder" / "user_files"; this->vcs_info_folder = root_path / ".vcs_info_folder"; this->temp_path = root_path / "temp"; }
-
+    backup_builder(const fs::path root_path);
     ~backup_builder()
         { }
 
