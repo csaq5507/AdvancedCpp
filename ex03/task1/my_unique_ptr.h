@@ -1,7 +1,3 @@
-//
-// Created by ivan on 27/10/17.
-//
-
 #ifndef ADVANCEDCPP_MY_UNIQUE_PTR_H
 #define ADVANCEDCPP_MY_UNIQUE_PTR_H
 

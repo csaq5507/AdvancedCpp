@@ -1,6 +1,3 @@
-//
-// Created by ivan on 27/10/17.
-//
 #include <memory>
 
 #include "my_unique_ptr.h"
