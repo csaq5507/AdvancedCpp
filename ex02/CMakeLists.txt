@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.6)
 
 project(VCS)
 
+include(CTest)
+
+enable_testing()
+
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -10,6 +15,8 @@ set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-lin
 
 # Link runTests with what we want to test and the GTest and pthread library
 aux_source_directory(. SRC_LIST)
+
+add_subdirectory(${PROJECT_SOURCE_DIR}/test/)
 
 
 add_executable(${PROJECT_NAME} Source.cpp)

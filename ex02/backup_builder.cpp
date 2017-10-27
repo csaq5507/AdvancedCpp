@@ -5,52 +5,44 @@
 
 backup_builder::backup_builder(const fs::path root_path) {
     this->root_path = root_path;
-    this->vcs_info_folder = root_path / std::string(".vcs_info_folder");
-    this->user_files = this->vcs_info_folder / std::string("user_files");
-    this->temp_path = this->vcs_info_folder / std::string("temp");
-    if(!dir_or_file_exists(vcs_info_folder)) create_file_or_directory(vcs_info_folder,false);
-    if(!dir_or_file_exists(user_files)) create_file_or_directory(user_files,false);
-    if(!dir_or_file_exists(temp_path)) create_file_or_directory(temp_path,false);
+    this->vcs_info_dir = root_path / std::string(".vcs_info_folder");
+    this->user_files = this->vcs_info_dir / std::string("user_files");
+    this->temp_path = this->vcs_info_dir / std::string("temp");
+    if(!fs::exists(vcs_info_dir)) create_directory(vcs_info_dir);
+    if(!fs::exists(user_files)) create_directory(user_files);
+    if(!fs::exists(temp_path)) create_directory(temp_path);
 }
 
 fs::path backup_builder::create_path(const fs::path path, bool is_file) {
-    if(dir_or_file_exists(path.parent_path()))
-        return create_file_or_directory(path, is_file);
+    if(fs::exists(path.parent_path()))
+        return (is_file ? create_file(path) : create_directory(path));
     else
         create_path(path.parent_path(), false);
-        return create_file_or_directory(path, is_file);
+        return (is_file ? create_file(path) : create_directory(path));
 }
 
-fs::path backup_builder::create_file_or_directory(const fs::path path, bool is_file) {
-    if(is_file){
-        std::ofstream os(path);
-        os << " ";
-        os.close();
-    }
-    else
-        fs::create_directory(path);
+fs::path backup_builder::create_file(const fs::path path) {
+    std::ofstream os(path);
+    os << " ";
+    os.close();
     return path;
 }
 
-bool backup_builder::dir_or_file_exists(const fs::path path) {
-    if(fs::exists(path))
-        return true;
-    else
-        return false;
+fs::path backup_builder::create_directory(const fs::path path) {
+    fs::create_directory(path);
 }
 
-
-void backup_builder::diff(const fs::path file_to_backup, int old_version, int new_version) {
+void backup_builder::diff(const fs::path file_to_backup,const int old_version,const int new_version) {
     if(old_version==0) {
         fs::path previous_file = user_files / file_to_backup;
         fs::path new_file = root_path / file_to_backup;
-        fs::path new_patch = vcs_info_folder / std::string("node1") / file_to_backup;
+        fs::path new_patch = vcs_info_dir / std::string("node1") / file_to_backup;
         create_path(new_patch,true);
         system((std::string("diff ") + previous_file.string() + std::string(" ") + new_file.string() + std::string(" > ") + new_patch.string()).c_str());
     } else {
         fs::path previous_file = patch(file_to_backup, old_version);
         fs::path new_file = root_path / file_to_backup;
-        fs::path new_patch = vcs_info_folder / (std::string("node") + std::to_string(new_version)) / file_to_backup;
+        fs::path new_patch = vcs_info_dir / (std::string("node") + std::to_string(new_version)) / file_to_backup;
         create_path(new_patch,true);
         system((std::string("diff ") + previous_file.string() + std::string(" ") + new_file.string() + std::string(" > ") + new_patch.string()).c_str());
     }
@@ -67,7 +59,7 @@ fs::path backup_builder::patch(const fs::path file_to_backup, int version) {
     fs::copy(original_file, current_version);
     for(int i=1;i<=version;i++)
     {
-        fs::path current_patch = vcs_info_folder / (std::string("node") + std::string(std::to_string(i))) / file_to_backup;
+        fs::path current_patch = vcs_info_dir / (std::string("node") + std::string(std::to_string(i))) / file_to_backup;
         system((std::string("patch ") + current_version.string() + std::string(" ") + current_patch.string()).c_str());
     }
     return current_version;

@@ -5,6 +5,6 @@ set(CMAKE_BUILD_TYPE Debug)
 
 
 add_subdirectory(
-        ex02/task1_and_2/
+        ex02/
 )
 
