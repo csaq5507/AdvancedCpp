@@ -5,6 +5,6 @@ set(CMAKE_BUILD_TYPE Debug)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/ex02/module)
 
 add_subdirectory(
-        ex02/
+        ex03/
 )
 
