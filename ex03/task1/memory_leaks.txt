@@ -1,0 +1,165 @@
+valgrind --leak-check=full --show-leak-kinds=all -v ./task1 > ../../ex03/task1/memory_leaks.txt
+==9471== Memcheck, a memory error detector
+==9471== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==9471== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==9471== Command: ./task1
+==9471==
+--9471-- Valgrind options:
+--9471--    --leak-check=full
+--9471--    --show-leak-kinds=all
+--9471--    -v
+--9471-- Contents of /proc/version:
+--9471--   Linux version 4.10.0-37-generic (buildd@lgw01-amd64-037) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ) #41~16.04.1-Ubuntu SMP Fri Oct 6 22:42:59 UTC 2017
+--9471--
+--9471-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--9471-- Page sizes: currently 4096, max supported 4096
+--9471-- Valgrind library directory: /usr/lib/valgrind
+--9471-- Reading syms from /home/ivan/CLionProjects/AdvancedCpp/cmake-build-debug/ex03/task1
+--9471-- Reading syms from /lib/x86_64-linux-gnu/ld-2.23.so
+--9471--   Considering /lib/x86_64-linux-gnu/ld-2.23.so ..
+--9471--   .. CRC mismatch (computed 9bc477cd wanted 3da2f12a)
+--9471--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.23.so ..
+--9471--   .. CRC is valid
+--9471-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--9471--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--9471--   .. CRC mismatch (computed eea41ea9 wanted 2009db78)
+--9471--    object doesn't have a symbol table
+--9471--    object doesn't have a dynamic symbol table
+--9471-- Scheduler: using generic scheduler lock implementation.
+--9471-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==9471== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-9471-by-ivan-on-???
+==9471== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-9471-by-ivan-on-???
+==9471== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-9471-by-ivan-on-???
+==9471==
+==9471== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==9471== don't want to do, unless you know exactly what you're doing,
+==9471== or are doing some strange experiment):
+==9471==   /usr/lib/valgrind/../../bin/vgdb --pid=9471 ...command...
+==9471==
+==9471== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==9471==   /path/to/gdb ./task1
+==9471== and then give GDB the following command
+==9471==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=9471
+==9471== --pid is optional if only one valgrind process is running
+==9471==
+--9471-- REDIR: 0x401cf90 (ld-linux-x86-64.so.2:strlen) redirected to 0x3809e181 (???)
+--9471-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--9471--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--9471--   .. CRC mismatch (computed 2567ccf6 wanted 49420590)
+--9471--    object doesn't have a symbol table
+--9471-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--9471--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--9471--   .. CRC mismatch (computed 0e27c9a8 wanted ac585421)
+--9471--    object doesn't have a symbol table
+==9471== WARNING: new redirection conflicts with existing -- ignoring it
+--9471--     old: 0x0401cf90 (strlen              ) R-> (0000.0) 0x3809e181 ???
+--9471--     new: 0x0401cf90 (strlen              ) R-> (2007.0) 0x04c31020 strlen
+--9471-- REDIR: 0x401b8e0 (ld-linux-x86-64.so.2:index) redirected to 0x4c30bc0 (index)
+--9471-- REDIR: 0x401bb00 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c320d0 (strcmp)
+--9471-- REDIR: 0x401dcf0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c35270 (mempcpy)
+--9471-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24
+--9471--    object doesn't have a symbol table
+--9471-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
+--9471--    object doesn't have a symbol table
+--9471-- Reading syms from /lib/x86_64-linux-gnu/libc-2.23.so
+--9471--   Considering /lib/x86_64-linux-gnu/libc-2.23.so ..
+--9471--   .. CRC mismatch (computed b2979fac wanted 1affc958)
+--9471--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.23.so ..
+--9471--   .. CRC is valid
+--9471-- Reading syms from /lib/x86_64-linux-gnu/libm-2.23.so
+--9471--   Considering /lib/x86_64-linux-gnu/libm-2.23.so ..
+--9471--   .. CRC mismatch (computed 8bd88005 wanted 32b88176)
+--9471--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.23.so ..
+--9471--   .. CRC is valid
+--9471-- REDIR: 0x5469a00 (libc.so.6:strcasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--9471-- REDIR: 0x5465280 (libc.so.6:strcspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--9471-- REDIR: 0x546bcf0 (libc.so.6:strncasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--9471-- REDIR: 0x54676f0 (libc.so.6:strpbrk) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--9471-- REDIR: 0x5467a80 (libc.so.6:strspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--9471-- REDIR: 0x546914b (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--9471-- REDIR: 0x5467400 (libc.so.6:rindex) redirected to 0x4c308a0 (rindex)
+--9471-- REDIR: 0x545e130 (libc.so.6:malloc) redirected to 0x4c2db20 (malloc)
+--9471-- REDIR: 0x5465720 (libc.so.6:strlen) redirected to 0x4c30f60 (strlen)
+--9471-- REDIR: 0x5468bf0 (libc.so.6:__GI_memcmp) redirected to 0x4c33b90 (__GI_memcmp)
+--9471-- REDIR: 0x5463cd0 (libc.so.6:strcmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--9471-- REDIR: 0x5479570 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x4c31f90 (strcmp)
+--9471-- REDIR: 0x4eca4a0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c2e080 (operator new(unsigned long))
+--9471-- REDIR: 0x4ec83e0 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c2f1e0 (operator delete(void*))
+==9471== Invalid free() / delete / delete[] / realloc()
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CD9: main (main.cpp:17)
+==9471==  Address 0x5abecd0 is 0 bytes inside a block of size 12 free'd
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CCD: main (main.cpp:18)
+==9471==  Block was alloc'd at
+==9471==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x400C73: main (main.cpp:16)
+==9471==
+==9471== Invalid free() / delete / delete[] / realloc()
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CE5: main (main.cpp:16)
+==9471==  Address 0x5abecd0 is 0 bytes inside a block of size 12 free'd
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CCD: main (main.cpp:18)
+==9471==  Block was alloc'd at
+==9471==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x400C73: main (main.cpp:16)
+==9471==
+--9471-- REDIR: 0x545e4f0 (libc.so.6:free) redirected to 0x4c2ed80 (free)
+==9471==
+==9471== HEAP SUMMARY:
+==9471==     in use at exit: 72,704 bytes in 1 blocks
+==9471==   total heap usage: 4 allocs, 5 frees, 72,776 bytes allocated
+==9471==
+==9471== Searching for pointers to 1 not-freed blocks
+==9471== Checked 116,600 bytes
+==9471==
+==9471== 72,704 bytes in 1 blocks are still reachable in loss record 1 of 1
+==9471==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4EC6365: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==9471==    by 0x40106B9: call_init.part.0 (dl-init.c:72)
+==9471==    by 0x40107CA: call_init (dl-init.c:30)
+==9471==    by 0x40107CA: _dl_init (dl-init.c:120)
+==9471==    by 0x4000C69: ??? (in /lib/x86_64-linux-gnu/ld-2.23.so)
+==9471==
+==9471== LEAK SUMMARY:
+==9471==    definitely lost: 0 bytes in 0 blocks
+==9471==    indirectly lost: 0 bytes in 0 blocks
+==9471==      possibly lost: 0 bytes in 0 blocks
+==9471==    still reachable: 72,704 bytes in 1 blocks
+==9471==         suppressed: 0 bytes in 0 blocks
+==9471==
+==9471== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==9471==
+==9471== 1 errors in context 1 of 2:
+==9471== Invalid free() / delete / delete[] / realloc()
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CE5: main (main.cpp:16)
+==9471==  Address 0x5abecd0 is 0 bytes inside a block of size 12 free'd
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CCD: main (main.cpp:18)
+==9471==  Block was alloc'd at
+==9471==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x400C73: main (main.cpp:16)
+==9471==
+==9471==
+==9471== 1 errors in context 2 of 2:
+==9471== Invalid free() / delete / delete[] / realloc()
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CD9: main (main.cpp:17)
+==9471==  Address 0x5abecd0 is 0 bytes inside a block of size 12 free'd
+==9471==    at 0x4C2F24B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x4010B5: my_shared_ptr::~my_shared_ptr() (my_shared_ptr.h:82)
+==9471==    by 0x400CCD: main (main.cpp:18)
+==9471==  Block was alloc'd at
+==9471==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9471==    by 0x400C73: main (main.cpp:16)
+==9471==
+==9471== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
