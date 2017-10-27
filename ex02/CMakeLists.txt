@@ -10,8 +10,13 @@ enable_testing()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(stdc++fs UNKNOWN IMPORTED)
-set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-linux-gnu/7/libstdc++fs.a")
+FIND_PACKAGE (CPPexperimental)
+IF(DL_FOUND AND CPPEXPERIMENTAL_FOUND)
+    SET (LIBRARIES ${LIBRARIES}
+            ${DL_LIBRARIES} ${CPPEXPERIMENTAL_LIBRARIES})
+    INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_DL=YES")
+ENDIF()
 
 # Link runTests with what we want to test and the GTest and pthread library
 aux_source_directory(. SRC_LIST)
