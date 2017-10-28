@@ -5,7 +5,8 @@
 #include <string>
 #include <sstream>
 #include <iterator>
-
+#include <map>
+#include <queue>
 
 constexpr char delimiter = ';';
 
@@ -41,7 +42,7 @@ unsigned DGraph::add_vertex() {
 void DGraph::add_edge(unsigned outgoing_node, unsigned incoming_node) {
 	//index out of bounce
 	if (outgoing_node >= this->size() || incoming_node >= this->size()) return;
-	//TODO add check if incoming node is not alraedy contained
+	//TODO add check if incoming node is not already contained
 	(*this)[outgoing_node].push_back(incoming_node);
 }
 
@@ -77,6 +78,42 @@ DGraph DGraph::deserialize(std::istream& s) {
 	return g;
 }
 
+//TODO test
+std::vector<unsigned> DGraph::BFS (const unsigned startNode,const unsigned endNode){
+	std::vector<unsigned> res;
+	std::map<unsigned,unsigned> path;
+	bool done = false;
+	if(startNode >= this->num_of_nodes() || endNode >= this->num_of_nodes()) return res;
+	bool visited[this->num_of_nodes()] = { false }; 
+	std::queue<unsigned> queue;
+	visited[startNode] = true;
+	queue.push(startNode);
+	while(!queue.empty() || done){
+		auto n = queue.front();
+		queue.pop();
+		for(auto c : (*this)[n]){
+			if(visited[c]) continue;
+			visited[c] = true;
+			queue.push(c);
+			path[c] = n;
+			if(c == endNode){
+				done = true;
+				break;
+			}
+		}
+	}
+	if(done){
+		auto parent = endNode;
+		res.push_back(parent);
+		while(parent != startNode){
+			parent = path[parent];
+			res.push_back(parent);
+		}
+	}
+	std::reverse(std::begin(res), std::end(res));
+	return res.rever;
+}
+
 std::ostream& operator<<(std::ostream &os, const DGraph &m) {
 	os << m.root_node << std::endl;
 	for (unsigned i = 0; i < m.size(); i++) {
@@ -87,3 +124,4 @@ std::ostream& operator<<(std::ostream &os, const DGraph &m) {
 	}
 	return os;
 }
+
