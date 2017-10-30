@@ -1,0 +1,9 @@
+Problem is of course the index out of bounce variable in the contains function.
+
+As we clearly see in the assembler code, the gcc compiler removes the contains function body and returns true.
+This probalby happens because internaly it pushes the whole array onto the stack (meaning each elemen for faster access)
+and after the array the variable v. This leads to the last check array[5] == v has the same meaning as v == v, because array[5] accesses
+the next element of the stack which is the pushed variable v.
+
+The clang-5.0 compiler does not change the function which is why we get the desired output (coincidence because array[5] not in {0,1,...,9}).
+This result is worse than the gcc version, because it does not immidiatly display the undesired behaviour.

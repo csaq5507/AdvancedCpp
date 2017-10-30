@@ -1,0 +1,84 @@
+std::ctype<char>::do_widen(char) const:
+  mov eax, esi
+  ret
+contains(int):
+  mov eax, 1
+  ret
+.LC0:
+  .string "array "
+.LC1:
+  .string "contains "
+.LC2:
+  .string "done"
+main:
+  push r12
+  push rbp
+  xor ebp, ebp
+  push rbx
+  jmp .L8
+.L15:
+  movsx esi, BYTE PTR [rbx+67]
+.L7:
+  mov rdi, r12
+  add ebp, 1
+  call std::basic_ostream<char, std::char_traits<char> >::put(char)
+  mov rdi, rax
+  call std::basic_ostream<char, std::char_traits<char> >::flush()
+  cmp ebp, 10
+  je .L13
+.L8:
+  mov edx, 6
+  mov esi, OFFSET FLAT:.LC0
+  mov edi, OFFSET FLAT:std::cout
+  call std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+  mov edx, 9
+  mov esi, OFFSET FLAT:.LC1
+  mov edi, OFFSET FLAT:std::cout
+  call std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+  mov esi, ebp
+  mov edi, OFFSET FLAT:std::cout
+  call std::basic_ostream<char, std::char_traits<char> >::operator<<(int)
+  mov r12, rax
+  mov rax, QWORD PTR [rax]
+  mov rax, QWORD PTR [rax-24]
+  mov rbx, QWORD PTR [r12+240+rax]
+  test rbx, rbx
+  je .L14
+  cmp BYTE PTR [rbx+56], 0
+  jne .L15
+  mov rdi, rbx
+  call std::ctype<char>::_M_widen_init() const
+  mov rax, QWORD PTR [rbx]
+  mov esi, 10
+  mov rax, QWORD PTR [rax+48]
+  cmp rax, OFFSET FLAT:std::ctype<char>::do_widen(char) const
+  je .L7
+  mov rdi, rbx
+  call rax
+  movsx esi, al
+  jmp .L7
+.L13:
+  mov edx, 4
+  mov esi, OFFSET FLAT:.LC2
+  mov edi, OFFSET FLAT:std::cout
+  call std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+  mov edi, OFFSET FLAT:std::cout
+  call std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)
+  pop rbx
+  xor eax, eax
+  pop rbp
+  pop r12
+  ret
+.L14:
+  call std::__throw_bad_cast()
+_GLOBAL__sub_I_array:
+  sub rsp, 8
+  mov edi, OFFSET FLAT:std::__ioinit
+  call std::ios_base::Init::Init()
+  mov edx, OFFSET FLAT:__dso_handle
+  mov esi, OFFSET FLAT:std::__ioinit
+  mov edi, OFFSET FLAT:std::ios_base::Init::~Init()
+  add rsp, 8
+  jmp __cxa_atexit
+array:
+  .zero 20

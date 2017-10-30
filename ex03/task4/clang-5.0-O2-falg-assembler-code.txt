@@ -1,0 +1,136 @@
+contains(int): # @contains(int)
+  cmp dword ptr [rip + array], edi
+  je .LBB0_5
+  cmp dword ptr [rip + array+4], edi
+  je .LBB0_5
+  cmp dword ptr [rip + array+8], edi
+  je .LBB0_5
+  cmp dword ptr [rip + array+12], edi
+  je .LBB0_5
+  cmp dword ptr [rip + array+16], edi
+  je .LBB0_5
+  cmp dword ptr [rip + array+20], edi
+  sete al
+  ret
+.LBB0_5:
+  mov al, 1
+  ret
+main: # @main
+  push rbp
+  push r14
+  push rbx
+  mov r14d, -1
+.LBB1_1: # =>This Inner Loop Header: Depth=1
+  inc r14d
+  cmp r14d, dword ptr [rip + array]
+  je .LBB1_13
+  cmp r14d, dword ptr [rip + array+4]
+  je .LBB1_13
+  cmp r14d, dword ptr [rip + array+8]
+  je .LBB1_13
+  cmp r14d, dword ptr [rip + array+12]
+  je .LBB1_13
+  cmp r14d, dword ptr [rip + array+16]
+  je .LBB1_13
+  cmp r14d, dword ptr [rip + array+20]
+  jne .LBB1_7
+.LBB1_13: # in Loop: Header=BB1_1 Depth=1
+  mov ebx, .L.str
+  jmp .LBB1_14
+.LBB1_7: # in Loop: Header=BB1_1 Depth=1
+  mov ebx, .L.str.1
+.LBB1_14: # in Loop: Header=BB1_1 Depth=1
+  mov edi, std::cout
+  mov esi, .L.str.2
+  mov edx, 6
+  call std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+  mov rdi, rbx
+  call strlen
+  mov edi, std::cout
+  mov rsi, rbx
+  mov rdx, rax
+  call std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+  mov edi, std::cout
+  mov esi, r14d
+  call std::basic_ostream<char, std::char_traits<char> >::operator<<(int)
+  mov rbx, rax
+  mov rax, qword ptr [rbx]
+  mov rax, qword ptr [rax - 24]
+  mov rbp, qword ptr [rbx + rax + 240]
+  test rbp, rbp
+  je .LBB1_19
+  cmp byte ptr [rbp + 56], 0
+  je .LBB1_17
+  movzx eax, byte ptr [rbp + 67]
+  jmp .LBB1_18
+.LBB1_17: # in Loop: Header=BB1_1 Depth=1
+  mov rdi, rbp
+  call std::ctype<char>::_M_widen_init() const
+  mov rax, qword ptr [rbp]
+  mov esi, 10
+  mov rdi, rbp
+  call qword ptr [rax + 48]
+.LBB1_18: # in Loop: Header=BB1_1 Depth=1
+  movsx esi, al
+  mov rdi, rbx
+  call std::basic_ostream<char, std::char_traits<char> >::put(char)
+  mov rdi, rax
+  call std::basic_ostream<char, std::char_traits<char> >::flush()
+  cmp r14d, 9
+  jb .LBB1_1
+  mov edi, std::cout
+  mov esi, .L.str.3
+  mov edx, 4
+  call std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+  mov rax, qword ptr [rip + std::cout]
+  mov rax, qword ptr [rax - 24]
+  mov rbx, qword ptr [rax + std::cout+240]
+  test rbx, rbx
+  je .LBB1_19
+  cmp byte ptr [rbx + 56], 0
+  je .LBB1_11
+  mov al, byte ptr [rbx + 67]
+  jmp .LBB1_12
+.LBB1_11:
+  mov rdi, rbx
+  call std::ctype<char>::_M_widen_init() const
+  mov rax, qword ptr [rbx]
+  mov esi, 10
+  mov rdi, rbx
+  call qword ptr [rax + 48]
+.LBB1_12:
+  movsx esi, al
+  mov edi, std::cout
+  call std::basic_ostream<char, std::char_traits<char> >::put(char)
+  mov rdi, rax
+  call std::basic_ostream<char, std::char_traits<char> >::flush()
+  xor eax, eax
+  pop rbx
+  pop r14
+  pop rbp
+  ret
+.LBB1_19:
+  call std::__throw_bad_cast()
+_GLOBAL__sub_I_example.cpp: # @_GLOBAL__sub_I_example.cpp
+  push rax
+  mov edi, std::__ioinit
+  call std::ios_base::Init::Init()
+  mov edi, std::ios_base::Init::~Init()
+  mov esi, std::__ioinit
+  mov edx, __dso_handle
+  pop rax
+  jmp __cxa_atexit # TAILCALL
+array:
+  .zero 20
+
+.L.str:
+  .asciz "contains "
+
+.L.str.1:
+  .asciz "does not contain "
+
+.L.str.2:
+  .asciz "array "
+
+.L.str.3:
+  .asciz "done"
