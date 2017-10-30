@@ -1,6 +1,6 @@
 # Expected behaviour
 
-either add the elements 0-9 to the vector or loop till infinity. (meaning till stack or allocation overflow)
+Either add the elements 0-9 to the vector or loop till infinity. (meaning till stack or allocation overflow)
 
 # Behaviour
 
@@ -15,7 +15,8 @@ Read the documentation of the function you use.
 
 # Warnings
 
-clang-5.0 with flags -Wall -Wextra -std=c++17 -O2
+
+Clang-5.0 with flags -Wall -Wextra -std=c++17 -O2
 	did not print any warnings.
 
-Same goes for g++
+Same goes for g++-7.2
