@@ -1,3 +1,5 @@
+#pragma warning(disable : 4996)
+
 #include "stage_file_entry.h"
 #include <string>
 #include <vector>
@@ -8,6 +10,7 @@
 static constexpr char delimiter('\t');
 
 using namespace std;
+namespace fs = std::experimental::filesystem;
 
 template <typename T>
 static void split(const string &input, const char delim, T res) {
@@ -24,6 +27,8 @@ static vector<string> split(const string& s, const char delim) {
 	return result;
 }
 
+StagedFileEntry::StagedFileEntry(std::string f, std::string s) : path(f), timestamp(s) {}
+StagedFileEntry::StagedFileEntry(std::string f) : path(f), timestamp(getTimeStamp(f)) {}
 
 string StagedFileEntry::Serialize(StagedFileEntry& entry) {
 	string result = entry.path + delimiter + entry.timestamp;
@@ -34,4 +39,17 @@ StagedFileEntry StagedFileEntry::Deserialize(std::string serialized_staged_file_
 	auto splited = split(serialized_staged_file_entry, delimiter);
 	StagedFileEntry entry(splited[0], splited[1]);
 	return entry;
+}
+
+std::string StagedFileEntry::getTimeStamp(const fs::path& p) {
+	auto time = fs::last_write_time(p);
+	std::time_t cftime = decltype(time)::clock::to_time_t(time);
+	return std::asctime(std::localtime(&cftime));
+}
+
+bool StagedFileEntry::operator==(const StagedFileEntry &other) const {
+	return this->path == other.path && this->timestamp == other.timestamp;
+}
+bool StagedFileEntry::operator==(const std::experimental::filesystem::path &path) const {
+	return this->path == path;
 }

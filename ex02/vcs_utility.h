@@ -2,21 +2,24 @@
 
 #include <experimental/filesystem>
 #include "stage_file_entry.h"
+#include "DGraph.h"
 
 struct Vcs {
 	Vcs();
+
 	bool is_vcs_initialized();
 	bool init_vcs();
 	void commit();
-	//todo make private
-	void call_status(std::vector<StagedFileEntry> prevStagedFiles, std::vector<std::experimental::filesystem::path>& modifiedFiles,
-			std::vector<std::experimental::filesystem::path>& addedFiles);
+
+	std::vector<std::experimental::filesystem::path> getAllFiles();
+	std::vector<std::experimental::filesystem::path> Vcs::getAddedFiles();
+	std::vector<StagedFileEntry> Vcs::getPrevStagedFiles();
+	std::vector<std::experimental::filesystem::path> Vcs::getModifiedFiles();
 	//members
+	//TODO make graph a member
+	DGraph graph;
 	const std::experimental::filesystem::path root_work_dir;
 	const std::experimental::filesystem::path vcs_root_dir;
 	const std::experimental::filesystem::path user_file_dir;
 
-private:
-	void call_status(const std::experimental::filesystem::path& dir, std::vector<StagedFileEntry> prevStagedFiles,
-			std::vector<std::experimental::filesystem::path>& modifiedFiles, std::vector<std::experimental::filesystem::path>& addedFiles);
 };
