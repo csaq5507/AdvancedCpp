@@ -27,7 +27,7 @@ TEST(vcs_utility_backup_builder, commit){
 
     string str(static_cast<stringstream const&>(stringstream() << committet.rdbuf()).str());
     string str1(static_cast<stringstream const&>(stringstream() << testie.rdbuf()).str());
-  //  ASSERT_EQ(str,str1);
+    ASSERT_EQ(str,str1);
 
 
 }
