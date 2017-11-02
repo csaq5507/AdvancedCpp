@@ -5,6 +5,11 @@
 #include "DGraph.h"
 
 struct Vcs {
+	const std::experimental::filesystem::path root_work_dir;
+	const std::experimental::filesystem::path vcs_root_dir;
+	const std::experimental::filesystem::path user_file_dir;
+
+
 	Vcs();
 
 	bool is_vcs_initialized();
@@ -21,7 +26,5 @@ struct Vcs {
 	//members
 	//TODO make graph a member
 	DGraph graph;
-	const std::experimental::filesystem::path root_work_dir;
-	const std::experimental::filesystem::path vcs_root_dir;
-	const std::experimental::filesystem::path user_file_dir;
+
 };
