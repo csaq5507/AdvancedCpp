@@ -102,7 +102,7 @@ std::vector<unsigned> DGraph::BFS (const unsigned startNode,const unsigned endNo
 	std::queue<unsigned> queue;
 	visited[startNode] = true;
 	queue.push(startNode);
-	while(!queue.empty() || done){
+	while(!queue.empty() && done){
 		auto n = queue.front();
 		queue.pop();
 		for(auto c : (*this).adjacentList[n]){

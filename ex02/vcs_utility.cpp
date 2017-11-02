@@ -24,7 +24,17 @@ enum file_status {
 	added
 };
 
-Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name){}
+Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name){
+	if (is_vcs_initialized()) {
+		ifstream in(vcs_root_dir / serialized_graph_file_name);
+		graph = DGraph::deserialize(in);
+	}
+}
+
+Vcs::~Vcs() {
+	ofstream out(vcs_root_dir / serialized_graph_file_name, std::ios_base::trunc);
+	graph.serialize(out);
+}
 	
 bool Vcs::is_vcs_initialized() {
 	return exists(vcs_root_dir);
@@ -145,7 +155,7 @@ std::vector<fs::path> Vcs::getAddedFiles() {
 	auto fileList = getAllFiles();
 	auto stagedFiles = getPrevStagedFiles();
 	std::vector<fs::path> result;
-	//difference(fileList.begin(), fileList.end(), stagedFiles.begin(), stagedFiles.end(), std::back_inserter(result));
+	difference(fileList.begin(), fileList.end(), stagedFiles.begin(), stagedFiles.end(), std::back_inserter(result));
 	return result;
 }
 
@@ -159,7 +169,6 @@ std::vector<fs::path> Vcs::getModifiedFiles() {
 			if (e.timestamp != StagedFileEntry::getTimeStamp(*tmp)) fileList.erase(tmp);
 		}
 	}
-	//difference(fileList.begin(), fileList.end(), stagedFiles.begin(), stagedFiles.end(), std::back_inserter(result));
 	return result;
 }
 

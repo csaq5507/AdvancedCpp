@@ -11,7 +11,7 @@ struct Vcs {
 
 
 	Vcs();
-
+	~Vcs();
 	bool is_vcs_initialized();
 	bool init_vcs();
 	void commit(std::string commitMsg);
