@@ -155,7 +155,7 @@ std::vector<fs::path> Vcs::getAddedFiles() {
 	auto fileList = getAllFiles();
 	auto stagedFiles = getPrevStagedFiles();
 	std::vector<fs::path> result;
-	//difference(fileList.begin(), fileList.end(), stagedFiles.begin(), stagedFiles.end(), std::back_inserter(result));
+	difference(fileList.begin(), fileList.end(), stagedFiles.begin(), stagedFiles.end(), std::back_inserter(result));
 	return result;
 }
 
@@ -169,7 +169,6 @@ std::vector<fs::path> Vcs::getModifiedFiles() {
 			if (e.timestamp != StagedFileEntry::getTimeStamp(*tmp)) fileList.erase(tmp);
 		}
 	}
-	//difference(fileList.begin(), fileList.end(), stagedFiles.begin(), stagedFiles.end(), std::back_inserter(result));
 	return result;
 }
 
