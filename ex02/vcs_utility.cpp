@@ -24,7 +24,7 @@ enum file_status {
 	added
 };
 
-Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name){
+    Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name){
 	if (is_vcs_initialized()) {
 		ifstream in(vcs_root_dir / serialized_graph_file_name);
 		graph = DGraph::deserialize(in);
@@ -89,12 +89,31 @@ void Vcs::commit(std::string commitMsg){
 
 	auto oldDiffs = graph.BFS(0, oldVersion);
 
+    added = remove_point(added);
+    modified = remove_point(modified);
+    allFiles = remove_point(allFiles);
+
 	for(auto& e : added) b.initial_copy(e);
 	for(auto& e : modified) b.diff(e, oldDiffs, newVersion);
 	for(auto& e : allFiles) { f << StagedFileEntry::Serialize(e) << endl; }
 
 	std::ofstream f1(this->vcs_root_dir / std::to_string(this->graph.root_node) / "commitMsg");
 	f1 << commitMsg;
+}
+
+std::vector<fs::path> Vcs::remove_point(std::vector<fs::path> files)
+{
+    std::vector<fs::path> result=std::vector<fs::path>();
+    for(auto& e : files){
+        fs::path new_path = fs::path();
+        for(auto& elem : e){
+            if(elem.string() !=".")
+                new_path=new_path / elem;
+        }
+        std::string test = new_path.string();
+        result.push_back(new_path);
+    }
+    return result;
 }
 
 void Vcs::show() {
@@ -117,8 +136,7 @@ void Vcs::checkout(int version) {
 	vector<StagedFileEntry> prevEntries = getPrevStagedFiles();
 	for (auto& f : prevEntries) {
 		auto tmpFile = b.patch(f.path, diffs);
-		b.create_path(f.path, true);
-		fs::copy(tmpFile, f.path, fs::copy_options::overwrite_existing);
+		fs::copy(tmpFile, root_work_dir / f.path, fs::copy_options::overwrite_existing);
 	}
 }
 
@@ -133,7 +151,7 @@ std::vector<fs::path> Vcs::getAllFiles(const fs::path& dir) {
 	std::vector<fs::path> result;
 	for (auto& p : fs::directory_iterator(dir)) {
 		auto path = p.path();
-		if (path == vcs_root_dir) continue;
+		if (path == vcs_root_dir || path.filename().string()=="VCS") continue;
 		if (!fs::is_directory(path)) {
 			result.push_back(path);
 		} else {
@@ -156,7 +174,7 @@ void difference(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2
 }
 
 std::vector<fs::path> Vcs::getAddedFiles() {
-	auto fileList = getAllFiles();
+	auto fileList = remove_point(getAllFiles());
 	auto stagedFiles = getPrevStagedFiles();
 	std::vector<fs::path> result;
 	difference(fileList.begin(), fileList.end(), stagedFiles.begin(), stagedFiles.end(), std::back_inserter(result));
@@ -164,7 +182,8 @@ std::vector<fs::path> Vcs::getAddedFiles() {
 }
 
 std::vector<fs::path> Vcs::getModifiedFiles() {
-	auto fileList = getAllFiles();
+	auto fileList = remove_point(getAllFiles());
+
 	std::vector<fs::path> result;
 	auto stagedFiles = getPrevStagedFiles();
 	for (auto& e : stagedFiles) {

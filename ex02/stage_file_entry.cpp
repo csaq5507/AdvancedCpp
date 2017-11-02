@@ -7,7 +7,7 @@
 #include <sstream>
 #include <fstream>
 
-static constexpr char delimiter('§');
+static constexpr char delimiter('?');
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
@@ -50,7 +50,7 @@ std::string StagedFileEntry::getTimeStamp(const fs::path& p) {
 	auto time = fs::last_write_time(p);
 	std::time_t cftime = decltype(time)::clock::to_time_t(time);
 	std::string res = std::asctime(std::localtime(&cftime));
-	res.erase(std::remove(res.begin(), res.end(), '\n'), res.end());
+	res.erase(res.length()-1);
 	return res;
 }
 

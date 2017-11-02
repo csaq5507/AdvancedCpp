@@ -15,18 +15,14 @@ int main(int argv, char** args) {
 	auto vcs = Vcs();
 	string message="";
 	int node=-1;
-	int node_a=-1;
-	int node_b=-1;
 	
 	po::options_description desc("Allowed options");
 	desc.add_options()
     ("help,h", "help")
     ("init,i", "init")
     ("commit,c", po::value< string >(&message), "commit")
-    ("show,s", po::value<int>(&node), "show")
-    ("checkout,o", po::value<int>(&node), "checkout")
-    ("mergea,a", po::value<int>(&node_a), "mergea")
-	("mergeb,b", po::value<int>(&node_b), "mergeb");
+    ("show,s", "show")
+    ("checkout,o", po::value<int>(&node), "checkout");
 	
 	po::variables_map vm;
 	po::store(po::parse_command_line(argv, args, desc), vm);
@@ -44,24 +40,14 @@ int main(int argv, char** args) {
 			vcs.commit(message);
 		}
 	} else if (vm.count("show")) {
-		if (node == -1) {
-			cout << "No node set" << endl;
-		} else{
-			//vcs.show(node);
-		}
+			vcs.show();
 	} else if (vm.count("checkout")) {
 		if (node == -1) {
 			cout << "No node set" << endl;
 		} else{
 			vcs.checkout(node);
 		}
-	} else if (vm.count("merge")) {
-		if (node_a == -1 || node_b == -1) {
-			cout << "No node set" << endl;
-		} else{
-			//vcs.merge(node_a, node_b);
-		}
-	} else {
+	}else {
 		cout << "Unknown command" << endl;
 	}
 

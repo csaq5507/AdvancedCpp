@@ -18,6 +18,8 @@ struct Vcs {
 	void show();
 	void checkout(int version);
 
+	std::vector<std::experimental::filesystem::path> remove_point(std::vector<std::experimental::filesystem::path> files);
+
 	std::vector<std::experimental::filesystem::path> getAllFiles();
 	std::vector<std::experimental::filesystem::path> getAllFiles(const std::experimental::filesystem::path& dir);
 	std::vector<std::experimental::filesystem::path> getAddedFiles();

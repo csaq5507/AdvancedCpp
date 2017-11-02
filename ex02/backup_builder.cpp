@@ -5,8 +5,8 @@
 #include <vector>
 
 backup_builder::backup_builder(const fs::path root_path) {
-    this->root_path = root_path;
-    this->vcs_info_dir = root_path / std::string(".vcs_info_dir");
+    this->root_path = fs::current_path();
+    this->vcs_info_dir = this->root_path / std::string(".vcs_info_dir");
     this->user_files = this->vcs_info_dir / std::string("user_file_dir");
     this->temp_path = this->vcs_info_dir / std::string("temp");
     if(!fs::exists(vcs_info_dir)) create_directory(vcs_info_dir);
@@ -50,7 +50,8 @@ void backup_builder::initial_copy(const fs::path file_to_backup) {
 fs::path backup_builder::patch(const fs::path file_to_backup, std::vector<unsigned> version) {
     fs::path original_file =  user_files / file_to_backup;
     fs::path current_version= temp_path / file_to_backup;
-    fs::copy(original_file, current_version);
+    create_path(current_version,true);
+    fs::copy(original_file, current_version, fs::copy_options::overwrite_existing);
     for(auto& i : version) {
         fs::path current_patch = vcs_info_dir / std::string(std::to_string(i)) / file_to_backup;
 		if (!fs::exists(current_patch)) continue;
