@@ -3,8 +3,8 @@
 #include <boost/program_options.hpp>
 #include <fstream>
 
-#include "vcs_utility.h"
-#include "DGraph.h"
+#include "src/vcs_utility.h"
+#include "src/DGraph.h"
 
 using namespace std;
 namespace fs = experimental::filesystem;

@@ -22,14 +22,14 @@ FIND_PACKAGE( Boost COMPONENTS program_options REQUIRED )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 # Link runTests with what we want to test and the GTest and pthread library
-aux_source_directory(. SRC_LIST)
+aux_source_directory(src/ SRC_LIST)
 
 add_executable(${PROJECT_NAME} Source.cpp)
 add_library(library ${SRC_LIST})
 target_link_libraries(${PROJECT_NAME} library stdc++fs ${Boost_LIBRARIES})
 
-# add_executable(UnitTest test/unit_test.cpp)
-# target_link_libraries(UnitTest ${GTEST_LIBRARIES} library stdc++fs pthread)
+ add_executable(UnitTest test/unit_test.cpp)
+ target_link_libraries(UnitTest ${GTEST_LIBRARIES} library stdc++fs pthread)
 
-# add_executable(IntegrationTest test/integration_test.cpp)
-# target_link_libraries(IntegrationTest ${GTEST_LIBRARIES} library stdc++fs pthread)
+ add_executable(IntegrationTest test/integration_test.cpp)
+ target_link_libraries(IntegrationTest ${GTEST_LIBRARIES} library stdc++fs pthread)
