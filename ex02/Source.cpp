@@ -10,11 +10,7 @@ namespace fs = experimental::filesystem;
 
 int main(int argv, char** args) {
 	auto test = Vcs();
-	test.init_vcs();
+	test.commit("Olles inni zeckn");
 
-	vector<fs::path> mod;
-	vector<fs::path> add;
-	
-	
 	return 0;
 }

@@ -24,7 +24,7 @@ enum file_status {
 	added
 };
 
-Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name), graph(vcs_root_dir / serialized_graph_file_name) {}
+Vcs::Vcs() : root_work_dir("."), vcs_root_dir(root_work_dir / vcs_dir_name), user_file_dir (vcs_root_dir / user_files_dir_name){}
 	
 bool Vcs::is_vcs_initialized() {
 	return exists(vcs_root_dir);
@@ -39,6 +39,7 @@ bool Vcs::init_vcs() {
 	create_directory(vcs_root_dir / fs::path(std::to_string(g.root_node)));
 	std::ofstream f(vcs_root_dir / serialized_graph_file_name);
 	g.serialize(f);
+	graph=g;
 	return true;
 }
 

@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.6)
 
 project(VCS)
 
-include(CTest)
 
-enable_testing()
-
+# Locate GTest
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -21,9 +21,12 @@ ENDIF()
 # Link runTests with what we want to test and the GTest and pthread library
 aux_source_directory(. SRC_LIST)
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/test/)
-
-
 add_executable(${PROJECT_NAME} Source.cpp)
 add_library(library ${SRC_LIST})
 target_link_libraries(${PROJECT_NAME} library stdc++fs)
+
+# add_executable(UnitTest test/unit_test.cpp)
+# target_link_libraries(UnitTest ${GTEST_LIBRARIES} library stdc++fs pthread)
+
+# add_executable(IntegrationTest test/integration_test.cpp)
+# target_link_libraries(IntegrationTest ${GTEST_LIBRARIES} library stdc++fs pthread)
