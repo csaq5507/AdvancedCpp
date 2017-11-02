@@ -7,7 +7,7 @@
 #include <sstream>
 #include <fstream>
 
-static constexpr char delimiter('\t');
+static constexpr char delimiter('§');
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
