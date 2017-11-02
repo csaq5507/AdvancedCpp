@@ -14,13 +14,16 @@ using namespace std;
 using namespace std::experimental::filesystem;
 
 TEST(vcs_utility_backup_builder, commit){
+    Vcs init = Vcs();
+    if(!init.is_vcs_initialized())
+        init.init_vcs();
     Vcs test = Vcs();
-    test.init_vcs();
+
     path testfile =path("test_file");
     std::ofstream file_to_commit(testfile);
     file_to_commit << "Hallo" <<std::endl;
     file_to_commit.close();
-   // ASSERT_NO_THROW(test.commit("Test Commit"));
+    ASSERT_NO_THROW(test.commit("Test Commit"));
     path committet_file=std::string(".vcs_info_dir") / std::string("user_file_dir") / std::string("test_file");
     std::ifstream committet(committet_file);
     std::ifstream testie(testfile);

@@ -9,7 +9,6 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
-#include <benchmark/benchmark.h>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
@@ -204,7 +203,3 @@ std::vector<StagedFileEntry> Vcs::getPrevStagedFiles() {
 	return getStagedFilesEntry(path);
 }
 
-BENCHMARK(commit);
-BENCHMARK(show);
-BENCHMARK(checkout);
-BENCHMARK_MAIN();
