@@ -165,27 +165,21 @@ std::vector<fs::path> Vcs::getAddedFiles() {
 
 std::vector<fs::path> Vcs::getModifiedFiles() {
 	auto fileList = getAllFiles();
+	std::vector<fs::path> result;
 	auto stagedFiles = getPrevStagedFiles();
 	for (auto& e : stagedFiles) {
 		auto tmp = std::find(fileList.begin(), fileList.end(), e.path);
-
 		if (tmp != fileList.end()) {
 			auto s = StagedFileEntry::getTimeStamp(*tmp);
-			if (e.timestamp != s) fileList.erase(tmp);
+			if (e.timestamp != s) {
+				result.push_back(*tmp);
+			}
 		}
 	}
-	return fileList;
+	return result;
 }
 
 std::vector<StagedFileEntry> Vcs::getPrevStagedFiles() {
 	auto path = this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name;
 	return getStagedFilesEntry(path);
 }
-
-/*
-
-fads
-afsdfsad
-asdffasd
-
-*/
