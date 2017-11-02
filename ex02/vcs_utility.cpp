@@ -84,13 +84,14 @@ void Vcs::commit(std::string commitMsg){
 
 
 	auto stageFilePath = this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name;
+	b.create_path(stageFilePath, true);
 	std::ofstream f(stageFilePath);
 
 	auto oldDiffs = graph.BFS(0, oldVersion);
 
 	for(auto& e : added) b.initial_copy(e);
 	for(auto& e : modified) b.diff(e, oldDiffs, newVersion);
-	for(auto& e : allFiles) { f << StagedFileEntry::Serialize(e) << endl; }
+	for(auto& e : allFiles) { f << StagedFileEntry::Serialize(e); }
 
 	std::ofstream f1(this->vcs_root_dir / std::to_string(this->graph.root_node) / "commitMsg");
 	f1 << commitMsg;
@@ -130,11 +131,14 @@ std::vector<fs::path> Vcs::getAllFiles() {
 
 std::vector<fs::path> Vcs::getAllFiles(const fs::path& dir) {
 	std::vector<fs::path> result;
-	for (auto& p : fs::recursive_directory_iterator(dir)) {
+	for (auto& p : fs::directory_iterator(dir)) {
 		auto path = p.path();
 		if (path == vcs_root_dir) continue;
 		if (!fs::is_directory(path)) {
 			result.push_back(path);
+		} else {
+			auto tmp = getAllFiles(p);
+			result.insert(result.end(), tmp.begin(), tmp.end());
 		}
 	}
 	return result;

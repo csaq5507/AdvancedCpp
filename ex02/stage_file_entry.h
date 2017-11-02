@@ -14,4 +14,5 @@ struct StagedFileEntry {
 	static std::string Serialize(StagedFileEntry& entry);
 	static std::string Serialize(std::experimental::filesystem::path& p);
 	static StagedFileEntry Deserialize(std::string serialized_staged_file_entry);
+
 };
