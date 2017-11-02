@@ -9,6 +9,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <benchmark/benchmark.h>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
@@ -202,3 +203,8 @@ std::vector<StagedFileEntry> Vcs::getPrevStagedFiles() {
 	auto path = this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name;
 	return getStagedFilesEntry(path);
 }
+
+BENCHMARK(commit);
+BENCHMARK(show);
+BENCHMARK(checkout);
+BENCHMARK_MAIN();
