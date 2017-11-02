@@ -1,5 +1,6 @@
 #include "DGraph.h"
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <fstream>
 #include <string>

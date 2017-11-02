@@ -18,7 +18,7 @@ public:
 	void add_edge(unsigned outgoing_node, unsigned incoming_node);
 
 	std::vector<unsigned> vertex_out_degree(unsigned degree);
-	std::vector<unsigned> DGraph::BFS(const unsigned startNode, const unsigned endNode);
+	std::vector<unsigned> BFS(const unsigned startNode, const unsigned endNode);
 	friend std::ostream &operator<<(std::ostream &os, const DGraph &m);
 	//TODO
 	void serialize(std::ofstream& f);

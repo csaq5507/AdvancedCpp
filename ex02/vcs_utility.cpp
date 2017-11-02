@@ -55,29 +55,71 @@ vector<StagedFileEntry> getStagedFilesEntry(fs::path& f) {
 	return result;
 }
 
-void Vcs::commit(){
+void Vcs::commit(std::string commitMsg){
 	if (!is_vcs_initialized()) return;	
 	backup_builder b(root_work_dir);
+
+	std::vector<fs::path> allFiles = getAllFiles();
+	vector<fs::path> modified = getModifiedFiles();
+	vector<fs::path> added = getAddedFiles();
+	vector<StagedFileEntry> prevEntries = getPrevStagedFiles();
+	if (modified.empty() && added.empty()) return;
+
 	//Update graph
 	auto oldVersion = graph.root_node;
 	auto newVersion = graph.add_vertex();
 	graph.add_edge(oldVersion, newVersion);
 	graph.root_node = newVersion;
 
-	std::vector<fs::path> allFiles = getAllFiles();
-	vector<fs::path> modified = getModifiedFiles();
-	vector<fs::path> added = getAddedFiles();
-	vector<StagedFileEntry> prevEntries = getPrevStagedFiles();
+
+	auto stageFilePath = this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name;
+	std::ofstream f(stageFilePath);
+
+	auto oldDiffs = graph.BFS(0, oldVersion);
 
 	for(auto& e : added) b.initial_copy(e);
+	for(auto& e : modified) b.diff(e, oldDiffs, newVersion);
+	for(auto& e : allFiles) { f << StagedFileEntry::Serialize(e) << endl; }
+
+	std::ofstream f1(this->vcs_root_dir / std::to_string(this->graph.root_node) / "commitMsg");
+	f1 << commitMsg;
+}
+
+void Vcs::show() {
+	auto folder = this->vcs_root_dir / std::to_string(this->graph.root_node);
+	auto files = getAllFiles(folder);
+	for (auto& f : files) {
+		system((std::string("cat ") + f.string()).c_str());
+	}
+}
+
+void Vcs::checkout(int version) {
+	backup_builder b(root_work_dir);
+	if (version < 0 || version >= graph.num_of_nodes()) return;
+	//Todo test then add the remove command
+	//fs::remove_all(this->root_work_dir);
+	graph.root_node = version;
+	auto diffs = graph.BFS(0, version);
+
+	auto stageFilePath = this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name;
+	vector<StagedFileEntry> prevEntries = getPrevStagedFiles();
+	for (auto& f : prevEntries) {
+		auto tmpFile = b.patch(f.path, diffs);
+		b.create_path(f.path, true);
+		fs::copy(tmpFile, f.path, fs::copy_options::overwrite_existing);
+	}
 }
 
 /*
 	returns a vector which contains the path to all files of this directory and all sub directories
 */
 std::vector<fs::path> Vcs::getAllFiles() {
+	return getAllFiles(this->root_work_dir);
+}
+
+std::vector<fs::path> Vcs::getAllFiles(const fs::path& dir) {
 	std::vector<fs::path> result;
-	for (auto& p : fs::recursive_directory_iterator(this->root_work_dir)) {
+	for (auto& p : fs::recursive_directory_iterator(dir)) {
 		auto path = p.path();
 		if (path == vcs_root_dir) continue;
 		if (!fs::is_directory(path)) {
@@ -111,7 +153,7 @@ std::vector<fs::path> Vcs::getModifiedFiles() {
 	auto fileList = getAllFiles();
 	auto stagedFiles = getPrevStagedFiles();
 	for (auto& e : stagedFiles) {
-		auto tmp = std::find(fileList.begin(), fileList.end(), e);
+		auto tmp = std::find(fileList.begin(), fileList.end(), e.path);
 		if (tmp != fileList.end()) {
 			if (e.timestamp != StagedFileEntry::getTimeStamp(*tmp)) fileList.erase(tmp);
 		}
@@ -121,5 +163,6 @@ std::vector<fs::path> Vcs::getModifiedFiles() {
 }
 
 std::vector<StagedFileEntry> Vcs::getPrevStagedFiles() {
-	return getStagedFilesEntry(this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name);
+	auto path = this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name;
+	return getStagedFilesEntry(path);
 }

@@ -2,6 +2,7 @@
 // Created by ivan on 25/10/17.
 //
 #include "backup_builder.h"
+#include <vector>
 
 backup_builder::backup_builder(const fs::path root_path) {
     this->root_path = root_path;
@@ -30,22 +31,15 @@ fs::path backup_builder::create_file(const fs::path path) {
 
 fs::path backup_builder::create_directory(const fs::path path) {
     fs::create_directory(path);
+	return path;
 }
 
-void backup_builder::diff(const fs::path file_to_backup,const int old_version,const int new_version) {
-    if(old_version==0) {
-        fs::path previous_file = user_files / file_to_backup;
-        fs::path new_file = root_path / file_to_backup;
-        fs::path new_patch = vcs_info_dir / std::string("node1") / file_to_backup;
-        create_path(new_patch,true);
-        system((std::string("diff ") + previous_file.string() + std::string(" ") + new_file.string() + std::string(" > ") + new_patch.string()).c_str());
-    } else {
+void backup_builder::diff(const fs::path file_to_backup, const std::vector<unsigned> old_version,const int new_version) {
         fs::path previous_file = patch(file_to_backup, old_version);
         fs::path new_file = root_path / file_to_backup;
-        fs::path new_patch = vcs_info_dir / (std::string("node") + std::to_string(new_version)) / file_to_backup;
+        fs::path new_patch = vcs_info_dir /  std::to_string(new_version) / file_to_backup;
         create_path(new_patch,true);
         system((std::string("diff ") + previous_file.string() + std::string(" ") + new_file.string() + std::string(" > ") + new_patch.string()).c_str());
-    }
 }
 
 void backup_builder::initial_copy(const fs::path file_to_backup) {
@@ -53,13 +47,13 @@ void backup_builder::initial_copy(const fs::path file_to_backup) {
     fs::copy(root_path / file_to_backup, user_files /file_to_backup, fs::copy_options::overwrite_existing);
 }
 
-fs::path backup_builder::patch(const fs::path file_to_backup, int version) {
+fs::path backup_builder::patch(const fs::path file_to_backup, std::vector<unsigned> version) {
     fs::path original_file =  user_files / file_to_backup;
     fs::path current_version= temp_path / file_to_backup;
     fs::copy(original_file, current_version);
-    for(int i=1;i<=version;i++)
-    {
-        fs::path current_patch = vcs_info_dir / (std::string("node") + std::string(std::to_string(i))) / file_to_backup;
+    for(auto& i : version) {
+        fs::path current_patch = vcs_info_dir / std::string(std::to_string(i)) / file_to_backup;
+		if (!fs::exists(current_patch)) continue;
         system((std::string("patch ") + current_version.string() + std::string(" ") + current_patch.string()).c_str());
     }
     return current_version;

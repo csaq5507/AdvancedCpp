@@ -8,6 +8,7 @@
 #include <iostream>
 #include <experimental/filesystem>
 #include <fstream>
+#include <vector>
 
 namespace fs = std::experimental::filesystem;
 
@@ -37,15 +38,14 @@ private:
      */
     fs::path create_directory(const fs::path path);
 
-    /**
-     * Builds creates Files and folders of a given path
-     * @param path
-     * @param is_file true if the path is a path to a file, false if it's a directory
-     * @return
-     */
-    fs::path create_path(const fs::path path, bool is_file);
-
 public:
+	/**
+	* Builds creates Files and folders of a given path
+	* @param path
+	* @param is_file true if the path is a path to a file, false if it's a directory
+	* @return
+	*/
+	fs::path create_path(const fs::path path, bool is_file);
 
     /**
      * Creates a instance of the backup builder.
@@ -66,7 +66,7 @@ public:
      * @param old_version
      * @param new_version
      */
-    void diff(const fs::path file_to_backup, int old_version, int new_version);
+    void diff(const fs::path file_to_backup, const std::vector<unsigned> old_version, const int new_version);
 
     /**
      * Copy the file_to_backup into the ".vcs_info_dir/user_files"
@@ -83,7 +83,7 @@ public:
      * @param version
      * @return
      */
-    fs::path patch(const std::experimental::filesystem::path file_to_backup, int version);
+    fs::path patch(const std::experimental::filesystem::path file_to_backup, std::vector<unsigned> version);
 };
 
 

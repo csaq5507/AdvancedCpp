@@ -35,6 +35,11 @@ string StagedFileEntry::Serialize(StagedFileEntry& entry) {
 	return result;
 }
 
+std::string StagedFileEntry::Serialize(std::experimental::filesystem::path& p) {
+	string result = p.string() + delimiter + getTimeStamp(p);
+	return result;
+}
+
 StagedFileEntry StagedFileEntry::Deserialize(std::string serialized_staged_file_entry) {
 	auto splited = split(serialized_staged_file_entry, delimiter);
 	StagedFileEntry entry(splited[0], splited[1]);
