@@ -91,7 +91,7 @@ void Vcs::commit(std::string commitMsg){
 
 	for(auto& e : added) b.initial_copy(e);
 	for(auto& e : modified) b.diff(e, oldDiffs, newVersion);
-	for(auto& e : allFiles) { f << StagedFileEntry::Serialize(e); }
+	for(auto& e : allFiles) { f << StagedFileEntry::Serialize(e) << endl; }
 
 	std::ofstream f1(this->vcs_root_dir / std::to_string(this->graph.root_node) / "commitMsg");
 	f1 << commitMsg;
@@ -164,19 +164,28 @@ std::vector<fs::path> Vcs::getAddedFiles() {
 }
 
 std::vector<fs::path> Vcs::getModifiedFiles() {
-	std::vector<fs::path> result;
 	auto fileList = getAllFiles();
 	auto stagedFiles = getPrevStagedFiles();
 	for (auto& e : stagedFiles) {
 		auto tmp = std::find(fileList.begin(), fileList.end(), e.path);
+
 		if (tmp != fileList.end()) {
-			if (e.timestamp != StagedFileEntry::getTimeStamp(*tmp)) fileList.erase(tmp);
+			auto s = StagedFileEntry::getTimeStamp(*tmp);
+			if (e.timestamp != s) fileList.erase(tmp);
 		}
 	}
-	return result;
+	return fileList;
 }
 
 std::vector<StagedFileEntry> Vcs::getPrevStagedFiles() {
 	auto path = this->vcs_root_dir / std::to_string(this->graph.root_node) / stage_file_name;
 	return getStagedFilesEntry(path);
 }
+
+/*
+
+fads
+afsdfsad
+asdffasd
+
+*/

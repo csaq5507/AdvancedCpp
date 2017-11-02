@@ -49,7 +49,9 @@ StagedFileEntry StagedFileEntry::Deserialize(std::string serialized_staged_file_
 std::string StagedFileEntry::getTimeStamp(const fs::path& p) {
 	auto time = fs::last_write_time(p);
 	std::time_t cftime = decltype(time)::clock::to_time_t(time);
-	return std::asctime(std::localtime(&cftime));
+	std::string res = std::asctime(std::localtime(&cftime));
+	res.erase(std::remove(res.begin(), res.end(), '\n'), res.end());
+	return res;
 }
 
 bool StagedFileEntry::operator==(const StagedFileEntry &other) const {
