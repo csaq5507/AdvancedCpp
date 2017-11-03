@@ -75,7 +75,8 @@ public:
         if(ptr!= nullptr)
         {
             my_shared_ptr_container::getInstance().remove(ptr);
-            delete ptr;
+            if(my_shared_ptr_container::getInstance().get_number_of_ptr(ptr) == 0)
+                delete ptr;
         }
     }
 
