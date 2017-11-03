@@ -1,0 +1,200 @@
+ivan@laptop:~/CLionProjects/AdvancedCpp/ex03/task5$ gcc -o bubble_so -O0 -g -std=c99 -Wall -Wextra bubble_sort.c -ggdb -static
+
+
+
+ivan@laptop:~/CLionProjects/AdvancedCpp/ex03/task5$ gdb bubble_so
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from bubble_so...done.
+(gdb) break main
+Breakpoint 1 at 0x400ae5: file bubble_sort.c, line 41.
+(gdb) set $n = 100
+(gdb) while $n-- > 0
+ >  printf "starting program\n"
+ >  run
+ >  record
+ >  c
+ >  if $_siginfo
+  >    printf "Received signal %d, stopping\n", $_siginfo.si_signo
+  >    loop_break
+  >  else
+  >    printf "program exited\n"
+  >  end
+ >end
+starting program
+
+Breakpoint 1, main () at bubble_sort.c:41
+41	    do_stuff();
+The next instruction is syscall exit_group.  It will make the program exit.  Do you want to stop the program?([y] or n) n
+[Inferior 1 (process 462) exited normally]
+program exited
+starting program
+
+Breakpoint 1, main () at bubble_sort.c:41
+41	    do_stuff();
+*** stack smashing detected ***: /home/ivan/CLionProjects/AdvancedCpp/ex03/task5/bubble_so terminated
+
+Program received signal SIGABRT, Aborted.
+0x000000000040dce8 in raise ()
+Received signal 6, stopping
+(gdb) rs
+Single stepping until exit from function raise,
+which has no line number information.
+0x000000000040de95 in abort ()
+(gdb) bt
+#0  0x000000000040de95 in abort ()
+#1  0x0000000000412096 in __libc_message ()
+#2  0x0000000000443302 in __fortify_fail ()
+#3  0x00000000004432ae in __stack_chk_fail ()
+#4  0x0000000000400ad7 in do_stuff () at bubble_sort.c:38
+#5  0x0000000000400aea in main () at bubble_sort.c:41
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+(gdb) rs
+Single stepping until exit from function abort,
+which has no line number information.
+0x0000000000412091 in __libc_message ()
+(gdb) rs
+Single stepping until exit from function __libc_message,
+which has no line number information.
+0x00000000004432fd in __fortify_fail ()
+(gdb) rs
+Single stepping until exit from function __fortify_fail,
+which has no line number information.
+0x00000000004432a9 in __stack_chk_fail ()
+(gdb) rs
+Single stepping until exit from function __stack_chk_fail,
+which has no line number information.
+do_stuff () at bubble_sort.c:38
+38	}
+(gdb) bt
+#0  do_stuff () at bubble_sort.c:38
+#1  0x0000000000400aea in main () at bubble_sort.c:41
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+(gdb) s
+
+No more reverse-execution history.
+0x000000000040dce8 in raise ()
+(gdb) p i
+No symbol "i" in current context.
+(gdb) s
+Single stepping until exit from function raise,
+which has no line number information.
+0x000000000040de9a in abort ()
+(gdb) p i
+No symbol "i" in current context.
+(gdb) rs
+Single stepping until exit from function abort,
+which has no line number information.
+0x0000000000412091 in __libc_message ()
+(gdb) rs
+Single stepping until exit from function __libc_message,
+which has no line number information.
+0x00000000004432fd in __fortify_fail ()
+(gdb) p i
+No symbol "i" in current context.
+(gdb) bt
+#0  0x00000000004432fd in __fortify_fail ()
+#1  0x00000000004432ae in __stack_chk_fail ()
+#2  0x0000000000400ad7 in do_stuff () at bubble_sort.c:38
+#3  0x0000000000400aea in main () at bubble_sort.c:41
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+(gdb) rs
+Single stepping until exit from function __fortify_fail,
+which has no line number information.
+0x00000000004432a9 in __stack_chk_fail ()
+(gdb) bt
+#0  0x00000000004432a9 in __stack_chk_fail ()
+#1  0x0000000000400ad7 in do_stuff () at bubble_sort.c:38
+#2  0x0000000000400aea in main () at bubble_sort.c:41
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+(gdb) rs
+Single stepping until exit from function __stack_chk_fail,
+which has no line number information.
+do_stuff () at bubble_sort.c:38
+38	}
+(gdb) bt
+#0  do_stuff () at bubble_sort.c:38
+#1  0x0000000000400aea in main () at bubble_sort.c:41
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+(gdb) p i
+No symbol "i" in current context.
+(gdb) rs
+sort (array=0x7fffffffd7b0) at bubble_sort.c:27
+27	}
+(gdb) rs
+9	    while (!sorted) {
+(gdb) rs
+12	        for (int i = 0; i < 31; i++) {
+(gdb) rs
+17	                continue;
+(gdb) rs
+16	            if (*item_one <= *item_two) {
+(gdb) rs
+14	            long *item_two = &array[i + 1];
+(gdb) rs
+13	            long *item_one = &array[i];
+(gdb) rs
+12	        for (int i = 0; i < 31; i++) {
+(gdb) rs
+17	                continue;
+(gdb) rs
+16	            if (*item_one <= *item_two) {
+(gdb) rs
+14	            long *item_two = &array[i + 1];
+(gdb) rs
+13	            long *item_one = &array[i];
+(gdb) rs
+12	        for (int i = 0; i < 31; i++) {
+(gdb) bt
+#0  sort (array=0x7fffffffd7b0) at bubble_sort.c:12
+#1  0x0000000000400ac2 in do_stuff () at bubble_sort.c:37
+#2  0x0000000000400aea in main () at bubble_sort.c:41
+Backtrace stopped: previous frame inner to this frame (corrupt stack?)
+(gdb) b 34
+Breakpoint 2 at 0x400a81: file bubble_sort.c, line 34.
+(gdb) s
+13	            long *item_one = &array[i];
+(gdb) s
+14	            long *item_two = &array[i + 1];
+(gdb) s
+16	            if (*item_one <= *item_two) {
+(gdb) s
+17	                continue;
+(gdb) s
+12	        for (int i = 0; i < 31; i++) {
+(gdb) s
+13	            long *item_one = &array[i];
+(gdb) s
+14	            long *item_two = &array[i + 1];
+(gdb) s
+16	            if (*item_one <= *item_two) {
+(gdb) s
+17	                continue;
+(gdb) s
+12	        for (int i = 0; i < 31; i++) {
+(gdb) s
+9	    while (!sorted) {
+(gdb) s
+27	}
+(gdb) s
+do_stuff () at bubble_sort.c:38
+38	}
+(gdb) rn
+37	    sort(array);
+(gdb) rn
+33	    for (unsigned i = 0; i < rand() % sizeof(array); i++) {
+(gdb) p i
+$1 = 36
+(gdb) 
