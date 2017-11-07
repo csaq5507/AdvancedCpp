@@ -1,0 +1,5 @@
+	sign	|	comments
+------------|----------------------
+	.		|	walkable
+	#		|	wall (not walkable)
+	
