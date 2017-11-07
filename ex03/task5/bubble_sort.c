@@ -30,7 +30,6 @@ void do_stuff(void) {
     long array[32];
 
     srand(time(NULL));
-
     for (unsigned i = 0; i < rand() % sizeof(array); i++) {
         array[i] = rand();
     }

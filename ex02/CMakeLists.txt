@@ -7,6 +7,9 @@ project(VCS)
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
+set(BENCHMARK_ENABLE_TESTING OFF)
+
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -21,7 +24,9 @@ ENDIF()
 FIND_PACKAGE( Boost COMPONENTS program_options REQUIRED )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
-# Link runTests with what we want to test and the GTest and pthread library
+include(ConfigGBench)
+add_subdirectory(${PROJECT_SOURCE_DIR}/bench/)
+
 aux_source_directory(src/ SRC_LIST)
 
 add_executable(${PROJECT_NAME} Source.cpp)

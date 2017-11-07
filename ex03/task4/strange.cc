@@ -17,6 +17,5 @@ int main() {
                   << (contains(i) ? "contains " : "does not contain ") << i
                   << std::endl;
     }
-
     std::cout << "done" << std::endl;
 }

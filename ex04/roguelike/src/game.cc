@@ -57,6 +57,7 @@ void Game::addEvent(SDL_Event e) {
         return;
     }
 
+
     events.push_back(std::move(e));
 }
 

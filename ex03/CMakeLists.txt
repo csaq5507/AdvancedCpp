@@ -11,3 +11,6 @@ aux_source_directory(. SRC_LIST)
 aux_source_directory(task1 SRC_LIST)
 
 add_executable(task1 task1/main.cpp)
+
+add_executable(task2 task2/main.cpp)
+add_executable(task5 task5/bubble_sort.c)

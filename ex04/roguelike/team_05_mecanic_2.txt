@@ -1,0 +1,6 @@
+Monster AI
+
+placed randomly at beginning of game(100 HP)
+running around randomely (move direction = rand % 4 && collision detection with wall)
+if player nearby(within radius of xx pixels) then running directly to the player.
+each moster has a velocity, some faster then player, some slower.
