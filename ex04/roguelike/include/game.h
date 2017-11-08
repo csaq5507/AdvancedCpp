@@ -59,6 +59,8 @@ class Game {
     const std::list<SDL_Event>& getEvents() const {
         return events;
     }
+
+    void generateEnemies();
 };
 
 #endif  // ROGUELIKE_GAME_H_

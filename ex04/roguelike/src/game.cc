@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "entities/player.h"
+#include "entities/enemy.h"
 #include "utils/logging.h"
 
 const int WINDOW_NUM_SPRITES_WIDTH = 15;
@@ -47,6 +48,7 @@ Game::~Game() {
 void Game::init() {
     // spawn player
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
+    generateEnemies();
 }
 
 void Game::addEvent(SDL_Event e) {
@@ -87,4 +89,13 @@ void Game::renderFrame() {
     }
 
     SDL_RenderPresent(renderer);
+}
+
+void Game::generateEnemies() {
+    int numEnemies = 1;//rand() % 100 + 1;
+    for (int i = 0; i < numEnemies; i++) {
+        int position_x = rand()  % 20;
+        int position_y = rand() % 20;
+        entities.push_back(std::make_shared<Enemy>(*this, Vec2{position_x, position_y}));
+    }
 }
