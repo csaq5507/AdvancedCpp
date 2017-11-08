@@ -1,0 +1,1 @@
+- Every entity has a amount of healthpoints(int hp) default value = 100

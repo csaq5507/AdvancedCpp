@@ -6,6 +6,7 @@
 
 #include "sprite_set.h"
 #include "utils/vec2.h"
+#include "chrono_timer.h"
 
 class Game;
 
@@ -14,9 +15,12 @@ class Entity {
     Game &game;
     Vec2 pos;
     std::shared_ptr<SpriteSet> sprite_set;
+    int hp;
+    ChronoTimer timer;
 
   public:
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename);
+    Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int hp);
 
     virtual ~Entity() = default;
 
