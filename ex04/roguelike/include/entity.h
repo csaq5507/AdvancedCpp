@@ -7,9 +7,10 @@
 #include "sprite_set.h"
 #include "utils/vec2.h"
 #include "chrono_timer.h"
+//#include "camera.h"
 
 class Game;
-
+class Camera;
 
 class Entity {
   protected:
@@ -47,6 +48,8 @@ class Entity {
     }
 
     virtual void update();
+
+    virtual void render(SDL_Renderer* renderer, Camera c) = 0;
 
 	Vec2 getPixelCoordinate() {
 		auto r = getPos();

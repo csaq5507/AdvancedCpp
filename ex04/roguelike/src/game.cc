@@ -44,15 +44,15 @@ Game::~Game() {
 
 void Game::init() {
 	//Load map
-	area.load(*resource_loader, "./maps/1.area");
+	area.load(*resource_loader, "1.area");
 	//load logic map
-	logic.load("./maps/1.area");
+	logic.load("1.area");
     // spawn player
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
 	auto player = entities.front();
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
 	Camera::CameraControl.SetTarget(player);
-    generateEnemies();
+    spawn_enemies();
 
 }
 
@@ -84,25 +84,18 @@ void Game::renderFrame() {
 	area.render(renderer, camPos);
 	std::cout << "camera pos:" << camPos.x << " " << camPos.y << std::endl;
 	for (auto& entity : entities) {
-        SDL_Rect dst;
-        dst.x = window_width / 2;
-        dst.y = window_height/2;
-        dst.w = tile_size;
-        dst.h = tile_size;
-		std::cout << "player pos:" << dst.x << " " << dst.y << std::endl;
-        auto sprite_set = entity->getSpriteSet();
-        SDL_RenderCopy(renderer, sprite_set->getTexture(),
-                       sprite_set->getRect(), &dst);
+        entity->render(renderer,Camera::CameraControl);
     }
     SDL_RenderPresent(renderer);
 }
 
-void Game::generateEnemies() {
+void Game::spawn_enemies() {
     int numEnemies = 5;//rand() % 100 + 1;
     std::default_random_engine rnd;
-    std::uniform_int_distribution<int> rng(0,10);
+    std::uniform_int_distribution<int> rng_width(0,window_width/tile_size);
+    std::uniform_int_distribution<int> rng_high(0,window_height/tile_size   );
     for (int i = 0; i < numEnemies; i++)
-        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng(rnd), rng(rnd)}));
+        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng_width(rnd), rng_high(rnd)}));
 
 }
 

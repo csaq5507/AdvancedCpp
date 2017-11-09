@@ -19,6 +19,7 @@ endif()
 aux_source_directory(src/ SRC_FILES)
 aux_source_directory(src/entities SRC_FILES)
 aux_source_directory(src/utils SRC_FILES)
+aux_source_directory(src/logic SRC_FILES)
 
 add_executable(roguelike ${SRC_FILES})
 

@@ -26,8 +26,8 @@ class ChronoTimer {
 		return std::chrono::high_resolution_clock::now();
 	}
 
-    std::chrono::duration<long long> one_second() const {
-		return std::chrono::seconds(1);
+    std::chrono::duration<long long> seconds(int seconds) const {
+		return std::chrono::seconds(seconds);
 	}
 };
 

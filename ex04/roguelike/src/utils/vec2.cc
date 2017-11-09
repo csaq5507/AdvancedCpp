@@ -10,6 +10,10 @@ Vec2& Vec2::operator+=(const Vec2& rhs) {
     return *this;
 }
 
+Vec2 Vec2::operator+(const Vec2& rhs) {
+    return Vec2({this->x+rhs.x, this->y+rhs.y});
+}
+
 std::string to_string(const Vec2& v) {
     std::string s{"Vec2{"};
     s += std::to_string(v.x);

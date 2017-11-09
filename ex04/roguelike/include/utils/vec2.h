@@ -14,10 +14,13 @@ class Vec2 {
     Vec2(int x, int y);
 
     Vec2& operator+=(const Vec2& rhs);
+    Vec2 operator+(const Vec2& rhs);
 };
 
 std::string to_string(const Vec2& v);
 
 std::ostream& operator<<(std::ostream& stream, const Vec2& v);
+
+
 
 #endif  // ROGUELIKE_UTILS_VEC2_H_

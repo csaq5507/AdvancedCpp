@@ -1,12 +1,13 @@
 #include <fstream>
-#include "Map.h"
-#include "utils\logging.h"
+#include "map.h"
+#include "utils/logging.h"
 #include <memory>
 
 Map::Map() {};
 
 bool Map::load(std::string filename) {
 	tileList.clear();
+    filename="resources/maps/"+filename;
 	auto stream = std::ifstream(filename);
 	
 	int id;

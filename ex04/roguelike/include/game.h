@@ -11,7 +11,8 @@
 #include "resource_loader.h"
 #include "area.h"
 #include "camera.h"
-#include "logic.h"
+#include "logic/logic.h"
+
 class Game {
     bool running = true;
 
@@ -65,7 +66,7 @@ class Game {
         return events;
     }
 
-    void generateEnemies();
+    void spawn_enemies();
 
     void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
 };

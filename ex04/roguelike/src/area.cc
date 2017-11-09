@@ -13,8 +13,8 @@ Area::Area() {
 
 bool Area::load(ResourceLoader& resourceLoader, std::string filename) {
 	mapList.clear();
-	auto stream = std::ifstream(filename);
-
+    filename="resources/maps/"+filename;
+	auto stream = std::ifstream(filename, std::ifstream::in);
 	std::string line;
 	std::getline(stream, line);
 
@@ -34,6 +34,7 @@ bool Area::load(ResourceLoader& resourceLoader, std::string filename) {
 			mapList.push_back(map);
 		}
 	}
+
 	return true;
 }
 

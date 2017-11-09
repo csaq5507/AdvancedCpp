@@ -1,12 +1,13 @@
 #include "logic/logic.h"
 #include <fstream>
 #include <algorithm>
-#include "Tile.h"
+#include "tile.h"
 Logic::Logic() {}
 
-bool Logic::load(std::string areaName) {
+bool Logic::load(std::string filename) {
 	playfield.clear();
-	auto stream = std::ifstream(areaName);
+	filename="resources/maps/"+filename;
+	auto stream = std::ifstream(filename);
 
 	std::string line;
 	//drop sprite file name
@@ -30,8 +31,9 @@ bool Logic::load(std::string areaName) {
 }
 
 //TODO test
-bool Logic::loadMap(std::string mapFile, int rowMapIndex, int columnMapIndex) {
-	auto stream = std::ifstream(mapFile);
+bool Logic::loadMap(std::string filename, int rowMapIndex, int columnMapIndex) {
+	filename="resources/maps/"+filename;
+	auto stream = std::ifstream(filename);
 
 	int id;
 	char seperator;
@@ -55,7 +57,7 @@ bool Logic::loadMap(std::string mapFile, int rowMapIndex, int columnMapIndex) {
 	return true;
 }
 	//TODO test
-	bool checkMove(Vec2 pos, Vec2 move){
+	bool Logic::checkMove(Vec2 pos, Vec2 move){
 		Vec2 tmp = pos + move;
 		if(tmp.x < 0 || tmp.y < 0 || tmp.x >= playfield.size() || tmp.y >= playfield.size()) return false;
 		//TODO use enum

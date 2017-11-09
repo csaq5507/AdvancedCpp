@@ -38,7 +38,7 @@ void Player::update() {
 
 void Player::attack() {
     if(timer.get_current_time()>attack_timer) {
-        attack_timer=timer.get_current_time()+timer.one_second();
+        attack_timer=timer.get_current_time()+ timer.seconds(1);
         std::vector<Vec2> hitten_fields=std::vector<Vec2>();
         switch (weapon) {
             case Weapon::melee:
@@ -58,3 +58,16 @@ void Player::attack() {
         }
     }
 }
+
+
+void Player::render(SDL_Renderer* renderer, Camera c){
+    SDL_Rect dst;
+    dst.x = window_width / 2;
+    dst.y = window_height/2;
+    dst.w = tile_size;
+    dst.h = tile_size;
+    auto sprite_set = this->getSpriteSet();
+    SDL_RenderCopy(renderer, sprite_set->getTexture(),
+                   sprite_set->getRect(), &dst);
+}
+

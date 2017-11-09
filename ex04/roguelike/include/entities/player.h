@@ -15,6 +15,8 @@ public:
 
     void update() override;
 
+    void render(SDL_Renderer* renderer,Camera c);
+
     void attack();
 };
 
