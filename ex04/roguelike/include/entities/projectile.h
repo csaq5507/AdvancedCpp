@@ -1,0 +1,8 @@
+//
+// Created by ivan on 09/11/17.
+//
+
+#ifndef ADVANCEDCPP_PROJECTILE_H
+#define ADVANCEDCPP_PROJECTILE_H
+
+#endif //ADVANCEDCPP_PROJECTILE_H
