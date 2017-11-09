@@ -43,7 +43,6 @@ Game::~Game() {
 }
 
 void Game::init() {
-	surf_display = SDL_GetWindowSurface(window);
 	//Load map
 	area.load(*resource_loader, "./maps/1.area");
     // spawn player

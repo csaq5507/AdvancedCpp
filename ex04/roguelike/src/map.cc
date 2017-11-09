@@ -20,6 +20,9 @@ bool Map::load(std::string filename) {
 			Tile genTile{};
 			stream >> id;			//read the id
 			stream >> seperator;	//read the seperator ":"
+			if (seperator != ':') {
+				FATAL("Format error\n");
+			}
 			stream >> type;			//read the type (block or normal)
 			if (id < 0) {
 				FATAL("Parse error at file %s\n", filename);
@@ -28,7 +31,6 @@ bool Map::load(std::string filename) {
 			genTile.tile_type = TileType(type);
 			tileList.push_back(genTile);
 		}
-		stream >> seperator; //read \n
 	}
 	return true;
 }

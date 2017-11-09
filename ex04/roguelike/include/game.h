@@ -21,7 +21,7 @@ class Game {
     std::unique_ptr<ResourceLoader> resource_loader;
 
     std::list<SDL_Event> events;
-	SDL_Surface* surf_display;
+
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
