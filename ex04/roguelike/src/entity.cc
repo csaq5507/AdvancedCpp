@@ -14,8 +14,10 @@ Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int h
 }
 
 
-void Entity::move(Vec2 v) {
+bool Entity::move(Vec2 v) {
+	if(!game.logic.checkMove(pos, v)) return false;
     pos += v;
+	return true;
 }
 
 void Entity::damage(int hp) {
