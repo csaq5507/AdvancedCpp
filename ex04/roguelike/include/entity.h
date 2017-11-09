@@ -6,18 +6,24 @@
 #include "enviorment_variables.h"
 #include "sprite_set.h"
 #include "utils/vec2.h"
+#include "chrono_timer.h"
 
 class Game;
+
 
 class Entity {
   protected:
     Game &game;
+    Vec2 pos;
+    int hp;
+    ChronoTimer timer;
 
     std::shared_ptr<SpriteSet> sprite_set;
   public:
 	Vec2 pos;
 
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename);
+    Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int hp);
 
     virtual ~Entity() = default;
 
@@ -35,13 +41,23 @@ class Entity {
         return sprite_set;
     }
 
+    void damage(int hp);
+
+    bool is_dead(){
+        return this->hp<=0;
+    }
+
     virtual void update();
+
 	Vec2 getPixelCoordinate() {
 		auto r = getPos();
 		r.x *= tile_size;
 		r.y *= tile_size;
 		return r;
 	}
+
+    bool equals(const Entity* other);
 };
+
 
 #endif  // ROGUELIKE_ENTITY_H_
