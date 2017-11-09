@@ -27,7 +27,10 @@ bool Area::load(ResourceLoader& resourceLoader, std::string filename) {
 	for (int y = 0; y < areaSize; y++) {
 		for (int x = 0; x < areaSize; x++) {
 			std::getline(stream, line,' ');
-			line.erase(std::remove(line.begin(), line.end(), '\n'), line.end());
+
+			int idx = line.find('\n');
+			if(idx!=-1)
+			line.erase(idx, line.length() - idx);
 			Map map;
 			if (map.load(line) == false) return false;
 			map.sprideSet = spride;
