@@ -29,6 +29,10 @@ class ChronoTimer {
     std::chrono::duration<long long> seconds(int seconds) const {
 		return std::chrono::seconds(seconds);
 	}
+
+	std::chrono::duration<long int,std::ratio<1, 1000> > milliseconds(int milliseconds) const {
+		return std::chrono::milliseconds(milliseconds);
+	}
 };
 
 #endif //ROGUELIKE_CCHRONO_UTILS_H_

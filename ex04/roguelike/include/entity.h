@@ -59,6 +59,8 @@ class Entity {
 	}
 
     bool equals(const Entity* other);
+
+
 };
 
 

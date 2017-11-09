@@ -6,15 +6,14 @@
 #define ROGUELIKE_ENTITIES_PROJECTILE_H_
 
 #include "entity.h"
+#include "player.h"
 
-enum Projectile_Type{hitscan, projectile};
 
 class Projectile : public Entity {
 private:
-    Projectile_Type type;
-    std::chrono::time_point<std::chrono::high_resolution_clock> travel_timer;
+    std::chrono::time_point<std::chrono::high_resolution_clock> existence_timer;
 public:
-    Projectile(Game &game, Vec2 pos, Projectile_Type type);
+    Projectile(Game &game, Vec2 pos,Weapon w_type);
 
     void update() override;
 

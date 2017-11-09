@@ -1,8 +1,8 @@
 #include "game.h"
 
 #include "enviorment_variables.h"
-#include "entities/player.h"
 #include "entities/enemy.h"
+#include "entities/projectile.h"
 #include "utils/logging.h"
 #include <random>
 
@@ -74,6 +74,10 @@ void Game::clearEvents() {
 void Game::updateEntities() {
     for (auto& entity : entities) {
         entity->update();
+        if(entity->is_dead()) dead_entities.push_back(entity);
+    }
+    for(auto &ent : dead_entities) {
+            entities.remove(ent);
     }
 }
 
@@ -100,21 +104,19 @@ void Game::spawn_enemies() {
 
 void Game::do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer){
     std::vector<std::shared_ptr<Entity> > dead_counter=std::vector<std::shared_ptr<Entity> >();
-    int counter=0;
     for(auto& entity : entities){
         for(auto & point : points){
-            if(entity->equals(damage_dealer)) continue;
+            if(damage_dealer!= nullptr && entity->equals(damage_dealer)) continue;
             else{
                 if(entity->getPos().x==point.x && entity->getPos().y==point.y) {
                     entity->damage(hp);
-                    if(entity->is_dead()) dead_counter.push_back(entity);
                 }
             }
         }
-        counter++;
     }
-    for(int i=0;i<dead_counter.size();i++)
-    {
-        entities.remove(dead_counter[i]);
-    }
+}
+
+void Game::add_projectile(Weapon w_type, std::vector<Vec2> points) {
+    for(auto point : points)
+        entities.push_back(std::make_shared<Projectile>(*this,point,w_type));
 }
