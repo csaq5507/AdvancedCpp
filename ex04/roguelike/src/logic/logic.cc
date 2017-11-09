@@ -47,10 +47,18 @@ bool Logic::loadMap(std::string mapFile, int rowMapIndex, int columnMapIndex) {
 			if (type == TILE_TYPE_BLOCK) {
 				//TODO use enum for understanding
 				int currentCol = columnMapIndex * map_width + x;
-				int currentRow = rowMapIndex  * map_width * map_height * areaSize + y * map_width * areaSize;
+				int currentRow = rowMapIndex  * map_height * map_width * areaSize + y * map_width * areaSize;
 				playfield[rowMapIndex + columnMapIndex] = 1;
 			}
 		}
 	}
-	return false;
+	return true;
 }
+	//TODO test
+	bool checkMove(Vec2 pos, Vec2 move){
+		Vec2 tmp = pos + move;
+		if(tmp.x < 0 || tmp.y < 0 || tmp.x >= playfield.size() || tmp.y >= playfield.size()) return false;
+		//TODO use enum
+		if(playfield[tmp.y * map_width * areaSize + tmp.x] == 1) return false;
+		return true;
+	}
