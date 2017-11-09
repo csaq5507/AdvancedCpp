@@ -9,8 +9,8 @@
 #include "entity.h"
 #include <vector>
 #include "resource_loader.h"
-#include "Area.h"
-#include "Camera.h"
+#include "area.h"
+#include "camera.h"
 
 class Game {
     bool running = true;

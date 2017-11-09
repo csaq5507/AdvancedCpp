@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ROGUELIKE_TILE_H_
+#define ROGUELIKE_TILE_H_
+
 
 #include "enviorment_variables.h"
 
@@ -15,3 +17,5 @@ public:
 
 	Tile();
 };
+
+#endif //ROGUELIKE_TILE_H_

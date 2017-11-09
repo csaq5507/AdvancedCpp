@@ -13,7 +13,7 @@ class ResourceLoader {
   private:
     SDL_Renderer *renderer;
 
-    std::map<std::string, std::shared_ptr<SpriteSet>> loaded_sprite_sets;
+    std::map<std::string, std::shared_ptr<SpriteSet> > loaded_sprite_sets;
 
   public:
     ResourceLoader(SDL_Renderer *renderer);

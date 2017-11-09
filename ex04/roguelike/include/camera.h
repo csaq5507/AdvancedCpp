@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ROGUELIKE_CAMERA_H_
+#define ROGUELIKE_CAMERA_H_
+
 #include <SDL.h>
 #include <memory>
 #include "enviorment_variables.h"
@@ -26,3 +28,5 @@ public:
 	void SetPos(Vec2 pos);
 	void SetTarget(std::shared_ptr<Entity> entity);
 };
+
+#endif //ROGUELIKE_CAMERA_H_
