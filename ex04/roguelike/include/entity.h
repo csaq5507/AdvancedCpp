@@ -40,7 +40,7 @@ class Entity {
     }
 
 
-    bool move(Vec2 pos);
+    bool move(int fields);
 
 
     std::shared_ptr<SpriteSet> getSpriteSet() {

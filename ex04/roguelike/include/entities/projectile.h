@@ -17,8 +17,7 @@ public:
 
     void update() override;
 
-    void render(SDL_Renderer* renderer,Camera c);
-
+     void render(SDL_Renderer* renderer, const Vec2& cameraPos);
     void attack();
 };
 

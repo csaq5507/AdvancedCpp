@@ -22,10 +22,10 @@ void Projectile::update() {
 }
 
 
-void Projectile::render(SDL_Renderer* renderer, Camera c){
+void Projectile::render(SDL_Renderer* renderer, const Vec2& cameraPos){
     SDL_Rect dst;
-    dst.x = (this->getPos().x * tile_size ) - c.GetPos().x;
-    dst.y = (this->getPos().y * tile_size) - c.GetPos().y;
+    dst.x = (this->getPos().x * tile_size ) - cameraPos.x;
+    dst.y = (this->getPos().y * tile_size) - cameraPos.y;
     dst.w = tile_size;
     dst.h = tile_size;
     auto sprite_set = this->getSpriteSet();

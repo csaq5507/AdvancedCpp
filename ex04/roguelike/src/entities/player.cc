@@ -48,11 +48,29 @@ void Player::attack() {
         switch (this->weapon) {
             case Weapon::melee:
 
-                for(int i=this->pos.x-1;i<=this->pos.x+1;i++)
-                    for(int j=this->pos.y-1;j<=this->pos.y+1;j++) {
-                        if(i==this->pos.x && j== this->pos.y) continue;
-                        hitten_fields.push_back(Vec2({i, j}));
-                    }
+                switch(this->direction)
+                {
+                    case Direction::north:
+                        hitten_fields.push_back(Vec2(this->pos.x-1,this->pos.y-1));
+                        hitten_fields.push_back(Vec2(this->pos.x,this->pos.y-1));
+                        hitten_fields.push_back(Vec2(this->pos.x+1,this->pos.y-1));
+                        break;
+                    case Direction::east:
+                        hitten_fields.push_back(Vec2(this->pos.x+1,this->pos.y-1));
+                        hitten_fields.push_back(Vec2(this->pos.x+1,this->pos.y));
+                        hitten_fields.push_back(Vec2(this->pos.x+1,this->pos.y+1));
+                        break;
+                    case Direction::south:
+                        hitten_fields.push_back(Vec2(this->pos.x-1,this->pos.y+1));
+                        hitten_fields.push_back(Vec2(this->pos.x,this->pos.y+1));
+                        hitten_fields.push_back(Vec2(this->pos.x+1,this->pos.y+1));
+                        break;
+                    case Direction::west:
+                        hitten_fields.push_back(Vec2(this->pos.x-1,this->pos.y-1));
+                        hitten_fields.push_back(Vec2(this->pos.x-1,this->pos.y));
+                        hitten_fields.push_back(Vec2(this->pos.x-1,this->pos.y+1));
+                        break;
+                }
                 game.do_damage(100,hitten_fields,this);
                 game.add_projectile(Weapon::melee,hitten_fields);
                 break;
