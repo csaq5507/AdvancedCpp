@@ -15,12 +15,12 @@ private:
     std::shared_ptr<Entity> player;
 
     int dist_to_player();
-    Direction get_player_direction();
+    void get_player_direction();
     bool is_on_player();
 public:
 
     void render(SDL_Renderer* renderer, const Vec2& cameraPos);
-    Enemy(Game &game, Vec2 pos, std::shared_ptr<Entity> player);
+    Enemy(Game &game, Vec2 pos, std::shared_ptr<Entity> player, int speed);
 
     void update() override;
 };
