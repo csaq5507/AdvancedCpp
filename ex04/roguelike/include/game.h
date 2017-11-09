@@ -12,6 +12,8 @@
 #include "area.h"
 #include "camera.h"
 #include "logic/logic.h"
+#include "entities/player.h"
+
 
 class Game {
 
@@ -29,7 +31,7 @@ class Game {
 
   public:
 	Logic logic;
-
+    std::list<std::shared_ptr<Entity>> dead_entities;
 
     Game();
 
@@ -72,6 +74,7 @@ class Game {
     void spawn_enemies();
 
     void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
+    void add_projectile(Weapon w_type, std::vector<Vec2> points);
 };
 
 #endif  // ROGUELIKE_GAME_H_

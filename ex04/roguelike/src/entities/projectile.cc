@@ -7,17 +7,17 @@
 #include <vector>
 #include "sprite_set.h"
 
-Projectile::Projectile(Game& game, Vec2 pos, Projectile_Type type) : Entity(game, pos, "player.png"), travel_timer(std::chrono::high_resolution_clock::now()), type(type) {
+Projectile::Projectile(Game& game, Vec2 pos,Weapon w_type) : Entity(game, pos, ((w_type==Weapon::melee)?"melee.png":"flint.png")), existence_timer(std::chrono::high_resolution_clock::now()+timer.milliseconds(200)) {
     sprite_set->setRect(0, 0, tile_size,tile_size);
 
 }
 
 void Projectile::update() {
-    switch(type){
-        case Projectile_Type::hitscan:
-            break;
-        case Projectile_Type::projectile:
-            break;
+    if(timer.get_current_time()>existence_timer)
+    {
+        std::vector<Vec2> range;
+        range.push_back(Vec2(this->getPos().x,this->getPos().y));
+        this->hp=0;
     }
 }
 

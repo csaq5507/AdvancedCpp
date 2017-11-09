@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include <random>
+#include "entities/player.h"
 
 class Enemy : public Entity {
 private:
@@ -10,9 +11,16 @@ private:
 
     std::default_random_engine rnd;
     std::uniform_int_distribution<int> rng;
+    int speed;
+    std::shared_ptr<Entity> player;
+
+    int dist_to_player();
+    Vec2 get_player_direction();
+    bool is_on_player();
 public:
-    Enemy(Game &game, Vec2 pos);
+
     void render(SDL_Renderer* renderer, const Vec2& cameraPos);
+    Enemy(Game &game, Vec2 pos, std::shared_ptr<Entity> player);
 
     void update() override;
 };
