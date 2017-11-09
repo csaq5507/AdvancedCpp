@@ -14,8 +14,9 @@ private:
     int speed;
     std::shared_ptr<Entity> player;
 
-    int is_player_near();
+    int dist_to_player();
     Vec2 get_player_direction();
+    bool is_on_player();
 public:
     Enemy(Game &game, Vec2 pos, std::shared_ptr<Entity> player);
     void render(SDL_Renderer* renderer, Camera c);

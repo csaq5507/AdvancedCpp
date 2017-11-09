@@ -13,15 +13,18 @@ Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player) : Entity(game
 void Enemy::update() {
     if(timer.get_current_time()>move_timer) {
         move_timer = timer.get_current_time() + timer.seconds(speed);
-        if (is_player_near() < 5) {
+        if (dist_to_player() < 5) {
             move(get_player_direction());
         } else {
             Vec2 move_horizontally = Vec2({(rng(rnd)==0?-1:1),0});
             Vec2 move_vertically = Vec2({0,(rng(rnd)==0?-1:1)});
             move((rng(rnd)==0)?move_horizontally:move_vertically);
         }
-    }
+        if (is_on_player()) {
+            player->damage(1000);
+        }
 
+    }
 }
 
 
@@ -36,7 +39,7 @@ void Enemy::render(SDL_Renderer* renderer,Camera c){
                    sprite_set->getRect(), &dst);
 }
 
-int Enemy::is_player_near() {
+int Enemy::dist_to_player() {
     Vec2 position_player = player->getPos();
     float diff_y = position_player.y - pos.y;
     float diff_x = position_player.x - pos.x;
@@ -56,4 +59,9 @@ Vec2 Enemy::get_player_direction() {
     } else {
         return (diff_x<0?(Vec2({-1,0})):(Vec2({1,0})));
     }
+}
+
+bool Enemy::is_on_player() {
+    Vec2 position_player = player->getPos();
+    return (((position_player.y - pos.y) == 0) && ((position_player.x - pos.x) == 0));
 }
