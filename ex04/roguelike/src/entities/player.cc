@@ -8,12 +8,12 @@
 #include "sprite_set.h"
 
 Player::Player(Game& game, Vec2 pos) : Entity(game, pos, "player.png"), attack_timer(std::chrono::high_resolution_clock::now()),weapon(Weapon::melee) {
-    sprite_set->setRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+    sprite_set->setRect(0, 0, 0, 0/*SPRITE_SIZE, SPRITE_SIZE*/);
 
 }
 
 Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, "player.png", hp),attack_timer(std::chrono::high_resolution_clock::now()),weapon(Weapon::melee) {
-    sprite_set->setRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+    sprite_set->setRect(0, 0, 0, 0/*SPRITE_SIZE, SPRITE_SIZE*/);
 }
 
 

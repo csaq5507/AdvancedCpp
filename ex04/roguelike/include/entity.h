@@ -14,7 +14,7 @@ class Game;
 class Entity {
   protected:
     Game &game;
-    Vec2 pos;
+    //Vec2 pos;
     int hp;
     ChronoTimer timer;
 

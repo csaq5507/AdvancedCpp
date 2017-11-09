@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 #include "sprite_set.h"
-#include "utils\vec2.h"
+#include "utils/vec2.h"
 #include "Tile.h"
 
 class Map {

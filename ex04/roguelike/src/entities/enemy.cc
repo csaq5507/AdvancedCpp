@@ -6,7 +6,7 @@
 #include "sprite_set.h"
 
 Enemy::Enemy(Game& game, Vec2 pos) : Entity(game, pos, "player2.png"), move_timer(std::chrono::high_resolution_clock::now()) {
-    sprite_set->setRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+    sprite_set->setRect(0, 0, 0, 0/*SPRITE_SIZE, SPRITE_SIZE*/);
 }
 
 void Enemy::update() {

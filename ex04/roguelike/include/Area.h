@@ -12,7 +12,7 @@ private:
 
 
 public:
-	Area::Area();
+	Area();
 	bool load(ResourceLoader& resourceLoader, std::string filename);
 	void render(SDL_Renderer* rendere, Vec2 cameraPos);
 

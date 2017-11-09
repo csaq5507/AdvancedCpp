@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include <memory>
 #include "enviorment_variables.h"
-#include "utils\vec2.h"
+#include "utils/vec2.h"
 #include "entity.h"
 enum Camera_Mode {
 	TARGET_MODE_NORMAL = 0,
