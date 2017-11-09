@@ -96,9 +96,10 @@ void Game::spawn_enemies() {
     int numEnemies = 5;//rand() % 100 + 1;
     std::default_random_engine rnd;
     std::uniform_int_distribution<int> rng_width(0,window_width/tile_size);
-    std::uniform_int_distribution<int> rng_high(0,window_height/tile_size   );
+    std::uniform_int_distribution<int> rng_high(0,window_height/tile_size);
+    //ToDo check if enemy is generated on wall or not
     for (int i = 0; i < numEnemies; i++)
-        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng_width(rnd), rng_high(rnd)}));
+        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng_width(rnd), rng_high(rnd)}, entities.front()));
 
 }
 
