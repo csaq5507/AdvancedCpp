@@ -13,7 +13,10 @@ void Enemy::update() {
 
     if(timer.get_current_time()>move_timer) {
         move_timer = timer.get_current_time() + timer.seconds(2);
-        move((rng(rnd)==0)?Vec2({(rng(rnd)==0?-1:1),0}):Vec2({0,(rng(rnd)==0?-1:1)}));
+
+        Vec2 move_horizontally = Vec2({(rng(rnd)==0?-1:1),0});
+        Vec2 move_vertically = Vec2({0,(rng(rnd)==0?-1:1)});
+        move((rng(rnd)==0)?move_horizontally:move_vertically);
     }
 }
 

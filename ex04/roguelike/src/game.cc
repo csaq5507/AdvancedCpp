@@ -82,7 +82,6 @@ void Game::renderFrame() {
 	SDL_RenderClear(renderer);
 	Vec2 camPos = Camera::CameraControl.GetPos();
 	area.render(renderer, camPos);
-	std::cout << "camera pos:" << camPos.x << " " << camPos.y << std::endl;
 	for (auto& entity : entities) {
         entity->render(renderer,Camera::CameraControl);
     }
