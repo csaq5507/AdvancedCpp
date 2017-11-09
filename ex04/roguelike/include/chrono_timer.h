@@ -17,7 +17,7 @@ class ChronoTimer {
 		std::cout << "Entity " << name << " died after " << elapsed.count() << " ms." << std::endl;
 	}
 
-	std::chrono::high_resolution_clock::time_point get_elapsed_time() const {
+	long long get_elapsed_time() const {
 		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
 	}
 
@@ -25,7 +25,7 @@ class ChronoTimer {
 		return std::chrono::high_resolution_clock::now();
 	}
 
-	std::chrono::duration one_second() const {
+    std::chrono::duration<long long> one_second() const {
 		return std::chrono::seconds(1);
 	}
 };

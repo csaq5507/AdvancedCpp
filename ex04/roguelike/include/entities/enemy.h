@@ -4,7 +4,10 @@
 #include "entity.h"
 
 class Enemy : public Entity {
-  public:
+private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> move_timer;
+
+public:
     Enemy(Game &game, Vec2 pos);
 
     void update() override;

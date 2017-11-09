@@ -10,6 +10,7 @@
 
 class Game;
 
+
 class Entity {
   protected:
     Game &game;
@@ -38,7 +39,17 @@ class Entity {
         return sprite_set;
     }
 
+    void damage(int hp);
+
+    bool is_dead(){
+        return this->hp<=0;
+    }
+
     virtual void update();
+
+    bool equals(const Entity* other);
+
 };
+
 
 #endif  // ROGUELIKE_ENTITY_H_

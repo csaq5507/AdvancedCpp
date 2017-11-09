@@ -3,6 +3,8 @@
 #include "entities/player.h"
 #include "entities/enemy.h"
 #include "utils/logging.h"
+#include <random>
+
 
 const int WINDOW_NUM_SPRITES_WIDTH = 15;
 const int WINDOW_NUM_SPRITES_HEIGHT = 15;
@@ -92,10 +94,31 @@ void Game::renderFrame() {
 }
 
 void Game::generateEnemies() {
-    int numEnemies = 1;//rand() % 100 + 1;
-    for (int i = 0; i < numEnemies; i++) {
-        int position_x = rand()  % 20;
-        int position_y = rand() % 20;
-        entities.push_back(std::make_shared<Enemy>(*this, Vec2{position_x, position_y}));
+    int numEnemies = 5;//rand() % 100 + 1;
+    std::default_random_engine rnd;
+    std::uniform_int_distribution<int> rng(0,10);
+    for (int i = 0; i < numEnemies; i++)
+        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng(rnd), rng(rnd)}));
+
+}
+
+void Game::do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer){
+    std::vector<std::shared_ptr<Entity> > dead_counter=std::vector<std::shared_ptr<Entity> >();
+    int counter=0;
+    for(auto& entity : entities){
+        for(auto & point : points){
+            if(entity->equals(damage_dealer)) continue;
+            else{
+                if(entity->getPos().x==point.x && entity->getPos().y==point.y) {
+                    entity->damage(hp);
+                    if(entity->is_dead()) dead_counter.push_back(entity);
+                }
+            }
+        }
+        counter++;
+    }
+    for(int i=0;i<dead_counter.size();i++)
+    {
+        entities.remove(dead_counter[i]);
     }
 }

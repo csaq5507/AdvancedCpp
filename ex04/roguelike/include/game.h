@@ -7,6 +7,7 @@
 #include <SDL.h>
 
 #include "entity.h"
+#include <vector>
 #include "resource_loader.h"
 
 class Game {
@@ -61,6 +62,8 @@ class Game {
     }
 
     void generateEnemies();
+
+    void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
 };
 
 #endif  // ROGUELIKE_GAME_H_
