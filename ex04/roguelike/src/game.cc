@@ -27,6 +27,8 @@ Game::Game() {
 
     resource_loader = std::make_unique<ResourceLoader>(renderer);
 
+    wave = 1;
+
     INFO("Game initialization done.");
 }
 
@@ -75,6 +77,7 @@ void Game::updateEntities() {
         entity->update();
         if(entity->is_dead()) dead_entities.push_back(entity);
     }
+
     for(auto &ent : dead_entities) {
     //    if (dynamic_cast<Player*>(ent) == nullptr) {
 
@@ -82,6 +85,8 @@ void Game::updateEntities() {
             entities.remove(ent);
         //}
     }
+    if(entities.size()==1)
+        spawn_enemies();
 }
 
 void Game::renderFrame() {
@@ -96,15 +101,14 @@ void Game::renderFrame() {
 }
 
 void Game::spawn_enemies() {
-    int numEnemies = rand() % 10 + 1;
     std::default_random_engine rnd;
-    std::uniform_int_distribution<int> rng_width(0,window_width/tile_size);
-    std::uniform_int_distribution<int> rng_high(0,window_height/tile_size);
-    std::uniform_int_distribution<int> rng_speed(350,1000);
+    std::uniform_int_distribution<int> rng_width(0,map_width*3);
+    std::uniform_int_distribution<int> rng_high(0,map_height*3);
+    std::uniform_int_distribution<int> rng_speed(350,1000*wave);
 
     //ToDo check if enemy is generated on wall or not
-    for (int i = 0; i < numEnemies; i++)
-        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng_width(rnd), rng_high(rnd)}, entities.front(), rng_speed(rnd)));
+    for (int i = 0; i < 10*wave; i++)
+        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng_width(rnd), rng_high(rnd)}, entities.front(), rng_speed(rnd),50*wave));
 
 }
 

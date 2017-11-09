@@ -3,7 +3,7 @@
 
 #include "entity.h"
 
-enum Weapon{melee, flint};
+enum Weapon{melee, flint, pumpgun};
 
 class Player : public Entity {
 private:

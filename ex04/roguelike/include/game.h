@@ -28,6 +28,7 @@ class Game {
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 	Area area;
+    int wave;
 
   public:
 	Logic logic;

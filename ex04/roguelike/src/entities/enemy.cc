@@ -2,10 +2,17 @@
 
 #include <SDL.h>
 #include "game.h"
+#include <string>
 #include "sprite_set.h"
 
-Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed) : Entity(game, pos, "player2.png"), move_timer(std::chrono::high_resolution_clock::now()),rng(0,4) {
-    sprite_set->setRect(0, 0, tile_size,tile_size);
+Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png")), move_timer(std::chrono::high_resolution_clock::now()),rng(0,4) {
+    this->sprite_set->setRect(0, 0, tile_size,tile_size);
+    this->speed = speed;
+    this->player = player;
+}
+
+Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed, const int hp) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png"),hp), move_timer(std::chrono::high_resolution_clock::now()),rng(0,4) {
+    this->sprite_set->setRect(0, 0, tile_size,tile_size);
     this->speed = speed;
     this->player = player;
 }
@@ -18,6 +25,13 @@ void Enemy::update() {
             move(1);
         } else {
             this->direction=Direction(rng(rnd));
+            switch(this->direction)
+            {
+                case Direction::north: this->sprite_set->setRect(0,3*tile_size,tile_size,tile_size); break;
+                case Direction::south: this->sprite_set->setRect(0, 0, tile_size,tile_size); break;
+                case Direction::east: this->sprite_set->setRect(0, 2*tile_size, tile_size,tile_size); break;
+                case Direction::west: this->sprite_set->setRect(0, 1*tile_size, tile_size,tile_size); break;
+            }
             move(rng(rnd)<2?-1:1);
         }
         if (is_on_player()) {

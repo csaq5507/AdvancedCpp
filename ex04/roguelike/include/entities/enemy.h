@@ -21,6 +21,7 @@ public:
 
     void render(SDL_Renderer* renderer, const Vec2& cameraPos);
     Enemy(Game &game, Vec2 pos, std::shared_ptr<Entity> player, int speed);
+    Enemy(Game &game, Vec2 pos, std::shared_ptr<Entity> player, int speed, const int hp);
 
     void update() override;
 };

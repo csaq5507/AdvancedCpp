@@ -24,16 +24,19 @@ void Player::update() {
         }
 
         switch (e.key.keysym.sym) {
-            case SDLK_UP: this->direction=Direction::north; move(this->movement_speed); break;
-            case SDLK_DOWN: this->direction=Direction::south; move(this->movement_speed); break;
-            case SDLK_LEFT: this->direction=Direction::west; move(this->movement_speed); break;
-            case SDLK_RIGHT: this->direction=Direction::east; move(this->movement_speed);  break;
+            case SDLK_UP: this->direction=Direction::north; move(this->movement_speed); this->sprite_set->setRect(0,2*tile_size,tile_size,tile_size); break;
+            case SDLK_DOWN: this->direction=Direction::south; move(this->movement_speed); this->sprite_set->setRect(0, 0, tile_size,tile_size); break;
+            case SDLK_LEFT: this->direction=Direction::west; move(this->movement_speed); this->sprite_set->setRect(0, 3*tile_size, tile_size,tile_size);break;
+            case SDLK_RIGHT: this->direction=Direction::east; move(this->movement_speed); this->sprite_set->setRect(0, tile_size, tile_size,tile_size); break;
             case SDLK_SPACE: attack(); break;
             case SDLK_1:
                 this->weapon = Weapon::melee;
                 break;
             case SDLK_2:
                 this->weapon = Weapon::flint;
+                break;
+            case SDLK_3:
+                this->weapon = Weapon::pumpgun;
                 break;
 
         }
@@ -42,12 +45,12 @@ void Player::update() {
 }
 
 void Player::attack() {
-    if(timer.get_current_time()>attack_timer) {
-        attack_timer=timer.get_current_time()+ timer.seconds(1);
         std::vector<Vec2> hitten_fields=std::vector<Vec2>();
         switch (this->weapon) {
             case Weapon::melee:
-
+                // Reload time
+                if(timer.get_current_time()<attack_timer) return;
+                attack_timer=timer.get_current_time()+ timer.milliseconds(500);
                 switch(this->direction)
                 {
                     case Direction::north:
@@ -75,14 +78,101 @@ void Player::attack() {
                 game.add_projectile(Weapon::melee,hitten_fields);
                 break;
             case Weapon::flint:
-                for(int i=this->pos.x+1;i<=this->pos.x+100;i++)
-                        hitten_fields.push_back(Vec2({i,this->pos.y}));
+                // Reload time
+                if(timer.get_current_time()<attack_timer) return;
+                attack_timer=timer.get_current_time()+ timer.milliseconds(300);
+                switch(this->direction)
+                {
+                    case Direction::north:
+                        for(int i=this->pos.y-1;i>=this->pos.y-20;i--)
+                            hitten_fields.push_back(Vec2({this->pos.x,i}));
+                        break;
+                    case Direction::east:
+                        for(int i=this->pos.x+1;i<=this->pos.x+20;i++)
+                            hitten_fields.push_back(Vec2({i,this->pos.y}));
+                        break;
+                    case Direction::south:
+                        for(int i=this->pos.y+1;i<=this->pos.y+20;i++)
+                            hitten_fields.push_back(Vec2({this->pos.x,i}));
+                        break;
+                    case Direction::west:
+                        for(int i=this->pos.x-1;i>=this->pos.x-20;i--)
+                            hitten_fields.push_back(Vec2({i,this->pos.y}));
+                        break;
+                }
                 game.do_damage(50,hitten_fields,this);
                 game.add_projectile(Weapon::flint,hitten_fields);
 
                 break;
+            case Weapon::pumpgun:
+                // Reload time
+                if(timer.get_current_time()<attack_timer) return;
+                attack_timer=timer.get_current_time()+ timer.milliseconds(1000);
+                switch(this->direction)
+                {
+                    case Direction::north:
+
+                        for(int i=this->pos.y-1;i>=this->pos.y-8;i--)
+                            hitten_fields.push_back(Vec2({this->pos.x,i}));
+
+                        for(int i=this->pos.y-3;i>=this->pos.y-8;i--) {
+                            hitten_fields.push_back(Vec2({this->pos.x-1, i}));
+                            hitten_fields.push_back(Vec2({this->pos.x+1, i}));
+                        }
+                        for(int i=this->pos.y-6;i>=this->pos.y-8;i--) {
+                            hitten_fields.push_back(Vec2({this->pos.x-2, i}));
+                            hitten_fields.push_back(Vec2({this->pos.x+2, i}));
+                        }
+                        break;
+                    case Direction::east:
+                        for(int i=this->pos.x+1;i<=this->pos.x+8;i++)
+                            hitten_fields.push_back(Vec2({i,this->pos.y}));
+
+                        for(int i=this->pos.x+3;i<=this->pos.x+8;i++) {
+                            hitten_fields.push_back(Vec2({i, this->pos.y-1}));
+                            hitten_fields.push_back(Vec2({i, this->pos.y+1}));
+                        }
+
+                        for(int i=this->pos.x+6;i<=this->pos.x+8;i++) {
+                            hitten_fields.push_back(Vec2({i, this->pos.y-2}));
+                            hitten_fields.push_back(Vec2({i, this->pos.y+2}));
+                        }
+                        break;
+                    case Direction::south:
+                        for(int i=this->pos.y+1;i<=this->pos.y+8;i++)
+                            hitten_fields.push_back(Vec2({this->pos.x,i}));
+
+                        for(int i=this->pos.y+3;i<=this->pos.y+8;i++) {
+                            hitten_fields.push_back(Vec2({this->pos.x+1, i}));
+                            hitten_fields.push_back(Vec2({this->pos.x-1, i}));
+                        }
+
+                        for(int i=this->pos.y+6;i<=this->pos.y+8;i++) {
+                            hitten_fields.push_back(Vec2({this->pos.x+2, i}));
+                            hitten_fields.push_back(Vec2({this->pos.x-2, i}));
+                        }
+                        break;
+                    case Direction::west:
+                        for(int i=this->pos.x-1;i>=this->pos.x-8;i--)
+                            hitten_fields.push_back(Vec2({i,this->pos.y}));
+
+                        for(int i=this->pos.x-3;i>=this->pos.x-8;i--) {
+                            hitten_fields.push_back(Vec2({i, this->pos.y-1}));
+                            hitten_fields.push_back(Vec2({i, this->pos.y+1}));
+                        }
+
+                        for(int i=this->pos.x-6;i>=this->pos.x-8;i--) {
+                            hitten_fields.push_back(Vec2({i, this->pos.y-2}));
+                            hitten_fields.push_back(Vec2({i, this->pos.y+2}));
+                        }
+                        break;
+                }
+                game.do_damage(25,hitten_fields,this);
+                game.add_projectile(Weapon::pumpgun,hitten_fields);
+
+                break;
         }
-    }
+
 }
 
 
