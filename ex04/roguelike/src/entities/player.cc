@@ -60,7 +60,7 @@ void Player::attack() {
 }
 
 
-void Player::render(SDL_Renderer* renderer, Camera c){
+void Player::render(SDL_Renderer* renderer, const Vec2& cameraPos){
     SDL_Rect dst;
     dst.x = window_width / 2;
     dst.y = window_height/2;
