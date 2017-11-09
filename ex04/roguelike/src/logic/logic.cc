@@ -2,6 +2,8 @@
 #include <fstream>
 #include <algorithm>
 #include "tile.h"
+#include <sstream>
+#include <iostream>
 Logic::Logic() {}
 
 bool Logic::load(std::string filename) {
@@ -17,13 +19,14 @@ bool Logic::load(std::string filename) {
 	//extract areaSize
 	areaSize = std::stoi(line);
 	//compute the size
-	int rows = map_height * areaSize;
-	int columns = map_width * areaSize;
+	rows = map_height * areaSize;
+	columns = map_width * areaSize;
 	playfield.resize(rows * columns,0);
 	for (int y = 0; y < areaSize; y++) {
+		std::getline(stream, line);
+		std::stringstream ss(line);
 		for (int x = 0; x < areaSize; x++) {
-			std::getline(stream, line, ' ');
-			line.erase(std::remove(line.begin(), line.end(), '\n'), line.end());
+			std::getline(ss, line, ' ');
 			loadMap(line, y, x);
 		}
 	}
@@ -45,22 +48,21 @@ bool Logic::loadMap(std::string filename, int rowMapIndex, int columnMapIndex) {
 			stream >> id;			//read the id
 			stream >> seperator;	//read the seperator ":"
 			stream >> type;			//read the type (block or normal)
-
 			if (type == TILE_TYPE_BLOCK) {
 				//TODO use enum for understanding
 				int currentCol = columnMapIndex * map_width + x;
 				int currentRow = rowMapIndex  * map_height * map_width * areaSize + y * map_width * areaSize;
-				playfield[rowMapIndex + columnMapIndex] = 1;
+				playfield[currentRow + currentCol] = 1;
 			}
 		}
 	}
 	return true;
 }
 	//TODO test
-	bool Logic::checkMove(Vec2 pos, Vec2 move){
-		Vec2 tmp = pos + move;
-		if(tmp.x < 0 || tmp.y < 0 || tmp.x >= playfield.size() || tmp.y >= playfield.size()) return false;
-		//TODO use enum
-		if(playfield[tmp.y * map_width * areaSize + tmp.x] == 1) return false;
-		return true;
-	}
+bool Logic::checkMove(const Vec2& pos,const Vec2& move){
+	Vec2 tmp = pos + move;
+	if(tmp.x < 0 || tmp.y < 0 || tmp.x >= columns || tmp.y >= rows) return false;
+	//TODO use enum
+	if(playfield[tmp.y * map_width * areaSize + tmp.x] == 1) return false;
+	return true;
+}

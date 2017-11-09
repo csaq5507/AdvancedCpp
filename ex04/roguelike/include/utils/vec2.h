@@ -14,7 +14,7 @@ class Vec2 {
     Vec2(int x, int y);
 
     Vec2& operator+=(const Vec2& rhs);
-    Vec2 operator+(const Vec2& rhs);
+    Vec2 operator+(const Vec2& rhs) const;
 };
 
 std::string to_string(const Vec2& v);
