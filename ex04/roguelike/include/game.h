@@ -14,20 +14,23 @@
 #include "logic/logic.h"
 
 class Game {
+
     bool running = true;
 
-	Area area;
-	Logic logic;
+
     std::list<std::shared_ptr<Entity>> entities;
 
     std::unique_ptr<ResourceLoader> resource_loader;
 
     std::list<SDL_Event> events;
-
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
+	Area area;
 
   public:
+	Logic logic;
+
+
     Game();
 
     Game(const Game&) = delete;
