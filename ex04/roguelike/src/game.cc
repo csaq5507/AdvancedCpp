@@ -47,7 +47,6 @@ void Game::init() {
 	area.load(*resource_loader, "1.area");
 	//load logic map
 	logic.load("1.area");
-    // spawn player
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
 	auto player = entities.front();
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
@@ -83,7 +82,7 @@ void Game::renderFrame() {
 	Vec2 camPos = Camera::CameraControl.GetPos();
 	area.render(renderer, camPos);
 	for (auto& entity : entities) {
-        entity->render(renderer,Camera::CameraControl);
+        entity->render(renderer,camPos);
     }
     SDL_RenderPresent(renderer);
 }
@@ -92,7 +91,7 @@ void Game::spawn_enemies() {
     int numEnemies = 5;//rand() % 100 + 1;
     std::default_random_engine rnd;
     std::uniform_int_distribution<int> rng_width(0,window_width/tile_size);
-    std::uniform_int_distribution<int> rng_high(0,window_height/tile_size   );
+    std::uniform_int_distribution<int> rng_high(0,window_height/tile_size);
     for (int i = 0; i < numEnemies; i++)
         entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng_width(rnd), rng_high(rnd)}));
 
