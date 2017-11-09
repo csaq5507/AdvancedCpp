@@ -10,7 +10,7 @@ Vec2& Vec2::operator+=(const Vec2& rhs) {
     return *this;
 }
 
-Vec2 Vec2::operator+(const Vec2& rhs) {
+Vec2 Vec2::operator+(const Vec2& rhs) const {
     return Vec2({this->x+rhs.x, this->y+rhs.y});
 }
 
