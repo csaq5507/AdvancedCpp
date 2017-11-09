@@ -77,11 +77,11 @@ void Game::updateEntities() {
         if(entity->is_dead()) dead_entities.push_back(entity);
     }
     for(auto &ent : dead_entities) {
-        if (dynamic_cast<Player*>(ent) == nullptr) {
+    //    if (dynamic_cast<Player*>(ent) == nullptr) {
 
-        } else {
+      //  } else {
             entities.remove(ent);
-        }
+        //}
     }
 }
 

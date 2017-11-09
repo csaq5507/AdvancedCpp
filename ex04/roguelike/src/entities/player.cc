@@ -24,10 +24,10 @@ void Player::update() {
         }
 
         switch (e.key.keysym.sym) {
-            case SDLK_UP: move({0, -1}); break;
-            case SDLK_DOWN: move({0, 1}); break;
-            case SDLK_LEFT: move({-1, 0}); break;
-            case SDLK_RIGHT: move({1, 0}); break;
+            case SDLK_UP: this->direction=Direction::north; move(this->movement_speed); break;
+            case SDLK_DOWN: this->direction=Direction::south; move(this->movement_speed); break;
+            case SDLK_LEFT: this->direction=Direction::west; move(this->movement_speed); break;
+            case SDLK_RIGHT: this->direction=Direction::east; move(this->movement_speed);  break;
             case SDLK_SPACE: attack(); break;
             case SDLK_1:
                 this->weapon = Weapon::melee;

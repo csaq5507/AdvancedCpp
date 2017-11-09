@@ -12,11 +12,14 @@
 class Game;
 class Camera;
 
+enum Direction{north, east, south, west};
+
 class Entity {
   protected:
     Game &game;
     Vec2 pos;
     int hp;
+    Direction direction;
     ChronoTimer timer;
 
     std::shared_ptr<SpriteSet> sprite_set;
@@ -35,7 +38,7 @@ class Entity {
         pos = new_pos;
     }
 
-    void move(Vec2 pos);
+    void move(int fields);
 
     std::shared_ptr<SpriteSet> getSpriteSet() {
         return sprite_set;
