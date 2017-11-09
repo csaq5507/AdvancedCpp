@@ -45,6 +45,8 @@ Game::~Game() {
 void Game::init() {
 	//Load map
 	area.load(*resource_loader, "./maps/1.area");
+	//load logic map
+	logic.load("./maps/1.area");
     // spawn player
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
 	auto player = entities.front();

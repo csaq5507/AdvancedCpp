@@ -11,11 +11,12 @@
 #include "resource_loader.h"
 #include "area.h"
 #include "camera.h"
-
+#include "logic.h"
 class Game {
     bool running = true;
 
 	Area area;
+	Logic logic;
     std::list<std::shared_ptr<Entity>> entities;
 
     std::unique_ptr<ResourceLoader> resource_loader;
