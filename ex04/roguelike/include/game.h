@@ -8,16 +8,19 @@
 
 #include "entity.h"
 #include "resource_loader.h"
+#include "Area.h"
+#include "Camera.h"
 
 class Game {
     bool running = true;
 
+	Area area;
     std::list<std::shared_ptr<Entity>> entities;
 
     std::unique_ptr<ResourceLoader> resource_loader;
 
     std::list<SDL_Event> events;
-
+	SDL_Surface* surf_display;
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 

@@ -3,8 +3,6 @@
 
 #include <SDL.h>
 
-const int SPRITE_SIZE = 32;
-
 class SpriteSet {
   private:
     SDL_Texture *texture;

@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <string>
-
+#include "enviorment_variables.h"
 #include "sprite_set.h"
 #include "utils/vec2.h"
 
@@ -12,10 +12,11 @@ class Game;
 class Entity {
   protected:
     Game &game;
-    Vec2 pos;
-    std::shared_ptr<SpriteSet> sprite_set;
 
+    std::shared_ptr<SpriteSet> sprite_set;
   public:
+	Vec2 pos;
+
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename);
 
     virtual ~Entity() = default;
@@ -35,6 +36,12 @@ class Entity {
     }
 
     virtual void update();
+	Vec2 getPixelCoordinate() {
+		auto r = getPos();
+		r.x *= tile_size;
+		r.y *= tile_size;
+		return r;
+	}
 };
 
 #endif  // ROGUELIKE_ENTITY_H_

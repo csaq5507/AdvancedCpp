@@ -43,8 +43,9 @@ std::shared_ptr<SpriteSet> ResourceLoader::loadSpriteSet(std::string filename) {
         }
         return it->second;
     }
-
+	
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+
     if (!texture) {
         SDL_FreeSurface(surface);
         FATAL("Could not create texture from '%s' surface.", filepath.c_str());

@@ -2,11 +2,12 @@
 
 #include <SDL.h>
 
+#include "enviorment_variables.h"
 #include "game.h"
 #include "sprite_set.h"
 
 Player::Player(Game& game, Vec2 pos) : Entity(game, pos, "player.png") {
-    sprite_set->setRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+    sprite_set->setRect(0, 0, tile_size, tile_size);
 }
 
 void Player::update() {
