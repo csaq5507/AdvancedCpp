@@ -6,8 +6,8 @@
 
 enum TileType {
 	TILE_TYPE_NONE = 0, //indicates that the tile should not be rendered
-	TILE_TYPE_NORMAL,	//indicates walkable path
-	TILE_TYPE_BLOCK,	//indicates not walkable path, needed if the collision will be computed with the tiles
+	TILE_TYPE_NORMAL = 1,	//indicates walkable path
+	TILE_TYPE_BLOCK = 2,	//indicates not walkable path, needed if the collision will be computed with the tiles
 };
 
 class Tile {
