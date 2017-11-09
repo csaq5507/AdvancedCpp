@@ -1,8 +1,10 @@
-#pragma once
+#ifndef ROGUELIKE_CAMERA_H_
+#define ROGUELIKE_CAMERA_H_
+
 #include <SDL.h>
 #include <memory>
 #include "enviorment_variables.h"
-#include "utils\vec2.h"
+#include "utils/vec2.h"
 #include "entity.h"
 enum Camera_Mode {
 	TARGET_MODE_NORMAL = 0,
@@ -26,3 +28,5 @@ public:
 	void SetPos(Vec2 pos);
 	void SetTarget(std::shared_ptr<Entity> entity);
 };
+
+#endif //ROGUELIKE_CAMERA_H_

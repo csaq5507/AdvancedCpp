@@ -1,4 +1,4 @@
-#include "Area.h"
+#include "area.h"
 #include "enviorment_variables.h"
 #include <algorithm>
 #include <fstream>

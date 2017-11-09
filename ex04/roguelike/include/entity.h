@@ -20,7 +20,6 @@ class Entity {
 
     std::shared_ptr<SpriteSet> sprite_set;
   public:
-	Vec2 pos;
 
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename);
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int hp);

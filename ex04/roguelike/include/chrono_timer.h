@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ROGUELIKE_CCHRONO_UTILS_H_
+#define ROGUELIKE_CCHRONO_UTILS_H_
 
 #include <string>
 #include <chrono>
@@ -29,3 +30,5 @@ class ChronoTimer {
 		return std::chrono::seconds(1);
 	}
 };
+
+#endif //ROGUELIKE_CCHRONO_UTILS_H_
