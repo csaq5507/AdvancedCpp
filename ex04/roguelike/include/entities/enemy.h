@@ -15,7 +15,7 @@ private:
     std::shared_ptr<Entity> player;
 
     int dist_to_player();
-    Vec2 get_player_direction();
+    Direction get_player_direction();
     bool is_on_player();
 public:
 

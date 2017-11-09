@@ -8,6 +8,7 @@ enum Weapon{melee, flint};
 class Player : public Entity {
 private:
     Weapon weapon;
+    int movement_speed;
     std::chrono::time_point<std::chrono::high_resolution_clock> attack_timer;
 public:
     Player(Game &game, Vec2 pos);
