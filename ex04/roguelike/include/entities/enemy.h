@@ -12,7 +12,7 @@ private:
     std::uniform_int_distribution<int> rng;
 public:
     Enemy(Game &game, Vec2 pos);
-    void render(SDL_Renderer* renderer, Camera c);
+    void render(SDL_Renderer* renderer, const Vec2& cameraPos);
 
     void update() override;
 };

@@ -7,6 +7,7 @@
 #include "sprite_set.h"
 #include "utils/vec2.h"
 #include "chrono_timer.h"
+#include "logic/logic.h"
 //#include "camera.h"
 
 class Game;
@@ -35,7 +36,7 @@ class Entity {
         pos = new_pos;
     }
 
-    void move(Vec2 pos);
+    bool move(Vec2 pos);
 
     std::shared_ptr<SpriteSet> getSpriteSet() {
         return sprite_set;
@@ -49,7 +50,7 @@ class Entity {
 
     virtual void update();
 
-    virtual void render(SDL_Renderer* renderer, Camera c) = 0;
+    virtual void render(SDL_Renderer* renderer, const Vec2& cameraPos) = 0;
 
 	Vec2 getPixelCoordinate() {
 		auto r = getPos();
