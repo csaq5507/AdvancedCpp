@@ -40,11 +40,11 @@ void Enemy::update() {
             }
             move(1);
         }
-        if (is_on_player()) {
-            player->damage(1000);
-            game.game_over();
-        }
 
+    }
+    if (is_on_player()) {
+        player->damage(1000);
+        game.game_over();
     }
 }
 
