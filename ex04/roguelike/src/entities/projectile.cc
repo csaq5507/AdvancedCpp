@@ -10,7 +10,7 @@
 
 
 
-Projectile::Projectile(Game& game, Vec2 pos,Weapon w_type,Direction dir) : Entity(game, pos, ((w_type==Weapon::melee)?"melee.png":((w_type==Weapon::flint)?"flint.png":"pumpgun.png"))), existence_timer(std::chrono::high_resolution_clock::now()+timer.milliseconds(200)) {
+Projectile::Projectile(Game& game, Vec2 pos,Weapon w_type,Direction dir) : Entity(game, pos, ((w_type==Weapon::melee)?"cheshirecat.png":((w_type==Weapon::flint)?"will-o-wisp.png":"pumpkin.png"))), existence_timer(std::chrono::high_resolution_clock::now()+timer.milliseconds(200)) {
     this->direction=dir;
     switch(this->direction)
     {
