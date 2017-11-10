@@ -20,7 +20,7 @@ Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed, co
 void Enemy::update() {
     if(timer.get_current_time()>move_timer) {
         move_timer = timer.get_current_time() + timer.milliseconds(speed);
-        if (dist_to_player() < 5) {
+        if (dist_to_player() < 7) {
             get_player_direction();
             move(1);
         } else {
@@ -36,6 +36,7 @@ void Enemy::update() {
         }
         if (is_on_player()) {
             player->damage(1000);
+            game.game_over();
         }
 
     }

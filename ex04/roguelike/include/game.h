@@ -76,6 +76,7 @@ class Game {
 
     void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
     void add_projectile(Weapon w_type, std::vector<Vec2> points);
+    void game_over();
 };
 
 #endif  // ROGUELIKE_GAME_H_

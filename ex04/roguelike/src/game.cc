@@ -79,11 +79,7 @@ void Game::updateEntities() {
     }
 
     for(auto &ent : dead_entities) {
-    //    if (dynamic_cast<Player*>(ent) == nullptr) {
-
-      //  } else {
-            entities.remove(ent);
-        //}
+        entities.remove(ent);
     }
     if(entities.size()==1)
         spawn_enemies();
@@ -104,7 +100,7 @@ void Game::spawn_enemies() {
     std::default_random_engine rnd;
     std::uniform_int_distribution<int> rng_width(0,map_width*3);
     std::uniform_int_distribution<int> rng_high(0,map_height*3);
-    std::uniform_int_distribution<int> rng_speed(350,1000*wave);
+    std::uniform_int_distribution<int> rng_speed(350,1500);//000*wave);
 
     //ToDo check if enemy is generated on wall or not
     for (int i = 0; i < 10*wave; i++)
@@ -129,4 +125,8 @@ void Game::do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer){
 void Game::add_projectile(Weapon w_type, std::vector<Vec2> points) {
     for(auto point : points)
         entities.push_back(std::make_shared<Projectile>(*this,point,w_type));
+}
+
+void Game::game_over() {
+    // ToDo
 }
