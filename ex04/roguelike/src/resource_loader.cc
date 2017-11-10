@@ -1,9 +1,7 @@
 #include "resource_loader.h"
 
 #include <cassert>
-
 #include <SDL_image.h>
-
 #include "utils/logging.h"
 
 // -- Base Path (resource folder assumed to be located in CWD)

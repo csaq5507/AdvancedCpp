@@ -1,7 +1,6 @@
 #include <fstream>
 #include "map.h"
 #include "utils/logging.h"
-#include <memory>
 
 Map::Map() {};
 
@@ -26,7 +25,7 @@ bool Map::load(std::string filename) {
 			}
 			stream >> type;			//read the type (block or normal)
 			if (id < 0) {
-				FATAL("Parse error at file %s\n", filename);
+				FATAL("Parse error at file %s\n", filename.c_str());
 			}
 			genTile.tile_id = id;
 			genTile.tile_type = TileType(type);
@@ -55,7 +54,7 @@ void Map::render(SDL_Renderer* renderer, Vec2 mapOffset) {
 
 	for (int y = 0; y < map_height; y++) {
 		for (int x = 0; x < map_width; x++) {
-			if (tileList[tileToRenderId].tile_type = TILE_TYPE_NONE) {
+			if (tileList[tileToRenderId].tile_type == TILE_TYPE_NONE) {
 				tileToRenderId++;
 				continue;
 			}

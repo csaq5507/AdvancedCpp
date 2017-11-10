@@ -1,10 +1,6 @@
 #include "area.h"
-#include "enviorment_variables.h"
 #include <algorithm>
 #include <fstream>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <iostream>
 #include <sstream>
 
 Area::Area() {

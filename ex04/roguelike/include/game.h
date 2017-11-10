@@ -14,7 +14,6 @@
 #include "logic/logic.h"
 #include "entities/player.h"
 
-
 class Game {
 
     bool running = true;

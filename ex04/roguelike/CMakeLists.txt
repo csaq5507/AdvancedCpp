@@ -23,7 +23,7 @@ aux_source_directory(src/logic SRC_FILES)
 
 add_executable(roguelike ${SRC_FILES})
 
-# Scan through resource folder for updated files and copy if none existing or changed
+# Scan through resource folder for updated files and copy if none existing or
 file (GLOB_RECURSE resources "resources/*.*")
 foreach(resource ${resources})
     get_filename_component(filename ${resource} NAME)

@@ -2,15 +2,12 @@
 #define ROGUELIKE_ENTITIES_ENEMY_H_
 
 #include "entity.h"
-#include <random>
 #include "entities/player.h"
 
 class Enemy : public Entity {
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> move_timer;
 
-    std::default_random_engine rnd;
-    std::uniform_int_distribution<int> rng;
     int speed;
     std::shared_ptr<Entity> player;
 

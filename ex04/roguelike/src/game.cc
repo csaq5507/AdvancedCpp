@@ -1,10 +1,7 @@
 #include "game.h"
 
-#include "enviorment_variables.h"
-#include "entities/enemy.h"
-#include "entities/projectile.h"
 #include "utils/logging.h"
-#include <random>
+#include "utils/random.h"
 
 
 
@@ -97,15 +94,16 @@ void Game::renderFrame() {
 }
 
 void Game::spawn_enemies() {
-    std::default_random_engine rnd;
-    std::uniform_int_distribution<int> rng_width(0,map_width*3);
-    std::uniform_int_distribution<int> rng_high(0,map_height*3);
-    std::uniform_int_distribution<int> rng_speed(350,1500);//000*wave);
 
     //ToDo check if enemy is generated on wall or not
     for (int i = 0; i < 10*wave; i++)
-        entities.push_back(std::make_shared<Enemy>(*this, Vec2{rng_width(rnd), rng_high(rnd)}, entities.front(), rng_speed(rnd),50*wave));
-
+        entities.push_back(
+                std::make_shared<Enemy>(*this,
+                                        Vec2(get_int_random(0,map_width*3), get_int_random(0,map_height*3)),
+                                        entities.front(),
+                                        get_int_random(600,1500),
+                                        50*wave)
+        );
 }
 
 void Game::do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer){
