@@ -1,30 +1,31 @@
-Basic Combat.
-ranged & melee weapon
+##### Basic Combat #####
+- ranged & melee weapon
 
-every weapon has potential damage: [1-1000]
+- every weapon has potential damage: [1-1000]
 
-AI usually have 100 HP
 
-melee weapon hits AI standing on following places:
+- melee weapon hits AI standing on following places:
 . . . . .
-. o o o .
-. o # o .
-. o o o .
+. . . o .
+. . > o .
+. . . o .
 . . . . .
 
 
-ranged weapon hits AI standing on following places(depending on range(10 to infinity)):
+- ranged weapon hits AI standing on following places(depends on range(10 to inf)):
 . . . . . . . . . .
-. # o o o o o o o o
+. > o o o o o o o o
 . . . . . . . . . .
 
 
-may also spreading projectiles:
+- may also spreading weapons(pumpgun):
 . . . . . . . . . o o o o o
-. . . . . o o o o o o o o o o
-. # o o o o o o o o o o o o o
-. . . . . o o o o o o o o o o
+. . . . . o o o o o o o o o
+. > o o o o o o o o o o o o
+. . . . . o o o o o o o o o
 . . . . . . . . . o o o o o
 
-Basic combat script animates the combat on hit, the hitten entitiy gets HP removed, entitys with no HP get removed from list.
-Player lose INT_MAX HP if it collides with a AI enemy
+
+Basic combat code animates the projectile & the hitten entitiy gets HP
+removed, entitys with no HP get removed from list(dead).
+Player lose 1000 HP if it collides with a AI enemy

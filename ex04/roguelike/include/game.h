@@ -73,7 +73,6 @@ class Game {
     }
 
     void spawn_enemies();
-
     void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
     void add_projectile(std::vector<std::shared_ptr<Entity> > projectiles);
     void game_over();

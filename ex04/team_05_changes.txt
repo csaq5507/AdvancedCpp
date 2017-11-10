@@ -1,1 +1,20 @@
-- Every entity has a amount of healthpoints(int hp) default value = 100
+###### game.h ######
+- we added of a "wave" member value, a  "spawn_enemies" func, a
+"do_damage" func that damages all enemies that are hitten by a projectile, a
+"add_projectile" func that displays the projectile on the map , the projectile
+is a entity with a short live. and a "game_over" func that shows the game over
+text.
+
+
+###### entity.h ######
+- Every entity has a amount of healthpoints(int hp) default value = 100, a
+direction and a timer.
+
+
+###### vec2.h ######
+- in Vec2 we have a + operator overloading func
+
+
+###### player.h ######
+- the player has a weapon(melee, flint or pumpgun) and a reload_timer
+

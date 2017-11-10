@@ -1,6 +1,10 @@
-Monster AI
+##### Monster AI #####
 
-placed randomly at beginning of game(100 HP)
-running around randomely (move direction = rand % 4 && collision detection with wall)
-if player nearby(within radius of xx pixels) then running directly to the player.
-each moster has a velocity, some faster then player, some slower.
+
+placed randomly at beginning of game(xx HP)
+running around randomly (move direction = rand % 4 && collision detection wall)
+if player nearby(within radius of xx pixels) then running directly to the player
+each monster has a velocity, some faster then player, some slower.
+
+- further we implemented implemented a wave system, when the first wave is dead,
+    a new wave with more(stronger, faster) enemies spawn
