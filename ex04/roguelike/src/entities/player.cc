@@ -195,3 +195,7 @@ void Player::render(SDL_Renderer* renderer, const Vec2& cameraPos){
                    sprite_set->getRect(), &dst);
 }
 
+void Player::damage(int hp) {
+    this->hp-=hp;
+    if (this->hp <= 0) game.game_over();
+}

@@ -47,7 +47,7 @@ class Entity {
         return sprite_set;
     }
 
-    void damage(int hp);
+    virtual void damage(int hp);
 
     bool is_dead(){
         return this->hp<=0;

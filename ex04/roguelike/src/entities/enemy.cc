@@ -44,7 +44,6 @@ void Enemy::update() {
     }
     if (is_on_player()) {
         player->damage(1000);
-        game.game_over();
     }
 }
 

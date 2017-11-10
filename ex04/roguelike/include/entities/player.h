@@ -20,6 +20,8 @@ public:
     void render(SDL_Renderer* renderer, const Vec2& cameraPos);
 
     void attack();
+
+    void damage(int hp) override;
 };
 
 #endif  // ROGUELIKE_ENTITIES_PLAYER_H_
