@@ -22,9 +22,11 @@ Game::Game() {
     // default background color
     SDL_SetRenderDrawColor(renderer, 0xD4, 0xC8, 0x38, 0xFF);
 
+
     resource_loader = std::make_unique<ResourceLoader>(renderer);
 
     wave = 1;
+    game_over_sprite = resource_loader->loadSpriteSet("gameover.png");
 
     INFO("Game initialization done.");
 }
@@ -90,6 +92,14 @@ void Game::renderFrame() {
 	for (auto& entity : entities) {
         entity->render(renderer,camPos);
     }
+    if(game_over_bool){
+        SDL_Rect dst;
+        SDL_QueryTexture(game_over_sprite->getTexture(), nullptr, nullptr,&dst.w,&dst.h);
+        dst.x = window_width / 2 - (dst.w/2);
+        dst.y = window_height / 2 - (dst.h/2);
+        SDL_RenderCopy(renderer, game_over_sprite->getTexture(),
+                       game_over_sprite->getRect(), &dst);
+    }
     SDL_RenderPresent(renderer);
 }
 
@@ -104,6 +114,7 @@ void Game::spawn_enemies() {
                                         get_int_random(600,1500),
                                         50*wave)
         );
+    wave++;
 }
 
 void Game::do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer){
@@ -126,5 +137,5 @@ void Game::add_projectile(std::vector<std::shared_ptr<Entity> > projectiles) {
 }
 
 void Game::game_over() {
-    // ToDo
+    game_over_bool=true;
 }
