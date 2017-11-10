@@ -122,9 +122,9 @@ void Game::do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer){
     }
 }
 
-void Game::add_projectile(Weapon w_type, std::vector<Vec2> points) {
-    for(auto point : points)
-        entities.push_back(std::make_shared<Projectile>(*this,point,w_type));
+void Game::add_projectile(std::vector<std::shared_ptr<Entity> > projectiles) {
+    for(auto projectile : projectiles)
+        entities.push_back(projectile);
 }
 
 void Game::game_over() {

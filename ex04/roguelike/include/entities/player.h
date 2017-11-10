@@ -2,6 +2,7 @@
 #define ROGUELIKE_ENTITIES_PLAYER_H_
 
 #include "entity.h"
+#include "entities/enemy.h"
 
 enum Weapon{melee, flint, pumpgun};
 

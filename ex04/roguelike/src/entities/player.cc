@@ -6,6 +6,7 @@
 #include "game.h"
 #include <vector>
 #include "sprite_set.h"
+#include "entities/projectile.h"
 
 Player::Player(Game& game, Vec2 pos) : Entity(game, pos, "player.png"), attack_timer(std::chrono::high_resolution_clock::now()),weapon(Weapon::melee) {
     sprite_set->setRect(0, 0, tile_size,tile_size);
@@ -45,7 +46,8 @@ void Player::update() {
 }
 
 void Player::attack() {
-        std::vector<Vec2> hitten_fields=std::vector<Vec2>();
+    std::vector<Vec2> hitten_fields=std::vector<Vec2>();
+    std::vector<std::shared_ptr<Entity> > projectiles=std::vector<std::shared_ptr<Entity> >();
         switch (this->weapon) {
             case Weapon::melee:
                 // Reload time
@@ -75,7 +77,9 @@ void Player::attack() {
                         break;
                 }
                 game.do_damage(100,hitten_fields,this);
-                game.add_projectile(Weapon::melee,hitten_fields);
+                for(auto vec : hitten_fields)
+                    projectiles.push_back(std::make_shared<Projectile>(game,vec,Weapon::melee,this->direction));
+                game.add_projectile(projectiles);
                 break;
             case Weapon::flint:
                 // Reload time
@@ -101,7 +105,9 @@ void Player::attack() {
                         break;
                 }
                 game.do_damage(50,hitten_fields,this);
-                game.add_projectile(Weapon::flint,hitten_fields);
+                for(auto vec : hitten_fields)
+                    projectiles.push_back(std::make_shared<Projectile>(game,vec,Weapon::flint,this->direction));
+                game.add_projectile(projectiles);
 
                 break;
             case Weapon::pumpgun:
@@ -168,7 +174,9 @@ void Player::attack() {
                         break;
                 }
                 game.do_damage(25,hitten_fields,this);
-                game.add_projectile(Weapon::pumpgun,hitten_fields);
+                for(auto vec : hitten_fields)
+                    projectiles.push_back(std::make_shared<Projectile>(game,vec,Weapon::pumpgun,this->direction));
+                game.add_projectile(projectiles);
 
                 break;
         }

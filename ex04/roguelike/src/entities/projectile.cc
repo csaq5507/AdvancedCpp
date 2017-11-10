@@ -3,13 +3,22 @@
 #include <SDL.h>
 
 #include "enviorment_variables.h"
+
 #include "game.h"
 #include <vector>
 #include "sprite_set.h"
 
-Projectile::Projectile(Game& game, Vec2 pos,Weapon w_type) : Entity(game, pos, ((w_type==Weapon::melee)?"melee.png":((w_type==Weapon::flint)?"flint.png":"pumpgun.png"))), existence_timer(std::chrono::high_resolution_clock::now()+timer.milliseconds(200)) {
-    sprite_set->setRect(0, 0, tile_size,tile_size);
 
+
+Projectile::Projectile(Game& game, Vec2 pos,Weapon w_type,Direction dir) : Entity(game, pos, ((w_type==Weapon::melee)?"melee.png":((w_type==Weapon::flint)?"flint.png":"pumpgun.png"))), existence_timer(std::chrono::high_resolution_clock::now()+timer.milliseconds(200)) {
+    this->direction=dir;
+    switch(this->direction)
+    {
+        case Direction::north: this->sprite_set->setRect(0,3*tile_size,tile_size,tile_size); break;
+        case Direction::south: this->sprite_set->setRect(0, 0, tile_size,tile_size); break;
+        case Direction::east: this->sprite_set->setRect(0, 2*tile_size, tile_size,tile_size); break;
+        case Direction::west: this->sprite_set->setRect(0, 1*tile_size, tile_size,tile_size); break;
+    }
 }
 
 void Projectile::update() {
