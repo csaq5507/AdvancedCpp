@@ -8,12 +8,10 @@
 #include "utils/vec2.h"
 #include "utils/chrono_timer.h"
 #include "logic/logic.h"
-//#include "camera.h"
 
 class Game;
 class Camera;
 
-enum Direction{north, east, south, west};
 
 class Entity {
   protected:
@@ -65,6 +63,7 @@ class Entity {
 	}
 
     bool equals(const Entity* other);
+
 
 
 };

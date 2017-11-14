@@ -2,12 +2,16 @@
 #define ROGUELIKE_SPRITE_SET_H_
 
 #include <SDL.h>
+#include <vector>
+#include "enviorment_variables.h"
 
 class SpriteSet {
   private:
     SDL_Texture *texture;
 
     SDL_Rect *rect = nullptr;
+
+    std::vector<int> direction_map;
 
   public:
     SpriteSet(SDL_Texture *texture);
@@ -20,7 +24,11 @@ class SpriteSet {
 
     ~SpriteSet();
 
+    void set_texture_map(std::vector<int> texture_map);
+
     void setRect(int x, int y, int w, int h);
+
+    void update_texture(Direction direction);
 
     void clearRect();
 

@@ -5,13 +5,13 @@
 
 
 Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png")), move_timer(std::chrono::high_resolution_clock::now()){
-    this->sprite_set->setRect(0, 0, tile_size,tile_size);
+    this->sprite_set->set_texture_map({3,2,0,1});
     this->speed = speed;
     this->player = player;
 }
 
 Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed, const int hp) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png"),hp), move_timer(std::chrono::high_resolution_clock::now()){
-    this->sprite_set->setRect(0, 0, tile_size,tile_size);
+    this->sprite_set->set_texture_map({3,2,0,1});
     this->speed = speed;
     this->player = player;
 }
@@ -21,26 +21,12 @@ void Enemy::update() {
         move_timer = timer.get_current_time() + timer.milliseconds(speed);
         if (dist_to_player() < 7) {
             get_player_direction();
-            switch(this->direction)
-            {
-                case Direction::north: this->sprite_set->setRect(0,3*tile_size,tile_size,tile_size); break;
-                case Direction::south: this->sprite_set->setRect(0, 0, tile_size,tile_size); break;
-                case Direction::east: this->sprite_set->setRect(0, 2*tile_size, tile_size,tile_size); break;
-                case Direction::west: this->sprite_set->setRect(0, 1*tile_size, tile_size,tile_size); break;
-            }
             move(1);
         } else {
-            this->direction=Direction(get_int_random(0,4));
-            switch(this->direction)
-            {
-                case Direction::north: this->sprite_set->setRect(0,3*tile_size,tile_size,tile_size); break;
-                case Direction::south: this->sprite_set->setRect(0, 0, tile_size,tile_size); break;
-                case Direction::east: this->sprite_set->setRect(0, 2*tile_size, tile_size,tile_size); break;
-                case Direction::west: this->sprite_set->setRect(0, 1*tile_size, tile_size,tile_size); break;
-            }
+            this->direction=Direction(get_int_random(0,3));
             move(1);
         }
-
+        this->sprite_set->update_texture(this->direction);
     }
     if (is_on_player()) {
         player->damage(1000);

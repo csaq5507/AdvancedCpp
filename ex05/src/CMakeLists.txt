@@ -11,7 +11,6 @@ else()
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG ")
 endif()
 
+aux_source_directory(task1_and_2 SRC_LIST)
 
-add_executable(person_test task2/person_test.cpp)
-
-target_include_directories(person_test PUBLIC task1)
+add_executable(person_test ${SRC_LIST})

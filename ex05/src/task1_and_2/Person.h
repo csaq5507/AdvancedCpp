@@ -9,7 +9,12 @@ namespace foo{
 		std::string last_name;
 		int age;
 	public:
+		static bool output;
 		Person(std::string f, std::string l, int a);
+		Person(const Person & from);
+		Person(const Person && from);
+		Person& operator=(const Person& from);
+		Person& operator=(const Person&& from);
 		int GetAge() const;
 		std::string GetFirstName() const;
 		std::string GetLastName() const;

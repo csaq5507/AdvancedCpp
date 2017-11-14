@@ -5,7 +5,7 @@
 Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename)
     : game(game), pos(pos),hp(100),direction(Direction::south),timer(sprite_set_filename) {
     sprite_set = game.getResourceLoader().loadSpriteSet(sprite_set_filename);
-
+    this->hp=100;
 }
 
 Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int hp)

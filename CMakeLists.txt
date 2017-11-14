@@ -4,6 +4,5 @@ project(AdvancedCpp LANGUAGES CXX)
 
 add_subdirectory(
         ex04/roguelike
-        ex05/src
 )
 

@@ -9,5 +9,9 @@ constexpr int tile_size = 32;  //texture size,this means each tile takes 32*32 p
 constexpr int window_width = 1280;
 constexpr int window_height = 960;
 
+enum Weapon{melee, flint, pumpgun};
+
+enum Direction{north, east, south, west};
+
 
 #endif //ROGUELIKE_ENV_H_

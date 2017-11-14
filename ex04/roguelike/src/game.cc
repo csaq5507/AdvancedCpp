@@ -3,6 +3,7 @@
 #include "utils/logging.h"
 #include "utils/random.h"
 
+#include <math.h>
 
 
 Game::Game() {
@@ -104,16 +105,24 @@ void Game::renderFrame() {
 }
 
 void Game::spawn_enemies() {
-
+    auto player=entities.front();
     //ToDo check if enemy is generated on wall or not
-    for (int i = 0; i < 10*wave; i++)
+    for (int i = 0; i < 1*wave; i++) {
+        int pos_x=get_int_random(0, map_width * 3);
+        int pos_y=get_int_random(0, map_width * 3);
+
+        if(abs(pos_x-player->getPos().x) < 3 || abs(pos_y-player->getPos().y) < 3)
+        {
+            i--; continue;
+        }
         entities.push_back(
                 std::make_shared<Enemy>(*this,
-                                        Vec2(get_int_random(0,map_width*3), get_int_random(0,map_height*3)),
+                                        Vec2(pos_x,pos_y),
                                         entities.front(),
-                                        get_int_random(600,1500),
-                                        50*wave)
+                                        get_int_random(600, 1500),
+                                        50 * wave)
         );
+    }
     wave++;
 }
 

@@ -9,12 +9,13 @@
 #include "entities/projectile.h"
 
 Player::Player(Game& game, Vec2 pos) : Entity(game, pos, "player.png"), attack_timer(std::chrono::high_resolution_clock::now()),weapon(Weapon::melee) {
-    sprite_set->setRect(0, 0, tile_size,tile_size);
-
+    sprite_set->set_texture_map({2,1,0,3});
+    sprite_set->update_texture(Direction::south);
 }
 
 Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, "player.png", hp),attack_timer(std::chrono::high_resolution_clock::now()),weapon(Weapon::melee) {
-    sprite_set->setRect(0, 0, tile_size,tile_size);
+    sprite_set->set_texture_map({2,1,0,3});
+    sprite_set->update_texture(Direction::south);
 }
 
 
@@ -25,11 +26,25 @@ void Player::update() {
         }
 
         switch (e.key.keysym.sym) {
-            case SDLK_UP: this->direction=Direction::north; move(this->movement_speed); this->sprite_set->setRect(0,2*tile_size,tile_size,tile_size); break;
-            case SDLK_DOWN: this->direction=Direction::south; move(this->movement_speed); this->sprite_set->setRect(0, 0, tile_size,tile_size); break;
-            case SDLK_LEFT: this->direction=Direction::west; move(this->movement_speed); this->sprite_set->setRect(0, 3*tile_size, tile_size,tile_size);break;
-            case SDLK_RIGHT: this->direction=Direction::east; move(this->movement_speed); this->sprite_set->setRect(0, tile_size, tile_size,tile_size); break;
-            case SDLK_SPACE: attack(); break;
+            case SDLK_UP:
+                this->direction=Direction::north;
+                move(this->movement_speed);
+                break;
+            case SDLK_DOWN:
+                this->direction=Direction::south;
+                move(this->movement_speed);
+                break;
+            case SDLK_LEFT:
+                this->direction=Direction::west;
+                move(this->movement_speed);
+                break;
+            case SDLK_RIGHT:
+                this->direction=Direction::east;
+                move(this->movement_speed);
+                break;
+            case SDLK_SPACE:
+                attack();
+                break;
             case SDLK_1:
                 this->weapon = Weapon::melee;
                 break;
@@ -43,6 +58,8 @@ void Player::update() {
         }
 
     }
+    this->sprite_set->update_texture(this->direction);
+
 }
 
 void Player::attack() {

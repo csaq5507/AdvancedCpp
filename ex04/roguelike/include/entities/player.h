@@ -4,7 +4,6 @@
 #include "entity.h"
 #include "entities/enemy.h"
 
-enum Weapon{melee, flint, pumpgun};
 
 class Player : public Entity {
 private:
