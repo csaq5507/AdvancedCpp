@@ -74,7 +74,10 @@ int main(void) {
 
 	//ower_bound / upper_bound makes sense in sorted array
 	std::cout << "Sort vector and print values in range of upper and lower bound" << std::endl;
+	vec.push_back(3);
+	copyVec.push_back(3);
 	std::sort(vec.begin(), vec.end());
+
 	auto lower = std::lower_bound(vec.begin(), vec.end(), 2);
 	auto upper = std::upper_bound(vec.begin(), vec.end(), modulo + 1);
 

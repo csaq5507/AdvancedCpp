@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Person.h"
+#include "../Person.h"
 #include <vector>
 #include <set>
 #include <algorithm>
@@ -24,8 +24,6 @@ void PrintSet(std::set<T> * v) {
 	}
 	std::cout<<std::endl;
 }
-
-bool foo::Person::output=true;
 
 int main(char** argv, int argc) {
 

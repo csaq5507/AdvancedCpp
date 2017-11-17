@@ -65,6 +65,9 @@ namespace foo {
 			}
 		}
 		return false;
+		//easier:
+		//#include <tuple>
+		//return std::tie(first_name,last_name,age) < std::tie(rhs.first_name,rhs.last_name,rhs.age);
 	}
 
 
@@ -106,21 +109,15 @@ namespace foo {
 
 
 	int Person::compFirstName(const Person& lhs,const Person& rhs){
-		if(Person::output)
-			std::cout<<"Calling first name comperator of " << lhs << " & "<< rhs << std::endl;
 		return lhs.first_name.compare(rhs.first_name) < 0;
 	}
 	int Person::compLastName(const Person& lhs, const Person& rhs) {
-		if(Person::output)
-			std::cout<<"Calling last name comperator of " << lhs << " & "<< rhs << std::endl;
 		return lhs.last_name.compare(rhs.last_name) < 0;
 	}
 	//explicit coded everything to present the strict odred convention
 	//return lhs.age < rhs.age would have all these properties already
 	//We consider all cases to demonstrate the conventions
 	int Person::compAge(const Person& lhs, const Person& rhs) {
-		if(Person::output)
-			std::cout<<"Calling age comperator of " << lhs << " & "<< rhs << std::endl;
 		if (lhs.age == rhs.age) return 0;
 		if (lhs.age < rhs.age) return 1;
 		if (lhs.age > rhs.age) return 0;

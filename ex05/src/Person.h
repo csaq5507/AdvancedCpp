@@ -9,7 +9,7 @@ namespace foo{
 		std::string last_name;
 		int age;
 	public:
-		static bool output;
+		bool output;
 		Person(std::string f, std::string l, int a);
 		Person(const Person & from);
 		Person(const Person && from);

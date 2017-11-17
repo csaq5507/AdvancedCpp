@@ -107,7 +107,7 @@ void Game::renderFrame() {
 void Game::spawn_enemies() {
     auto player=entities.front();
     //ToDo check if enemy is generated on wall or not
-    for (int i = 0; i < 1*wave; i++) {
+    for (int i = 0; i < 10*wave; i++) {
         int pos_x=get_int_random(0, map_width * 3);
         int pos_y=get_int_random(0, map_width * 3);
 
