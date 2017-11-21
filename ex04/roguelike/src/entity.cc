@@ -3,13 +3,13 @@
 #include "game.h"
 
 Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename)
-    : game(game), pos(pos),hp(100),direction(Direction::south),timer(sprite_set_filename) {
+    : game(game), pos(pos),hp(100),direction(Direction::south) {
     sprite_set = game.getResourceLoader().loadSpriteSet(sprite_set_filename);
     this->hp=100;
 }
 
 Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int hp)
-        : game(game), pos(pos),hp(100),direction(Direction::south),timer(sprite_set_filename) {
+        : game(game), pos(pos),hp(100),direction(Direction::south) {
     sprite_set = game.getResourceLoader().loadSpriteSet(sprite_set_filename);
     this->hp=hp;
 }
@@ -25,7 +25,7 @@ bool Entity::move(int fields) {
         case Direction::west: v=Vec2(-fields,0); break;
     }
 	if(!game.logic.checkMove(this->pos, v)) return false;
-    pos += v;
+    this->pos += v;
 	return true;
 }
 

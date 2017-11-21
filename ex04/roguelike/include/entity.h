@@ -10,8 +10,6 @@
 #include "logic/logic.h"
 
 class Game;
-class Camera;
-
 
 class Entity {
   protected:
@@ -19,8 +17,6 @@ class Entity {
     Vec2 pos;
     int hp;
     Direction direction;
-    ChronoTimer timer;
-
     std::shared_ptr<SpriteSet> sprite_set;
   public:
 
@@ -63,8 +59,6 @@ class Entity {
 	}
 
     bool equals(const Entity* other);
-
-
 
 };
 

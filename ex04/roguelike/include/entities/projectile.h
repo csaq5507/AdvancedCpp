@@ -9,13 +9,13 @@
 #include "entities/player.h"
 class Projectile : public Entity {
 private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> existence_timer;
+    long long existence_timer;
 public:
-    Projectile(Game &game, Vec2 pos,Weapon w_type,Direction dir);
+    Projectile(Game &game, Vec2 pos, WeaponTextType w_type,Direction dir);
 
     void update() override;
 
-     void render(SDL_Renderer* renderer, const Vec2& cameraPos);
+    void render(SDL_Renderer* renderer, const Vec2& cameraPos);
     void attack();
 };
 

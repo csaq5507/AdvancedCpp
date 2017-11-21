@@ -17,8 +17,8 @@ Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed, co
 }
 
 void Enemy::update() {
-    if(timer.get_current_time()>move_timer) {
-        move_timer = timer.get_current_time() + timer.milliseconds(speed);
+    if(Game::timer.get_current_time()>move_timer) {
+        move_timer = Game::timer.get_current_time() + Game::timer.milliseconds(speed);
         if (dist_to_player() < 7) {
             get_player_direction();
             move(1);
@@ -49,15 +49,15 @@ void Enemy::render(SDL_Renderer* renderer, const Vec2& cameraPos){
 
 int Enemy::dist_to_player() {
     Vec2 position_player = player->getPos();
-    float diff_y = position_player.y - pos.y;
-    float diff_x = position_player.x - pos.x;
-    return sqrt((diff_y * diff_y) + (diff_x * diff_x));
+    float diff_y = (float)(position_player.y - pos.y);
+    float diff_x = (float)(position_player.x - pos.x);
+    return (int)sqrt((diff_y * diff_y) + (diff_x * diff_x));
 }
 
 void Enemy::get_player_direction() {
     Vec2 position_player = player->getPos();
-    float diff_y = position_player.y - pos.y;
-    float diff_x = position_player.x - pos.x;
+    float diff_y = (float)(position_player.y - pos.y);
+    float diff_x = (float)(position_player.x - pos.x);
     if (diff_y == 0) {
         this->direction = diff_x<0?Direction::west:Direction::east;
     } else if (diff_x == 0) {

@@ -14,11 +14,11 @@
 #include "logic/logic.h"
 #include "entities/player.h"
 #include "sprite_set.h"
+#include "utils/chrono_timer.h"
 
 class Game {
 
     bool running = true;
-
     bool game_over_bool = false;
     std::shared_ptr<SpriteSet> game_over_sprite;
 
@@ -33,6 +33,7 @@ class Game {
     int wave;
 
   public:
+	static ChronoTimer timer;
 	Logic logic;
     std::list<std::shared_ptr<Entity>> dead_entities;
 

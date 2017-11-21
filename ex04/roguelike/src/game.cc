@@ -5,8 +5,9 @@
 
 #include <math.h>
 
-
+ChronoTimer Game::timer{ "Game time" };
 Game::Game() {
+	
     window = SDL_CreateWindow("Roguelike", SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED, window_width, window_height, SDL_WINDOW_SHOWN);
     if (!window) {
@@ -48,7 +49,7 @@ void Game::init() {
 	//Load map
 	area.load(*resource_loader, "1.area");
 	//load logic map
-	logic.load("1.area");
+	logic.load(area);
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
 	auto player = entities.front();
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
@@ -84,6 +85,14 @@ void Game::updateEntities() {
     if(entities.size()==1)
         spawn_enemies();
 }
+void renderGameOver(SDL_Renderer* renderer, std::shared_ptr<SpriteSet> game_over_sprite) {
+	SDL_Rect dst;
+	SDL_QueryTexture(game_over_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	dst.x = window_width / 2 - (dst.w / 2);
+	dst.y = window_height / 2 - (dst.h / 2);
+	SDL_RenderCopy(renderer, game_over_sprite->getTexture(),
+		game_over_sprite->getRect(), &dst);
+}
 
 void Game::renderFrame() {
 	
@@ -94,12 +103,7 @@ void Game::renderFrame() {
         entity->render(renderer,camPos);
     }
     if(game_over_bool){
-        SDL_Rect dst;
-        SDL_QueryTexture(game_over_sprite->getTexture(), nullptr, nullptr,&dst.w,&dst.h);
-        dst.x = window_width / 2 - (dst.w/2);
-        dst.y = window_height / 2 - (dst.h/2);
-        SDL_RenderCopy(renderer, game_over_sprite->getTexture(),
-                       game_over_sprite->getRect(), &dst);
+		renderGameOver(renderer, game_over_sprite);
     }
     SDL_RenderPresent(renderer);
 }

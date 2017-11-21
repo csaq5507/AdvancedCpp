@@ -10,9 +10,8 @@
 #include "tile.h"
 
 class Map {
-private:
-	std::vector<Tile> tileList;
 public:
+	std::vector<Tile> tileList;
     std::shared_ptr<SpriteSet> sprideSet;
 
 	Map();

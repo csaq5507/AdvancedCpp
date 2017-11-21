@@ -3,13 +3,15 @@
 
 #include "entity.h"
 #include "entities/enemy.h"
+#include "weapon.h"
 
 
 class Player : public Entity {
 private:
-    Weapon weapon;
-    int movement_speed;
-    std::chrono::time_point<std::chrono::high_resolution_clock> attack_timer;
+    int weaponIndex = 0;
+	std::vector<Weapon> equipedWeapons{ Weapon::Melee(), Weapon::Flint(), Weapon::Pumpgun()};
+    int movement_speed = 1;
+
 public:
     Player(Game &game, Vec2 pos);
     Player(Game &game, Vec2 pos, const int hp);

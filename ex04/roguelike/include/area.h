@@ -8,9 +8,9 @@ class Area {
 public:
 	std::vector<Map> mapList;
 	std::shared_ptr<SpriteSet> spride;
+	int GetAreaSize() { return areaSize; }
 private:
 	int areaSize;
-
 
 public:
 	Area();

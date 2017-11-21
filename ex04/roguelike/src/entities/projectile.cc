@@ -10,8 +10,8 @@
 
 
 
-Projectile::Projectile(Game& game, Vec2 pos,Weapon w_type,Direction dir) : Entity(game, pos, ((w_type==Weapon::melee)?"cheshirecat.png":((w_type==Weapon::flint)?"will-o-wisp.png":"pumpkin.png"))), existence_timer(std::chrono::high_resolution_clock::now()+timer.milliseconds(200)) {
-    this->direction=dir;
+Projectile::Projectile(Game& game, Vec2 pos, WeaponTextType w_type,Direction dir) : Entity(game, pos, ((w_type== WeaponTextType::melee)?"cheshirecat.png":((w_type== WeaponTextType::flint)?"will-o-wisp.png":"pumpkin.png"))), existence_timer(Game::timer.get_elapsed_time() + 200) {
+    this->direction = dir;
     switch(this->direction)
     {
         case Direction::north: this->sprite_set->setRect(0,3*tile_size,tile_size,tile_size); break;
@@ -22,7 +22,7 @@ Projectile::Projectile(Game& game, Vec2 pos,Weapon w_type,Direction dir) : Entit
 }
 
 void Projectile::update() {
-    if(timer.get_current_time()>existence_timer)
+    if(Game::timer.get_elapsed_time() > existence_timer)
     {
         std::vector<Vec2> range;
         range.push_back(Vec2(this->getPos().x,this->getPos().y));
