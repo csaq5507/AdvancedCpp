@@ -44,7 +44,7 @@ void Player::update() {
                 move(this->movement_speed);
                 break;
             case SDLK_SPACE:
-                attack();
+                 attack();
                 break;
             case SDLK_1:
                 this->weaponIndex = 0;

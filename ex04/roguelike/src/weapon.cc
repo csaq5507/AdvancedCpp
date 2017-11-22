@@ -48,6 +48,7 @@ Weapon Weapon::Melee() {
 	w.dmg = 100;
 	w.reloadTimeInMs = 500;
 	w.type = melee;
+	w.lastShotAt=0;
 	return w;
 }
 Weapon Weapon::Flint() {
@@ -58,6 +59,7 @@ Weapon Weapon::Flint() {
 	w.dmg = 50;
 	w.reloadTimeInMs = 100;
 	w.type = flint;
+	w.lastShotAt=0;
 	return w;
 }
 
@@ -78,6 +80,7 @@ Weapon Weapon::Pumpgun() {
 	w.dmg = 25;
 	w.reloadTimeInMs = 1000;
 	w.type = pumpgun;
+	w.lastShotAt=0;
 	return w;
 }
 

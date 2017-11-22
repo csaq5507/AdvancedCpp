@@ -5,6 +5,7 @@
 #include "utils/random.h"
 #include "entities/projectile.h"
 #include <math.h>
+#include "SDL_ttf.h"
 
 ChronoTimer Game::timer{ "Game time" };
 Game::Game() {
@@ -30,6 +31,12 @@ Game::Game() {
 
     wave = 1;
     game_over_sprite = resource_loader->loadSpriteSet("gameover.png");
+
+
+    if(TTF_Init()==-1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        exit(2);
+    }
 
     INFO("Game initialization done.");
 }
