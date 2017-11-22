@@ -5,11 +5,8 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
-find_package(SDL2TTF REQUIRED)
-
-include_directories(${SDL2_INCLUDE_DIRS}
-        ${SDL2_IMAGE_INCLUDE_DIRS}
-        ${SDL2TTF_INCLUDE_DIR})
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
+# -- Compilation
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /wd4141 /WX")
@@ -56,18 +53,14 @@ foreach(resource ${resources})
 
 endforeach()
 
-
-
 target_include_directories(roguelike PUBLIC include)
 
 target_include_directories(roguelike SYSTEM PUBLIC
-        ${SDL2_INCLUDE_DIRS}
-        ${SDL2_IMAGE_INCLUDE_DIRS}
-        ${SDL2TTF_INCLUDE_DIR}
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_IMAGE_INCLUDE_DIRS}
 )
 
 target_link_libraries(roguelike
-        ${SDL2_LIBRARY}
-        ${SDL2_IMAGE_LIBRARY}
-        ${SDL2TTF_LIBRARY}
+    ${SDL2_LIBRARY}
+    ${SDL2_IMAGE_LIBRARY}
 )
