@@ -26,12 +26,12 @@ std::vector<Vec2> Weapon::GetHitedFields(Direction d) {
 	switch (d){
 	case north: angle = 90;
 		break;
-	case east: angle = 0;
-		return result;
-	case south: angle = 270;
-		break;
 	case west: angle = 180;
 		break;
+	case south: angle = 270;
+		break;
+	case east: angle = 0;
+		return result;
 	}
 	angle = angle * factor;
 	for(auto& v : result) {

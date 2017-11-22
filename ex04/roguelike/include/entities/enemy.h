@@ -3,12 +3,12 @@
 
 #include "entity.h"
 #include "entities/player.h"
-
+#include <fstream>
+class Player;
 class Enemy : public Entity {
 private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> move_timer;
-
-    int speed;
+    long long move_timer;
+    long moveStopInMs;
     std::shared_ptr<Entity> player;
 
     int dist_to_player();
@@ -21,6 +21,8 @@ public:
     Enemy(Game &game, Vec2 pos, std::shared_ptr<Entity> player, int speed, const int hp);
 
     void update() override;
+	void serialize(std::fstream& f);
+	static Enemy deserialize(std::fstream& f, Game& game, std::shared_ptr<Player>& player);
 };
 
 #endif  // ROGUELIKE_ENTITIES_ENEMY_H_

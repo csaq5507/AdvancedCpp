@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <fstream>
 #include "enviorment_variables.h"
 #include "sprite_set.h"
 #include "utils/vec2.h"
@@ -10,6 +11,7 @@
 #include "logic/logic.h"
 
 class Game;
+enum EntityType { enemy, player, projectile};
 
 class Entity {
   protected:
@@ -19,9 +21,8 @@ class Entity {
     Direction direction;
     std::shared_ptr<SpriteSet> sprite_set;
   public:
-
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename);
-    Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int hp);
+    Entity(Game &game, Vec2 pos, std::string sprite_set_filename, const int hp);
 
     virtual ~Entity() = default;
 
@@ -59,7 +60,7 @@ class Entity {
 	}
 
     bool equals(const Entity* other);
-
+	virtual void serialize(std::fstream& f);
 };
 
 

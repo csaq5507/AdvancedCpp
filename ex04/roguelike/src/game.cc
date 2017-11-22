@@ -1,8 +1,9 @@
 #include "game.h"
-
+#include <iostream>
+#include <fstream>
 #include "utils/logging.h"
 #include "utils/random.h"
-
+#include "entities/projectile.h"
 #include <math.h>
 
 ChronoTimer Game::timer{ "Game time" };
@@ -47,7 +48,8 @@ Game::~Game() {
 
 void Game::init() {
 	//Load map
-	area.load(*resource_loader, "1.area");
+	current_area = "1.area";
+	area.load(*resource_loader, current_area);
 	//load logic map
 	logic.load(area);
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
@@ -123,7 +125,7 @@ void Game::spawn_enemies() {
                 std::make_shared<Enemy>(*this,
                                         Vec2(pos_x,pos_y),
                                         entities.front(),
-                                        get_int_random(600, 1500),
+                                        get_int_random(1500, 3000),
                                         50 * wave)
         );
     }
@@ -151,4 +153,65 @@ void Game::add_projectile(std::vector<std::shared_ptr<Entity> > projectiles) {
 
 void Game::game_over() {
     game_over_bool=true;
+}
+
+
+
+//invariant is that the first element is the player
+//we need to change that, the whole structor is still messy
+bool Game::saveState(std::string filename) {
+	std::fstream file{ filename, std::fstream::in | std::fstream::out | std::fstream::trunc};
+	file << Game::timer.get_elapsed_time() << std::endl;
+	file << game_over_bool << std::endl;
+	file << current_area << std::endl;
+	file << wave << std::endl;
+	for (auto& e : entities) {
+		e->serialize(file);
+	}
+	return true;
+}
+
+int readLineAndConvertToInt(std::fstream& f) {
+	std::string line;
+	std::getline(f, line);
+	return std::stoi(line);
+}
+
+int readLineAndConvertToLongLong(std::fstream& f) {
+	std::string line;
+	std::getline(f, line);
+	return std::stoll(line);
+}
+
+void Game::loadState(std::string filename) {
+	entities.clear();
+	dead_entities.clear();
+	std::fstream file{ filename, std::fstream::in};
+	std::string line;
+	long long elapsed = readLineAndConvertToLongLong(file);
+	Game::timer.setTimerTo(elapsed);
+	game_over_bool = readLineAndConvertToInt(file);
+	std::getline(file, line);
+	current_area = line;
+	area.load(this->getResourceLoader(), current_area);
+	logic.load(area);
+	wave = readLineAndConvertToInt(file);
+	
+	//load entities
+	EntityType type = (EntityType)readLineAndConvertToInt(file);
+	//TODO make exception meaningfull...convention is that first serialized object must be a player
+	if (type != player) throw 11;
+	auto p = std::make_shared<Player>(Player::deserialize(file, *this));
+	entities.push_back(p);
+	while (std::getline(file, line)) {
+		type = (EntityType)std::stoi(line);
+		if (type == projectile) {
+			auto pro = std::make_shared<Projectile>(Projectile::deserialize(file, *this));
+			entities.push_back(pro);
+		}
+		else if (type == enemy) {
+			auto enemy = std::make_shared<Enemy>(Enemy::deserialize(file, *this, p));
+			entities.push_back(enemy);
+		}
+	}
 }

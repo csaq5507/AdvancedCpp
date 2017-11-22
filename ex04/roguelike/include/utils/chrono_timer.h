@@ -7,7 +7,7 @@
 
 class ChronoTimer {
 	const std::string name;
-	const std::chrono::time_point<std::chrono::high_resolution_clock> start;
+	std::chrono::time_point<std::chrono::high_resolution_clock> start;
   public:
 	  ChronoTimer(const std::string& name);
 	  ~ChronoTimer();
@@ -16,6 +16,7 @@ class ChronoTimer {
 	  std::chrono::high_resolution_clock::time_point get_current_time() const;
 	  std::chrono::duration<long long> seconds(int seconds) const;
 	  std::chrono::duration<long int, std::ratio<1, 1000> > milliseconds(int milliseconds) const;
+	  void setTimerTo(long long elapsedTime);
 };
 
 #endif //ROGUELIKE_CCHRONO_UTILS_H_

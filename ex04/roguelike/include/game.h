@@ -3,7 +3,7 @@
 
 #include <list>
 #include <memory>
-
+#include <string>
 #include <SDL.h>
 
 #include "entity.h"
@@ -17,28 +17,31 @@
 #include "utils/chrono_timer.h"
 
 class Game {
-
     bool running = true;
-    bool game_over_bool = false;
     std::shared_ptr<SpriteSet> game_over_sprite;
-
-    std::list<std::shared_ptr<Entity>> entities;
-
-    std::unique_ptr<ResourceLoader> resource_loader;
-
+	std::unique_ptr<ResourceLoader> resource_loader;
     std::list<SDL_Event> events;
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
+
+	//Following must be serializeable/deserializable
+	bool game_over_bool = false;
+	std::string current_area;
 	Area area;
     int wave;
+	//invariant is that the first element is the player
+	//we need to change that, the whole structor is still messy
+	std::list<std::shared_ptr<Entity>> entities;
 
   public:
+	//timer must be serializeable/deserializable
 	static ChronoTimer timer;
 	Logic logic;
+
     std::list<std::shared_ptr<Entity>> dead_entities;
-
     Game();
-
+	bool saveState(std::string filename);
+	void loadState(std::string filename);
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
 

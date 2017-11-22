@@ -22,3 +22,8 @@ std::chrono::duration<long int, std::ratio<1, 1000> > ChronoTimer::milliseconds(
 	return std::chrono::milliseconds(milliseconds);
 }
 
+void ChronoTimer::setTimerTo(long long elapsedTime) {
+	auto diff = elapsedTime - this->get_elapsed_time();
+	start += ChronoTimer::milliseconds(diff);
+}
+

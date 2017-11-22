@@ -8,8 +8,8 @@
 
 class Player : public Entity {
 private:
-    int weaponIndex = 0;
 	std::vector<Weapon> equipedWeapons{ Weapon::Melee(), Weapon::Flint(), Weapon::Pumpgun()};
+	int weaponIndex = 0;
     int movement_speed = 1;
 
 public:
@@ -23,6 +23,9 @@ public:
     void attack();
 
     void damage(int hp) override;
+
+	void serialize(std::fstream& f);
+	static Player deserialize(std::fstream& f, Game& game);
 };
 
 #endif  // ROGUELIKE_ENTITIES_PLAYER_H_

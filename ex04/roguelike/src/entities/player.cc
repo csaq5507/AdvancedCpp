@@ -1,20 +1,21 @@
 #include "entities/player.h"
 
 #include <SDL.h>
-
+#include <string>
 #include "enviorment_variables.h"
 #include "game.h"
 #include <vector>
 #include "sprite_set.h"
 #include "entities/projectile.h"
 
+const std::string playerTextFileName = "player.png";
 
-Player::Player(Game& game, Vec2 pos) : Entity(game, pos, "player.png") {
+Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName) {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
 }
 
-Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, "player.png", hp) {
+Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTextFileName, hp) {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
 }
@@ -92,4 +93,38 @@ void Player::render(SDL_Renderer* renderer, const Vec2& cameraPos){
 void Player::damage(int hp) {
     this->hp-=hp;
     if (this->hp <= 0) game.game_over();
+}
+
+void Player::serialize(std::fstream& f) {
+	f << player << std::endl;
+	Entity::serialize(f);
+	f << this->weaponIndex << std::endl;
+	f << this->movement_speed << std::endl;
+}
+
+//convention type was already read
+Player Player::deserialize(std::fstream& f, Game& game) {
+	std::string line;
+	Vec2 pos;
+	int hp;
+	Direction dir;
+	//read entity
+	std::getline(f, line);
+	pos.x = std::stoi(line);
+	std::getline(f, line);
+	pos.y = std::stoi(line);
+	std::getline(f, line);
+	hp = std::stoi(line);
+	std::getline(f, line);
+	dir = (Direction)std::stoi(line);
+	//read player
+	std::getline(f, line);
+	int weaponI = std::stoi(line);
+	std::getline(f, line);
+	int speed = std::stoi(line);
+	Player p{ game, pos,hp };
+	p.direction = dir;
+	p.weaponIndex = weaponI;
+	p.movement_speed = speed;
+	return p;
 }

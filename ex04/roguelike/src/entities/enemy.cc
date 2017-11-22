@@ -1,24 +1,24 @@
 #include "entities/enemy.h"
-
 #include "game.h"
 #include "utils/random.h"
 
 
-Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png")), move_timer(std::chrono::high_resolution_clock::now()){
+
+Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png")), move_timer(Game::timer.get_elapsed_time()){
     this->sprite_set->set_texture_map({3,2,0,1});
-    this->speed = speed;
+    this->moveStopInMs = speed;
     this->player = player;
 }
 
-Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed, const int hp) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png"),hp), move_timer(std::chrono::high_resolution_clock::now()){
+Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed, const int hp) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png"),hp), move_timer(Game::timer.get_elapsed_time()){
     this->sprite_set->set_texture_map({3,2,0,1});
-    this->speed = speed;
+    this->moveStopInMs = speed;
     this->player = player;
 }
 
 void Enemy::update() {
-    if(Game::timer.get_current_time()>move_timer) {
-        move_timer = Game::timer.get_current_time() + Game::timer.milliseconds(speed);
+    if(Game::timer.get_elapsed_time() > move_timer) {
+        move_timer = Game::timer.get_elapsed_time() + moveStopInMs;
         if (dist_to_player() < 7) {
             get_player_direction();
             move(1);
@@ -72,4 +72,33 @@ void Enemy::get_player_direction() {
 bool Enemy::is_on_player() {
     Vec2 position_player = player->getPos();
     return (((position_player.y - pos.y) == 0) && ((position_player.x - pos.x) == 0));
+}
+
+void Enemy::serialize(std::fstream& f) {
+	f << enemy << std::endl;
+	Entity::serialize(f);
+	f << this->moveStopInMs << std::endl;
+}
+
+//convention type was already read
+Enemy Enemy::deserialize(std::fstream& f, Game& game, std::shared_ptr<Player>& player) {
+	std::string line;
+	Vec2 pos;
+	int hp;
+	Direction dir;
+	//read entity
+	std::getline(f, line);
+	pos.x = std::stoi(line);
+	std::getline(f, line);
+	pos.y = std::stoi(line);
+	std::getline(f, line);
+	hp = std::stoi(line);
+	std::getline(f, line);
+	dir = (Direction)std::stoi(line);
+	//read enemy
+	std::getline(f, line);
+	int speed = std::stoi(line);
+	Enemy e{ game, pos, player, speed, hp };
+	e.direction = dir;
+	return e;
 }

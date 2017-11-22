@@ -1,9 +1,8 @@
 #include "entity.h"
-
 #include "game.h"
 
 Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename)
-    : game(game), pos(pos),hp(100),direction(Direction::south) {
+		: game(game), pos(pos), hp(100), direction(Direction::south) {
     sprite_set = game.getResourceLoader().loadSpriteSet(sprite_set_filename);
     this->hp=100;
 }
@@ -37,5 +36,11 @@ bool Entity::equals(const Entity* other){
     return this==other;
 }
 
-
 void Entity::update() {}
+
+void Entity::serialize(std::fstream& f) {
+	f << pos.x << std::endl;
+	f << pos.y << std::endl;
+	f << hp << std::endl;
+	f << direction << std::endl;
+}
