@@ -19,6 +19,8 @@ class Weapon {
 	WeaponTextType type;
 public:
 
+	Weapon() : lastShotAt(0) {};
+
 	static Weapon Melee();
 	static Weapon Flint();
 	static Weapon Pumpgun();
