@@ -1,5 +1,6 @@
 #include "entity.h"
 #include "game.h"
+#include "SDL_mixer.h"
 
 Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename)
 		: game(game), pos(pos), hp(100), direction(Direction::south) {
@@ -15,6 +16,7 @@ Entity::Entity(Game &game, Vec2 pos, std::string sprite_set_filename,const int h
 
 
 bool Entity::move(int fields) {
+
     Vec2 v;
     switch (this->direction)
     {

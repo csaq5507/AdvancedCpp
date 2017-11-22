@@ -32,12 +32,6 @@ Game::Game() {
     wave = 1;
     game_over_sprite = resource_loader->loadSpriteSet("gameover.png");
 
-
-    if(TTF_Init()==-1) {
-        printf("TTF_Init: %s\n", TTF_GetError());
-        exit(2);
-    }
-
     INFO("Game initialization done.");
 }
 
@@ -115,10 +109,16 @@ void Game::renderFrame() {
 		renderGameOver(renderer, game_over_sprite);
     }
 
- /**
-  * An example how to use sdlttf
-  *
-  */
+
+
+  //  Mix_Music * music = Mix_LoadMUS("resources/music.ogg");
+  //  if (music == NULL)
+  //      return ;
+
+    /**
+     * An example how to use sdlttf
+     *
+     */
 
     TTF_Font* Sans = TTF_OpenFont("resources/sunvalley.ttf", 24); //this opens a font style and sets a size
 
