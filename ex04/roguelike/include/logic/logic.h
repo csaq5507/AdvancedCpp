@@ -3,13 +3,13 @@
 #include "enviorment_variables.h"
 #include <vector>
 #include "utils/vec2.h"
-#include "Area.h"
+#include "area.h"
 
 class Logic {
 	//represents our game in the logic
 	int rows;
 	int columns;
-	void Logic::loadMap(int rowMapIndex, int columnMapIndex, Map& map);
+	void loadMap(int rowMapIndex, int columnMapIndex, Map& map);
 
 public:
 
