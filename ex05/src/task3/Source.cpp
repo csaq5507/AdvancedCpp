@@ -28,7 +28,7 @@ int main(void) {
 	std::vector<int> vec;
 	std::vector<int> copyVec;
 	for (int i = 0; i < numOfVectorElements; i++) {
-		vec.push_back(i % modulo + 1); //this allows to have some duplicates which will present the rsults of some methods of the list give in task 3
+		vec.push_back(i % modulo + 1); //this allows to have some duplicates which will present the results of some methods of the list give in task 3
 	}
 
 	//for each applies function to all elements e.g. map in functional language

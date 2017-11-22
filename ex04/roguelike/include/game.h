@@ -18,6 +18,15 @@
 
 class Game {
     bool running = true;
+    bool menuOpen = true;
+    bool pause = false;
+    unsigned menuSelector = 0;
+    std::vector<std::string> menuItems;
+    SDL_Color White = {255, 255, 255};
+    SDL_Color Blue = {0, 0, 255};
+    SDL_Color Red = {255, 0, 0};
+    SDL_Color Gray = {128, 128, 128};
+
     std::shared_ptr<SpriteSet> game_over_sprite;
 	std::unique_ptr<ResourceLoader> resource_loader;
     std::list<SDL_Event> events;
@@ -54,11 +63,15 @@ class Game {
 
     void init();
 
+    void clearGame();
+
     // -- Main Game Loop
 
     bool isRunning() const {
         return running;
     }
+
+	void mainLoop();
 
     void addEvent(SDL_Event e);
 
@@ -82,6 +95,7 @@ class Game {
     void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
     void add_projectile(std::vector<std::shared_ptr<Entity> > projectiles);
     void game_over();
+    void renderMenu();
 };
 
 #endif  // ROGUELIKE_GAME_H_

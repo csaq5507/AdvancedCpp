@@ -59,14 +59,74 @@ void Game::init() {
 	Camera::CameraControl.SetTarget(player);
     spawn_enemies();
 
+    menuItems.push_back("Start New Game");
+    menuItems.push_back("Resume");
+    menuItems.push_back("Load Game");
+    menuItems.push_back("Save Game");
+    menuItems.push_back("Exit");
+}
+
+void Game::clearGame() {
+    entities.clear();
+    auto player = entities.front();
+    Camera::CameraControl.mode = TARGET_MODE_CENTER;
+    Camera::CameraControl.SetTarget(player);
+    spawn_enemies();
+    menuItems.clear();
+}
+
+void Game::mainLoop() {
+
+        clearEvents();
+
+        SDL_Event e;
+        while (SDL_PollEvent(&e)) {
+            addEvent(e);
+        }
+
+    if (!menuOpen) {
+        updateEntities();
+        renderFrame();
+    } else {
+        renderMenu();
+    }
 }
 
 void Game::addEvent(SDL_Event e) {
-    if (e.type == SDL_QUIT ||
-        (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q)) {
-        INFO("Received 'quit' signal.");
-        running = false;
+    if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q) {
+        pause = true;
+        menuOpen = true;
         return;
+    } else if (e.type == SDL_QUIT ) {
+        running = false;
+        INFO("Received 'quit' signal.");
+    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_DOWN && menuOpen && menuSelector != menuItems.size()-1) {
+        if ((menuItems.at(menuSelector + 1) == "Resume" || menuItems.at(menuSelector + 1) == "Save Game") && !pause)
+            menuSelector += 2;
+        else
+            menuSelector++;
+    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_UP && menuOpen && menuSelector != 0) {
+        if ((menuItems.at(menuSelector - 1) == "Resume" || menuItems.at(menuSelector - 1) == "Save Game") && !pause)
+            menuSelector -= 2;
+        else
+            menuSelector--;
+    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN && menuOpen) {
+        if (menuItems.at(menuSelector) == "Start New Game") {
+            pause = false;
+            menuOpen = false;
+            //clearGame();
+            init();
+            INFO("New Game started.");
+        } else if (menuItems.at(menuSelector) == "Resume") {
+
+        } else if (menuItems.at(menuSelector) == "Load Game") {
+
+        } else if (menuItems.at(menuSelector) == "Save Game") {
+
+        } else if (menuItems.at(menuSelector) == "Exit") {
+            running = false;
+            INFO("Game closed.");
+        }
     }
 
     events.push_back(std::move(e));
@@ -108,37 +168,6 @@ void Game::renderFrame() {
     if(game_over_bool){
 		renderGameOver(renderer, game_over_sprite);
     }
-
-
-
-  //  Mix_Music * music = Mix_LoadMUS("resources/music.ogg");
-  //  if (music == NULL)
-  //      return ;
-
-    /**
-     * An example how to use sdlttf
-     *
-     */
-
-    TTF_Font* Sans = TTF_OpenFont("resources/sunvalley.ttf", 24); //this opens a font style and sets a size
-
-    SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
-
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Hallo", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-
-    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
-
-    SDL_Rect Message_rect; //create a rect
-    Message_rect.x = 0;  //controls the rect's x coordinate
-    Message_rect.y = 0; // controls the rect's y coordinte
-    Message_rect.w = 100; // controls the width of the rect
-    Message_rect.h = 100; // controls the height of the rect
-
-//Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
-
-//Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
-
-    SDL_RenderCopy(renderer, Message, NULL, &Message_rect); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
 
 //Don't forget too free your surface and texture
     SDL_RenderPresent(renderer);
@@ -248,4 +277,42 @@ void Game::loadState(std::string filename) {
 			entities.push_back(enemy);
 		}
 	}
+
+
+}
+
+void Game::renderMenu() {
+    SDL_RenderClear(renderer);
+    /**
+     * An example how to use sdlttf
+     *
+     */
+
+    TTF_Font* Sans = TTF_OpenFont("resources/sunvalley.ttf", 112); //this opens a font style and sets a size
+    SDL_Surface* surfaceMessage;
+    SDL_Texture* Message;
+    SDL_Rect Message_rect;
+    for(unsigned i = 0; i < menuItems.size(); i++){
+            if (i == menuSelector)
+                surfaceMessage = TTF_RenderText_Solid(Sans, menuItems.at(i).c_str(), Red);
+            else if ((menuItems.at(i) == "Resume" || menuItems.at(i) == "Save Game") && !pause)
+                surfaceMessage = TTF_RenderText_Solid(Sans, menuItems.at(i).c_str(), Gray);
+            else
+                surfaceMessage = TTF_RenderText_Solid(Sans, menuItems.at(i).c_str(), Blue);
+            Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+            Message_rect.x = 450;
+            Message_rect.y = 100 + i * 150;
+            Message_rect.w = 300;
+            Message_rect.h = 100;
+            SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+    }
+
+
+
+//Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
+
+//Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
+
+    SDL_RenderPresent(renderer);
 }

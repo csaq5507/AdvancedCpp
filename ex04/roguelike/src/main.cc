@@ -47,16 +47,7 @@ int main(int, char* []) {
     game.init();
 
     while (game.isRunning()) {
-        game.clearEvents();
-
-        SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            game.addEvent(e);
-        }
-
-        game.updateEntities();
-
-        game.renderFrame();
+        game.mainLoop();
     }
 
     return EXIT_SUCCESS;
