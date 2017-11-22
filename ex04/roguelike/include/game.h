@@ -20,7 +20,10 @@ class Game {
     bool running = true;
     bool menuOpen = true;
     bool pause = false;
+    bool saveMenu = false;
+    bool loadMenu = false;
     unsigned menuSelector = 0;
+    std::string filename;
     std::vector<std::string> menuItems;
     SDL_Color White = {255, 255, 255};
     SDL_Color Blue = {0, 0, 255};
@@ -95,7 +98,10 @@ class Game {
     void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
     void add_projectile(std::vector<std::shared_ptr<Entity> > projectiles);
     void game_over();
-    void renderMenu();
+    void renderMainMenu();
+    void renderSaveMenu();
+    void renderLoadMenu();
+    void getFileNameInput(SDL_Event e);
 };
 
 #endif  // ROGUELIKE_GAME_H_

@@ -64,10 +64,14 @@ void Game::init() {
     menuItems.push_back("Load Game");
     menuItems.push_back("Save Game");
     menuItems.push_back("Exit");
+
+    filename = "";
 }
 
 void Game::clearGame() {
+    wave = 0;
     entities.clear();
+    entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
     auto player = entities.front();
     Camera::CameraControl.mode = TARGET_MODE_CENTER;
     Camera::CameraControl.SetTarget(player);
@@ -87,13 +91,23 @@ void Game::mainLoop() {
     if (!menuOpen) {
         updateEntities();
         renderFrame();
+    } else if (saveMenu) {
+        renderSaveMenu();
+    } else if (loadMenu) {
+        renderSaveMenu();
     } else {
-        renderMenu();
+        renderMainMenu();
     }
 }
 
 void Game::addEvent(SDL_Event e) {
-    if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q) {
+    if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE && menuOpen && !saveMenu && !loadMenu) {
+        running = false;
+    } else if (saveMenu) {
+        getFileNameInput(e);
+    } else if (loadMenu) {
+
+    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
         pause = true;
         menuOpen = true;
         return;
@@ -114,15 +128,16 @@ void Game::addEvent(SDL_Event e) {
         if (menuItems.at(menuSelector) == "Start New Game") {
             pause = false;
             menuOpen = false;
-            //clearGame();
+            clearGame();
             init();
             INFO("New Game started.");
         } else if (menuItems.at(menuSelector) == "Resume") {
-
+            pause = false;
+            menuOpen = false;
         } else if (menuItems.at(menuSelector) == "Load Game") {
 
         } else if (menuItems.at(menuSelector) == "Save Game") {
-
+            saveMenu = true;
         } else if (menuItems.at(menuSelector) == "Exit") {
             running = false;
             INFO("Game closed.");
@@ -281,7 +296,7 @@ void Game::loadState(std::string filename) {
 
 }
 
-void Game::renderMenu() {
+void Game::renderMainMenu() {
     SDL_RenderClear(renderer);
     /**
      * An example how to use sdlttf
@@ -308,11 +323,60 @@ void Game::renderMenu() {
 
     }
 
+    SDL_RenderPresent(renderer);
+}
 
+void Game::renderSaveMenu() {
+    SDL_RenderClear(renderer);
+    /**
+     * An example how to use sdlttf
+     *
+     */
 
-//Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
+    TTF_Font* Sans = TTF_OpenFont("resources/sunvalley.ttf", 112); //this opens a font style and sets a size
+    SDL_Surface* surfaceMessage;
+    SDL_Texture* Message;
+    SDL_Rect Message_rect;
 
-//Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
+    surfaceMessage = TTF_RenderText_Solid(Sans, "Enter a name for the game", Red);
+    Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    Message_rect.x = 450;
+    Message_rect.y = 100;
+    Message_rect.w = 300;
+    Message_rect.h = 100;
+    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+    surfaceMessage = TTF_RenderText_Solid(Sans, filename.c_str(), Red);
+    Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    Message_rect.x = 600 - 10 * filename.length();
+    Message_rect.y = 350;
+    Message_rect.w = 20 * filename.length();
+    Message_rect.h = 100;
+    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
 
     SDL_RenderPresent(renderer);
+}
+
+void Game::renderLoadMenu() {
+    //ToDo
+    //Get list of all saved files
+}
+
+void Game::getFileNameInput(SDL_Event e) {
+    if (e.type == SDL_KEYDOWN) {
+        if (e.key.keysym.sym >= SDLK_a && e.key.keysym.sym <= SDLK_z && filename.length() < 38) {
+            filename += SDL_GetKeyName(e.key.keysym.sym);
+        } else if (e.key.keysym.sym == SDLK_RETURN) {
+            saveMenu = false;
+            filename = "";
+        } else if (e.key.keysym.sym == SDLK_ESCAPE) {
+            saveMenu = false;
+            filename = "";
+        } else if (e.key.keysym.sym == SDLK_BACKSPACE) {
+            filename = filename.substr(0, filename.length()-1);
+        }
+    } else if (e.type == SDL_QUIT ) {
+        running = false;
+        INFO("Received 'quit' signal.");
+    }
 }
