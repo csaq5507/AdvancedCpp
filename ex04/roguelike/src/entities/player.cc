@@ -87,6 +87,10 @@ void Player::update() {
 
 void Player::attack() {
     std::vector<std::shared_ptr<Entity> > projectiles=std::vector<std::shared_ptr<Entity> >();
+
+	auto& weapon = this->equipedWeapons[this->weaponIndex];
+	if (!weapon.readyToShoot()) return;
+	weapon.updateShotTimer();
     switch (this->weaponIndex)
     {
         case 0:
@@ -100,9 +104,6 @@ void Player::attack() {
             sounds::getInstance().play_attack_sound(sounds::PUMPGUN_SOUND);
             break;
     }
-	auto& weapon = this->equipedWeapons[this->weaponIndex];
-	if (!weapon.readyToShoot()) return;
-	weapon.updateShotTimer();
 	auto hitten_fields = weapon.GetHitedFields(this->direction);
 	for (auto& vec : hitten_fields) {
 		vec.x += this->pos.x;

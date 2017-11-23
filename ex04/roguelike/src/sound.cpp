@@ -3,7 +3,7 @@
 //
 
 #include "sound.h"
-
+#include <iostream>
 sounds::sounds() {
     sound_chunk=NULL;
     musik_chunk=NULL;
@@ -21,14 +21,13 @@ void sounds::play_musik()
 {
     if(musik_chunk==NULL)
         musik_chunk = Mix_LoadWAV(MUSIK);
-    Mix_PlayChannel(-1, musik_chunk, -1);
+
+     musik_channel=Mix_PlayChannel(-1, musik_chunk, -1);
 }
 
 void sounds::stop_musik()
 {
-    if(musik_chunk==NULL)
-        musik_chunk = Mix_LoadWAV(MUSIK);
-    Mix_PlayChannel(-1, musik_chunk, -1);
+    Mix_HaltChannel(musik_channel);
 }
 
 void sounds::toggle_walk(bool walk)
@@ -38,7 +37,7 @@ void sounds::toggle_walk(bool walk)
     }
     if(walk && walk_channel==-1)
         walk_channel=Mix_PlayChannel(-1,walk_chunk,-1);
-    else if(!walk)
+    else if(!walk && walk_channel!=-1)
     {
         Mix_HaltChannel(walk_channel);
         walk_channel=-1;

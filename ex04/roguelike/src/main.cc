@@ -41,7 +41,7 @@ class Runtime {
 
 
         // Set up the audio stream
-        int result = Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 4096 << 3);
+        int result = Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024);
         if( result < 0 )
         {
             fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());

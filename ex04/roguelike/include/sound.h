@@ -26,6 +26,7 @@ private:
     Mix_Chunk * walk_chunk;
 
     int walk_channel;
+    int musik_channel;
 
     sounds();
 
