@@ -2,16 +2,15 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include "SDL_ttf.h"
-#include "SDL_mixer.h"
-
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "game.h"
 #include "utils/logging.h"
 
 class Runtime {
   public:
     Runtime() {
-        if (SDL_Init(SDL_INIT_EVERYTHING)) {
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
             FATAL("Could not initialize SDL: %s", SDL_GetError());
         }
 
@@ -22,14 +21,40 @@ class Runtime {
         if (TTF_Init()==-1) {
             FATAL("Could not initialize TTF: %s", TTF_GetError());
         }
-
-        int flags=MIX_INIT_OGG|MIX_INIT_MOD;
+/*
+        int flags=MIX_INIT_MP3¦MIX_INIT_;
         if ((Mix_Init(flags) & flags) != flags) {
             FATAL("Could not initialize Mixer: %s", Mix_GetError());
         }
 
-      //  if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
-        //    FATAL("Could not initialize OpenAudio: %s", Mix_GetError());
+        int audio_rate = 22050;
+        Uint16 audio_format =  AUDIO_S16SYS;
+        int audio_channels = 2;
+        int audio_buffers = 4096;
+
+        if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) {
+            FATAL("Could not initialize OpenAudio: %s", Mix_GetError());
+        }
+
+        */
+
+
+
+        // Set up the audio stream
+        int result = Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 4096 << 3);
+        if( result < 0 )
+        {
+            fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
+            exit(-1);
+        }
+
+        result = Mix_AllocateChannels(4);
+        if( result < 0 )
+        {
+            fprintf(stderr, "Unable to allocate mixing channels: %s\n", SDL_GetError());
+            exit(-1);
+        }
+
 
         INFO("SDL initilization done.");
     }

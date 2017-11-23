@@ -46,41 +46,44 @@
  # (To distribute this file outside of CMake, substitute the full
  #  License text for the above reference.)
 
+
+
  if(NOT SDL_MIXER_INCLUDE_DIR AND SDLMIXER_INCLUDE_DIR)
      set(SDL_MIXER_INCLUDE_DIR ${SDLMIXER_INCLUDE_DIR} CACHE PATH "directory cache
 entry initialized from old variable name")
  endif()
- find_path(SDL_MIXER_INCLUDE_DIR SDL_mixer.h
-         HINTS
-         ENV SDLMIXERDIR
-         ENV SDLDIR
-         PATH_SUFFIXES SDL
-         # path suffixes to search inside ENV{SDLDIR}
-         include/SDL include/SDL12 include/SDL11 include
+
+
+ SET(SDL2MIXER_SEARCH_PATHS
+         ~/Library/Frameworks
+         /Library/Frameworks
+         /usr/local
+         /usr
+         /sw # Fink
+         /opt/local # DarwinPorts
+         /opt/csw # Blastwave
+         /opt
          )
 
- if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-     set(VC_LIB_PATH_SUFFIX lib/x64)
- else()
-     set(VC_LIB_PATH_SUFFIX lib/x86)
- endif()
-
- if(NOT SDL_MIXER_LIBRARY AND SDLMIXER_LIBRARY)
-     set(SDL_MIXER_LIBRARY ${SDLMIXER_LIBRARY} CACHE FILEPATH "file cache entry
-initialized from old variable name")
- endif()
- find_library(SDL_MIXER_LIBRARY
-         NAMES SDL_mixer
+ FIND_PATH(SDL2_MIXER_INCLUDE_DIR SDL_mixer.h
          HINTS
-         ENV SDLMIXERDIR
-         ENV SDLDIR
-         PATH_SUFFIXES lib ${VC_LIB_PATH_SUFFIX}
+         $ENV{SDL2MIXERDIR}
+         PATH_SUFFIXES include/SDL2 include
+         PATHS ${SDL2MIXER_SEARCH_PATHS}
          )
 
- if(SDL_MIXER_INCLUDE_DIR AND EXISTS "${SDL_MIXER_INCLUDE_DIR}/SDL_mixer.h")
-     file(STRINGS "${SDL_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL_MIXER_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MAJOR_VERSION[ \t]+[0-9]+$")
-     file(STRINGS "${SDL_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL_MIXER_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MINOR_VERSION[ \t]+[0-9]+$")
-     file(STRINGS "${SDL_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL_MIXER_VERSION_PATCH_LINE REGEX "^#define[ \t]+SDL_MIXER_PATCHLEVEL[ \t]+[0-9]+$")
+ FIND_LIBRARY(SDL2_MIXER_LIBRARY
+         NAMES SDL2_mixer
+         HINTS
+         $ENV{SDL2MIXERDIR}
+         PATH_SUFFIXES lib64 lib
+         PATHS ${SDL2MIXER_SEARCH_PATHS}
+         )
+
+ if(SDL2_MIXER_INCLUDE_DIR AND EXISTS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h")
+     file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL_MIXER_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MAJOR_VERSION[ \t]+[0-9]+$")
+     file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL_MIXER_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MINOR_VERSION[ \t]+[0-9]+$")
+     file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL_MIXER_VERSION_PATCH_LINE REGEX "^#define[ \t]+SDL_MIXER_PATCHLEVEL[ \t]+[0-9]+$")
      string(REGEX REPLACE "^#define[ \t]+SDL_MIXER_MAJOR_VERSION[ \t]+([0-9]+)$" "\\1" SDL_MIXER_VERSION_MAJOR "${SDL_MIXER_VERSION_MAJOR_LINE}")
      string(REGEX REPLACE "^#define[ \t]+SDL_MIXER_MINOR_VERSION[ \t]+([0-9]+)$" "\\1" SDL_MIXER_VERSION_MINOR "${SDL_MIXER_VERSION_MINOR_LINE}")
      string(REGEX REPLACE "^#define[ \t]+SDL_MIXER_PATCHLEVEL[ \t]+([0-9]+)$" "\\1" SDL_MIXER_VERSION_PATCH "${SDL_MIXER_VERSION_PATCH_LINE}")
@@ -93,18 +96,18 @@ initialized from old variable name")
      unset(SDL_MIXER_VERSION_PATCH)
  endif()
 
- set(SDL_MIXER_LIBRARIES ${SDL_MIXER_LIBRARY})
- set(SDL_MIXER_INCLUDE_DIRS ${SDL_MIXER_INCLUDE_DIR})
+ set(SDL2_MIXER_LIBRARIES ${SDL2_MIXER_LIBRARY})
+ set(SDL2_MIXER_INCLUDE_DIRS ${SDL2_MIXER_INCLUDE_DIR})
 
  include(FindPackageHandleStandardArgs)
 
- FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL_mixer
-         REQUIRED_VARS SDL_MIXER_LIBRARIES SDL_MIXER_INCLUDE_DIRS
+ FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL2_mixer
+         REQUIRED_VARS SDL2_MIXER_LIBRARIES SDL2_MIXER_INCLUDE_DIRS
          VERSION_VAR SDL_MIXER_VERSION_STRING)
 
  # for backward compatiblity
- set(SDLMIXER_LIBRARY ${SDL_MIXER_LIBRARIES})
- set(SDLMIXER_INCLUDE_DIR ${SDL_MIXER_INCLUDE_DIRS})
- set(SDLMIXER_FOUND ${SDL_MIXER_FOUND})
+ set(SDL2MIXER_LIBRARY ${SDL2_MIXER_LIBRARIES})
+ set(SDL2MIXER_INCLUDE_DIR ${SDL2_MIXER_INCLUDE_DIRS})
+ set(SDL2MIXER_FOUND ${SDL2_MIXER_FOUND})
 
- mark_as_advanced(SDL_MIXER_LIBRARY SDL_MIXER_INCLUDE_DIR)
+ mark_as_advanced(SDL2_MIXER_LIBRARY SDL2_MIXER_INCLUDE_DIR)

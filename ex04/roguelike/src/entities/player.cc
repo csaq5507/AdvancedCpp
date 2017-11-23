@@ -7,15 +7,17 @@
 #include <vector>
 #include "sprite_set.h"
 #include "entities/projectile.h"
+#include "sound.h"
+
 
 const std::string playerTextFileName = "player.png";
 
-Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName) {
+Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName,10.0) {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
 }
 
-Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTextFileName, hp) {
+Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTextFileName, hp,10.0) {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
 }
@@ -23,40 +25,60 @@ Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTex
 
 void Player::update() {
     for (auto const& e : game.getEvents()) {
-        if (e.type != SDL_KEYDOWN) {
-            continue;
-        }
-        switch (e.key.keysym.sym) {
-            case SDLK_UP:
-                this->direction=Direction::north;
-                move(this->movement_speed);
-                break;
-            case SDLK_DOWN:
-                this->direction=Direction::south;
-                move(this->movement_speed);
-                break;
-            case SDLK_LEFT:
-                this->direction=Direction::west;
-                move(this->movement_speed);
-                break;
-            case SDLK_RIGHT:
-                this->direction=Direction::east;
-                move(this->movement_speed);
-                break;
-            case SDLK_SPACE:
-                 attack();
-                break;
-            case SDLK_1:
-                this->weaponIndex = 0;
-                break;
-            case SDLK_2:
-                this->weaponIndex = 1;
-                break;
-            case SDLK_3:
-                this->weaponIndex = 2;
-                break;
+        if (e.type == SDL_KEYDOWN) {
+            switch (e.key.keysym.sym) {
+                case SDLK_UP:
+                    this->direction=Direction::north;
+                    break;
+                case SDLK_DOWN:
+                    this->direction=Direction::south;
+                    break;
+                case SDLK_LEFT:
+                    this->direction=Direction::west;
+                    break;
+                case SDLK_RIGHT:
+                    this->direction=Direction::east;
+                    break;
+                case SDLK_SPACE:
+                    attack();
+                    break;
+                case SDLK_1:
+                    this->weaponIndex = 0;
+                    break;
+                case SDLK_2:
+                    this->weaponIndex = 1;
+                    break;
+                case SDLK_3:
+                    this->weaponIndex = 2;
+                    break;
+                case SDLK_LSHIFT:
+                    this->fast=true;
+                    break;
+            }
+            if(e.key.keysym.sym == SDLK_UP ||
+               e.key.keysym.sym == SDLK_RIGHT ||
+               e.key.keysym.sym == SDLK_LEFT ||
+               e.key.keysym.sym == SDLK_DOWN)
+            {
+                move();
+                sounds::getInstance().toggle_walk(true);
+            }
+        } else if(e.type == SDL_KEYUP){
+            switch (e.key.keysym.sym) {
+                case SDLK_LSHIFT:
+                    this->fast=false;
+                    break;
+            }
+            if(e.key.keysym.sym == SDLK_UP ||
+               e.key.keysym.sym == SDLK_RIGHT ||
+               e.key.keysym.sym == SDLK_LEFT ||
+               e.key.keysym.sym == SDLK_DOWN)
+            {
+                sounds::getInstance().toggle_walk(false);
+            }
+        } else continue;
 
-        }
+
 
     }
     this->sprite_set->update_texture(this->direction);
@@ -65,6 +87,19 @@ void Player::update() {
 
 void Player::attack() {
     std::vector<std::shared_ptr<Entity> > projectiles=std::vector<std::shared_ptr<Entity> >();
+    switch (this->weaponIndex)
+    {
+        case 0:
+            sounds::getInstance().play_attack_sound(sounds::MELEE_SOUND);
+            break;
+
+        case 1:
+            sounds::getInstance().play_attack_sound(sounds::FLINT_SOUND);
+            break;
+        case 2:
+            sounds::getInstance().play_attack_sound(sounds::PUMPGUN_SOUND);
+            break;
+    }
 	auto& weapon = this->equipedWeapons[this->weaponIndex];
 	if (!weapon.readyToShoot()) return;
 	weapon.updateShotTimer();

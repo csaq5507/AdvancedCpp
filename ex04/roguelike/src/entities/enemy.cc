@@ -4,30 +4,37 @@
 
 
 
-Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png")), move_timer(Game::timer.get_elapsed_time()){
+Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, const double movement_speed) :
+        Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png"),100,movement_speed),
+        player(player),
+        enemy_move_timer(0)
+{
     this->sprite_set->set_texture_map({3,2,0,1});
-    this->moveStopInMs = speed;
-    this->player = player;
 }
 
-Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, int speed, const int hp) : Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png"),hp), move_timer(Game::timer.get_elapsed_time()){
+Enemy::Enemy(Game& game, Vec2 pos, std::shared_ptr<Entity> player, const double movement_speed, const int hp) :
+        Entity(game, pos, std::string("monster")+std::to_string(pos.x%4+1)+std::string(".png"),hp,movement_speed),
+        player(player),
+        enemy_move_timer(0)
+{
     this->sprite_set->set_texture_map({3,2,0,1});
-    this->moveStopInMs = speed;
-    this->player = player;
 }
 
 void Enemy::update() {
-    if(Game::timer.get_elapsed_time() > move_timer) {
-        move_timer = Game::timer.get_elapsed_time() + moveStopInMs;
+    if(Game::timer.get_elapsed_time() > enemy_move_timer) {
+        long long int delay=( Game::timer.milliseconds(1000).count() / movement_speed );
+        enemy_move_timer = Game::timer.get_elapsed_time() + ( (fast) ? delay*2 : delay*4 ) ;
         if (dist_to_player() < 7) {
             get_player_direction();
-            move(1);
+            this->fast=true;
         } else {
             this->direction=Direction(get_int_random(0,3));
-            move(1);
+            this->fast=false;
         }
         this->sprite_set->update_texture(this->direction);
     }
+    move();
+
     if (is_on_player()) {
         player->damage(1000);
     }
@@ -77,7 +84,7 @@ bool Enemy::is_on_player() {
 void Enemy::serialize(std::fstream& f) {
 	f << enemy << std::endl;
 	Entity::serialize(f);
-	f << this->moveStopInMs << std::endl;
+	f << this->movement_speed << std::endl;
 }
 
 //convention type was already read

@@ -20,9 +20,15 @@ class Entity {
     int hp;
     Direction direction;
     std::shared_ptr<SpriteSet> sprite_set;
-  public:
+    double movement_speed;
+    long long move_timer;
+    bool fast=false;
+
+public:
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename);
     Entity(Game &game, Vec2 pos, std::string sprite_set_filename, const int hp);
+    Entity(Game &game, Vec2 pos, std::string sprite_set_filename, const double movement_speed);
+    Entity(Game &game, Vec2 pos, std::string sprite_set_filename, const int hp, const double movement_speed);
 
     virtual ~Entity() = default;
 
@@ -34,9 +40,7 @@ class Entity {
         pos = new_pos;
     }
 
-
-    bool move(int fields);
-
+    bool move();
 
     std::shared_ptr<SpriteSet> getSpriteSet() {
         return sprite_set;

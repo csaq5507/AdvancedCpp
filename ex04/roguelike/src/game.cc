@@ -5,7 +5,8 @@
 #include "utils/random.h"
 #include "entities/projectile.h"
 #include <math.h>
-#include "SDL_ttf.h"
+#include <SDL_ttf.h>
+#include "sound.h"
 
 ChronoTimer Game::timer{ "Game time" };
 Game::Game() {
@@ -31,6 +32,8 @@ Game::Game() {
 
     wave = 1;
     game_over_sprite = resource_loader->loadSpriteSet("gameover.png");
+
+    sounds::getInstance().play_musik();
 
     INFO("Game initialization done.");
 }
@@ -203,7 +206,7 @@ void Game::spawn_enemies() {
                 std::make_shared<Enemy>(*this,
                                         Vec2(pos_x,pos_y),
                                         entities.front(),
-                                        get_int_random(1500, 3000),
+                                        get_double_random(wave, 2 * wave),
                                         50 * wave)
         );
     }
@@ -298,12 +301,8 @@ void Game::loadState(std::string filename) {
 
 void Game::renderMainMenu() {
     SDL_RenderClear(renderer);
-    /**
-     * An example how to use sdlttf
-     *
-     */
 
-    TTF_Font* Sans = TTF_OpenFont("resources/sunvalley.ttf", 112); //this opens a font style and sets a size
+    TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
     SDL_Surface* surfaceMessage;
     SDL_Texture* Message;
     SDL_Rect Message_rect;
@@ -328,12 +327,8 @@ void Game::renderMainMenu() {
 
 void Game::renderSaveMenu() {
     SDL_RenderClear(renderer);
-    /**
-     * An example how to use sdlttf
-     *
-     */
 
-    TTF_Font* Sans = TTF_OpenFont("resources/sunvalley.ttf", 112); //this opens a font style and sets a size
+    TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
     SDL_Surface* surfaceMessage;
     SDL_Texture* Message;
     SDL_Rect Message_rect;

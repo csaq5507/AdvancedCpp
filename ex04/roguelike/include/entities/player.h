@@ -10,7 +10,6 @@ class Player : public Entity {
 private:
 	std::vector<Weapon> equipedWeapons{ Weapon::Melee(), Weapon::Flint(), Weapon::Pumpgun()};
 	int weaponIndex = 0;
-    int movement_speed = 1;
 
 public:
     Player(Game &game, Vec2 pos);
