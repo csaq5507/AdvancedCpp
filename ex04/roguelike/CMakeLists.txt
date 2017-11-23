@@ -26,7 +26,7 @@ aux_source_directory(src/entities SRC_FILES)
 aux_source_directory(src/utils SRC_FILES)
 aux_source_directory(src/logic SRC_FILES)
 
-add_executable(roguelike ${SRC_FILES})
+add_executable(roguelike ${SRC_FILES} include/menu.h include/menu_item.h src/menu.cpp)
 
 # Scan through resource folder for updated files and copy if none existing or
 file (GLOB_RECURSE resources "resources/*.*")

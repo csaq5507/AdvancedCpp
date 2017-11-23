@@ -35,6 +35,34 @@ Game::Game() {
 
     sounds::getInstance().play_musik();
 
+
+    filename = "";
+
+    /* Initialize the default elements for the different menus*/
+    main_menu.name = "Main menu";
+    main_menu.addElement(*new MenuItem("Start New Game", Blue, true, true));;
+    main_menu.addElement(*new MenuItem("Resume", Gray, false, true));;
+    main_menu.addElement(*new MenuItem("Load Game", Blue, true, true));;
+    main_menu.addElement(*new MenuItem("Save Game", Gray, false, true));;
+    main_menu.addElement(*new MenuItem("Exit", Blue, true, true));
+    main_menu.renderer = renderer;
+    main_menu.actual_element = 0;
+
+    save_menu.name = "Save menu";
+    save_menu.addElement(*new MenuItem("Enter a filename", Blue, false, true));
+    save_menu.addElement(*new MenuItem(filename, Blue, false, false));
+    save_menu.renderer = renderer;
+    save_menu.actual_element = -1; // No element selected
+
+    load_menu.name = "Load menu";
+    load_menu.addElement(*new MenuItem("Select a game to be load", Blue, false, true));
+    load_menu.renderer = renderer;
+    load_menu.actual_element = -1; // No element selected
+
+    /* Add the main menu to the top of the stack to start the game with the main menu opened */
+    menu_stack.push_back(main_menu);
+
+
     INFO("Game initialization done.");
 }
 
@@ -62,92 +90,79 @@ void Game::init() {
 	Camera::CameraControl.SetTarget(player);
     spawn_enemies();
 
-    menuItems.push_back("Start New Game");
-    menuItems.push_back("Resume");
-    menuItems.push_back("Load Game");
-    menuItems.push_back("Save Game");
-    menuItems.push_back("Exit");
 
-    filename = "";
 }
 
 void Game::clearGame() {
     wave = 0;
     entities.clear();
-    entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
-    auto player = entities.front();
-    Camera::CameraControl.mode = TARGET_MODE_CENTER;
-    Camera::CameraControl.SetTarget(player);
-    spawn_enemies();
-    menuItems.clear();
 }
 
 void Game::mainLoop() {
+    clearEvents();
 
-        clearEvents();
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {
 
-        SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            addEvent(e);
-        }
+        addEvent(e);
+    }
 
-    if (!menuOpen) {
+    if (menu_stack.size() == 0) {
         updateEntities();
         renderFrame();
-    } else if (saveMenu) {
-        renderSaveMenu();
-    } else if (loadMenu) {
-        renderSaveMenu();
-    } else {
-        renderMainMenu();
+   } else {
+        menu_stack.back().render();
     }
 }
 
 void Game::addEvent(SDL_Event e) {
-    if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE && menuOpen && !saveMenu && !loadMenu) {
-        running = false;
-    } else if (saveMenu) {
-        getFileNameInput(e);
-    } else if (loadMenu) {
-
-    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
-        pause = true;
-        menuOpen = true;
-        return;
-    } else if (e.type == SDL_QUIT ) {
+    if (e.type == SDL_QUIT) {          // The game is closed
         running = false;
         INFO("Received 'quit' signal.");
-    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_DOWN && menuOpen && menuSelector != menuItems.size()-1) {
-        if ((menuItems.at(menuSelector + 1) == "Resume" || menuItems.at(menuSelector + 1) == "Save Game") && !pause)
-            menuSelector += 2;
-        else
-            menuSelector++;
-    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_UP && menuOpen && menuSelector != 0) {
-        if ((menuItems.at(menuSelector - 1) == "Resume" || menuItems.at(menuSelector - 1) == "Save Game") && !pause)
-            menuSelector -= 2;
-        else
-            menuSelector--;
-    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN && menuOpen) {
-        if (menuItems.at(menuSelector) == "Start New Game") {
-            pause = false;
-            menuOpen = false;
-            clearGame();
-            init();
-            INFO("New Game started.");
-        } else if (menuItems.at(menuSelector) == "Resume") {
-            pause = false;
-            menuOpen = false;
-        } else if (menuItems.at(menuSelector) == "Load Game") {
-
-        } else if (menuItems.at(menuSelector) == "Save Game") {
-            saveMenu = true;
-        } else if (menuItems.at(menuSelector) == "Exit") {
-            running = false;
-            INFO("Game closed.");
+    } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {       // The menu is opened and the game paused
+        menu_stack.push_back(main_menu);
+        return;
+    } else if (menu_stack.size() != 0) {           // There is no menu open
+        if (menu_stack.back().name == "Save menu") {
+            getFileNameInput(e);                    // Get input file name
+        } else if (e.type == SDL_KEYDOWN) {         // A key was pressed
+            if (e.key.keysym.sym == SDLK_ESCAPE &&
+                menu_stack.back().name != "Main menu") { // Close the menu current menu
+                menu_stack.pop_back();
+            } else if (e.key.keysym.sym == SDLK_DOWN) {     // Go down at menu
+                menu_stack.back().moveDown();
+            } else if (e.key.keysym.sym == SDLK_UP) {       // GO up at menu
+                menu_stack.back().moveUp();
+            } else if (e.key.keysym.sym == SDLK_RETURN) {               // A menu item is selected
+                auto action = menu_stack.back().selectActualElement();
+                if (menu_stack.back().name == "Main menu") {
+                    if (action == "Start New Game") {
+                        clearGame();
+                        init();
+                        menu_stack.clear();
+                        main_menu.activateAllItems();
+                    } else if (action == "Resume") {
+                        menu_stack.clear();
+                    } else if (action == "Load Game") {
+                        setLoadMenuItems("/root/Documents/");
+                        menu_stack.push_back(load_menu);
+                    } else if (action == "Save Game") {
+                        menu_stack.push_back(save_menu);
+                    } else if (action == "Exit") {
+                        running = false;
+                        INFO("Received 'quit' signal.");
+                    }
+                } else if (menu_stack.back().name == "Load menu") {
+                    // ToDo load seceted file
+                    // and start game
+                    loadState("/root/Documents/" + action + ".txt");
+                    menu_stack.clear();
+                }
+            }
         }
     }
 
-    events.push_back(std::move(e));
+    events.push_back(std::move(e));     // Default key handling
 }
 
 void Game::clearEvents() {
@@ -299,79 +314,35 @@ void Game::loadState(std::string filename) {
 
 }
 
-void Game::renderMainMenu() {
-    SDL_RenderClear(renderer);
-
-    TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
-    SDL_Surface* surfaceMessage;
-    SDL_Texture* Message;
-    SDL_Rect Message_rect;
-    for(unsigned i = 0; i < menuItems.size(); i++){
-            if (i == menuSelector)
-                surfaceMessage = TTF_RenderText_Solid(Sans, menuItems.at(i).c_str(), Red);
-            else if ((menuItems.at(i) == "Resume" || menuItems.at(i) == "Save Game") && !pause)
-                surfaceMessage = TTF_RenderText_Solid(Sans, menuItems.at(i).c_str(), Gray);
-            else
-                surfaceMessage = TTF_RenderText_Solid(Sans, menuItems.at(i).c_str(), Blue);
-            Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-            Message_rect.x = 450;
-            Message_rect.y = 100 + i * 150;
-            Message_rect.w = 300;
-            Message_rect.h = 100;
-            SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
-    }
-
-    SDL_RenderPresent(renderer);
-}
-
-void Game::renderSaveMenu() {
-    SDL_RenderClear(renderer);
-
-    TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
-    SDL_Surface* surfaceMessage;
-    SDL_Texture* Message;
-    SDL_Rect Message_rect;
-
-    surfaceMessage = TTF_RenderText_Solid(Sans, "Enter a name for the game", Red);
-    Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-    Message_rect.x = 450;
-    Message_rect.y = 100;
-    Message_rect.w = 300;
-    Message_rect.h = 100;
-    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
-    surfaceMessage = TTF_RenderText_Solid(Sans, filename.c_str(), Red);
-    Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-    Message_rect.x = 600 - 10 * filename.length();
-    Message_rect.y = 350;
-    Message_rect.w = 20 * filename.length();
-    Message_rect.h = 100;
-    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
-    SDL_RenderPresent(renderer);
-}
-
-void Game::renderLoadMenu() {
-    //ToDo
-    //Get list of all saved files
-}
-
 void Game::getFileNameInput(SDL_Event e) {
     if (e.type == SDL_KEYDOWN) {
-        if (e.key.keysym.sym >= SDLK_a && e.key.keysym.sym <= SDLK_z && filename.length() < 38) {
+        if (e.key.keysym.sym >= SDLK_a && e.key.keysym.sym <= SDLK_z && filename.length() < 20
+                ) {
             filename += SDL_GetKeyName(e.key.keysym.sym);
+            menu_stack.back().menu_items.back().changeName(filename);
         } else if (e.key.keysym.sym == SDLK_RETURN) {
-            saveMenu = false;
+            saveState("/root/Documents/" + filename + ".txt");
+            menu_stack.pop_back();
             filename = "";
         } else if (e.key.keysym.sym == SDLK_ESCAPE) {
-            saveMenu = false;
+            menu_stack.pop_back();
             filename = "";
         } else if (e.key.keysym.sym == SDLK_BACKSPACE) {
             filename = filename.substr(0, filename.length()-1);
+            menu_stack.back().menu_items.back().changeName(filename);
         }
     } else if (e.type == SDL_QUIT ) {
         running = false;
         INFO("Received 'quit' signal.");
     }
+    save_menu.menu_items.back().changeName(filename);
 }
+
+void Game::setLoadMenuItems(std::string name) {
+    load_menu.menu_items.clear();
+    load_menu.addElement(*new MenuItem("Select a game to be load", Blue, false, true));
+    load_menu.addElement(*new MenuItem("SDAF", Blue, true, true));
+    load_menu.addElement(*new MenuItem("TEST", Blue, true, true));
+    load_menu.actual_element = 1;
+}
+
