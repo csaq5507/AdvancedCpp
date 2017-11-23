@@ -5,7 +5,6 @@
 #ifndef ADVANCEDCPP_SOUND_H
 #define ADVANCEDCPP_SOUND_H
 
-#include <string>
 #include "SDL2/SDL.h"
 #include <unistd.h>
 
@@ -31,12 +30,12 @@ private:
     sounds();
 
 public:
-    static constexpr char* PLAYER_WALK_SOUND = "resources/sounds/walk1.wav";
-    static constexpr char* MONSTER_WALK_SOUND = "resources/sounds/walk2.wav";
-    static constexpr char* MELEE_SOUND = "resources/sounds/melee.wav";
-    static constexpr char* FLINT_SOUND = "resources/sounds/flint.aiff";
-    static constexpr char* PUMPGUN_SOUND = "resources/sounds/pumpgun.wav";
-    static constexpr char* MUSIK = "resources/sounds/music.wav";
+    static constexpr char PLAYER_WALK_SOUND[] = "resources/sounds/walk1.wav";
+    static constexpr char MONSTER_WALK_SOUND[] = "resources/sounds/walk2.wav";
+    static constexpr char MELEE_SOUND[] = "resources/sounds/melee.wav";
+    static constexpr char FLINT_SOUND[] = "resources/sounds/flint.wav";
+    static constexpr char PUMPGUN_SOUND[] = "resources/sounds/pumpgun.wav";
+    static constexpr char MUSIK[] = "resources/sounds/music.wav";
 
 
     sounds(sounds const&)          = delete;
