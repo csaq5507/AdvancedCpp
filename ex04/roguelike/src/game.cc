@@ -58,8 +58,8 @@ Game::Game() {
     save_menu.renderer = renderer;
     save_menu.actual_element = -1; // No element selected
     settings_menu.name="Settings";
-    settings_menu.addElement(*new MenuItem("Enable/Disable Music",Blue,true,true));
-    settings_menu.addElement(*new MenuItem("Enable/Disable Sound",Blue,true,true));
+    settings_menu.addElement(*new MenuItem("Enable Disable Music",Blue,true,true));
+    settings_menu.addElement(*new MenuItem("Enable Disable Sound",Blue,true,true));
     settings_menu.renderer=renderer;
     settings_menu.actual_element=0;
     load_menu.name = "Load menu";
@@ -97,8 +97,6 @@ void Game::init() {
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
 	Camera::CameraControl.SetTarget(player);
     spawn_enemies();
-
-
 }
 
 void Game::clearGame() {
@@ -163,17 +161,17 @@ void Game::addEvent(SDL_Event e) {
                         INFO("Received 'quit' signal.");
                     }
                 } else if (menu_stack.back().name == "Load menu") {
-                    // ToDo load seceted file
-                    // and start game
-                    loadState(menu_stack.back().path_to_save + action);
+                    clearGame();
+                    init();
+                    loadState(menu_stack.back().path_to_save + action + ".txt");
                     menu_stack.clear();
+                    main_menu.activateAllItems();
                 } else if (menu_stack.back().name == "Settings") {
-                    if(action=="Enable/Disable Music"){
+                    if(action=="Enable Disable Music"){
                         sounds::getInstance().toggle_music();
                     } else
                     {
                         sounds::getInstance().toggle_sound();
-
                     }
                 }
             }
@@ -329,7 +327,8 @@ void Game::loadState(std::string filename) {
 			entities.push_back(enemy);
 		}
 	}
-
+    Camera::CameraControl.mode = TARGET_MODE_CENTER;
+    Camera::CameraControl.SetTarget(p);
 
 }
 
@@ -362,7 +361,7 @@ void Game::setLoadMenuItems(std::string name) {
     load_menu.addElement(*new MenuItem("Select a game to be load", Blue, false, true));
     for (fs::directory_iterator itr(name); itr!=fs::directory_iterator(); ++itr)
         if (fs::is_regular_file(itr->status()))
-            load_menu.addElement(*new MenuItem(itr->path().filename().string(), Blue, true, true));
+            load_menu.addElement(*new MenuItem(itr->path().filename().replace_extension("").string(), Blue, true, true));
 
     load_menu.actual_element = 1;
 }
