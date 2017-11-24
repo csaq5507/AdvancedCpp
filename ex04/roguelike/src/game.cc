@@ -236,8 +236,7 @@ void Game::spawn_enemies() {
                 std::make_shared<Enemy>(*this,
                                         Vec2(pos_x,pos_y),
                                         entities.front(),
-                                        get_double_random(wave * 2, 4
-                                                                    * wave),
+                                        get_double_random(wave * 2, 4* wave),
                                         50 * wave)
         );
     }

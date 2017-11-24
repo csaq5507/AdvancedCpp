@@ -12,7 +12,9 @@
 class Map {
 public:
 	std::vector<Tile> tileList;
-    std::shared_ptr<SpriteSet> sprideSet;
+	std::shared_ptr<SpriteSet> sprideSet;
+	std::shared_ptr<SpriteSet> sprideSet_wall;
+	std::shared_ptr<SpriteSet> sprideSet_floor;
 
 	Map();
 
