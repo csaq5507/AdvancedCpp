@@ -4,6 +4,28 @@
 
 #include <menu.h>
 #include "SDL_ttf.h"
+#include <boost/filesystem.hpp>
+#include <string>
+
+#ifdef WIN32
+Menu::Menu() : path_to_save("%appdata%/local/roguelike/")
+{
+    boost::filesystem::path rootPath (path_to_save);
+    boost::system::error_code returnedError;
+
+    boost::filesystem::create_directories( rootPath, returnedError );
+}
+#else
+
+Menu::Menu() : path_to_save(std::string(getenv("HOME"))+"/.roguelike/")
+{
+    boost::filesystem::path rootPath (path_to_save);
+    boost::system::error_code returnedError;
+
+    boost::filesystem::create_directories( rootPath, returnedError );
+}
+
+#endif
 
 void Menu::addElement(MenuItem menu_item) {
     menu_items.push_back(menu_item);
@@ -11,7 +33,7 @@ void Menu::addElement(MenuItem menu_item) {
 
 void Menu::render() {
     SDL_RenderClear(renderer);
-    TTF_Font* Sans = TTF_OpenFont("resources/sunvalley.ttf", 112); //this opens a font style and sets a size
+    TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
     SDL_Surface* SurfaceMessage;
     SDL_Texture* Message;
     SDL_Rect Message_rect;

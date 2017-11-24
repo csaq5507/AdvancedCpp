@@ -7,10 +7,13 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2TTF REQUIRED)
 find_package(SDL2_mixer REQUIRED)
+FIND_PACKAGE( Boost 1.40 COMPONENTS program_options filesystem REQUIRED )
+
 include_directories(${SDL2_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
         ${SDL2TTF_INCLUDE_DIRS}
-        ${SDL2_MIXER_INCLUDE_DIRS})
+        ${SDL2_MIXER_INCLUDE_DIRS}
+        ${Boost_INCLUDE_DIR} )
 # -- Compilation
 
 if(MSVC)
@@ -65,6 +68,7 @@ target_include_directories(roguelike SYSTEM PUBLIC
     ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2TTF_INCLUDE_DIRS}
     ${SDL2_MIXER_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIR}
 )
 
 target_link_libraries(roguelike
@@ -72,4 +76,5 @@ target_link_libraries(roguelike
     ${SDL2_IMAGE_LIBRARY}
     ${SDL2TTF_LIBRARY}
     ${SDL2_MIXER_LIBRARY}
+    ${Boost_LIBRARIES}
 )

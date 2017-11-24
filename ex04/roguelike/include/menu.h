@@ -14,6 +14,9 @@
 
 class Menu {
 public:
+
+    std::string path_to_save;
+
     std::string name;
     std::vector<MenuItem> menu_items;
     int actual_element = 0;
@@ -21,6 +24,7 @@ public:
     SDL_Color Red = {255, 0, 0};
     SDL_Color Blue = {0, 0, 255};
 
+    Menu();
     void addElement(MenuItem menu_item);
     void render();
     void moveUp();

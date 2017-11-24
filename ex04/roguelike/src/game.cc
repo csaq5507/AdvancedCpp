@@ -8,6 +8,9 @@
 #include <SDL_ttf.h>
 #include "sound.h"
 
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
 ChronoTimer Game::timer{ "Game time" };
 Game::Game() {
 	
@@ -144,7 +147,7 @@ void Game::addEvent(SDL_Event e) {
                     } else if (action == "Resume") {
                         menu_stack.clear();
                     } else if (action == "Load Game") {
-                        setLoadMenuItems("/root/Documents/");
+                        setLoadMenuItems(menu_stack.back().path_to_save);
                         menu_stack.push_back(load_menu);
                     } else if (action == "Save Game") {
                         menu_stack.push_back(save_menu);
@@ -155,7 +158,7 @@ void Game::addEvent(SDL_Event e) {
                 } else if (menu_stack.back().name == "Load menu") {
                     // ToDo load seceted file
                     // and start game
-                    loadState("/root/Documents/" + action + ".txt");
+                    loadState(menu_stack.back().path_to_save + action);
                     menu_stack.clear();
                 }
             }
@@ -256,6 +259,7 @@ void Game::game_over() {
 //invariant is that the first element is the player
 //we need to change that, the whole structor is still messy
 bool Game::saveState(std::string filename) {
+
 	std::fstream file{ filename, std::fstream::in | std::fstream::out | std::fstream::trunc};
 	file << Game::timer.get_elapsed_time() << std::endl;
 	file << game_over_bool << std::endl;
@@ -321,7 +325,7 @@ void Game::getFileNameInput(SDL_Event e) {
             filename += SDL_GetKeyName(e.key.keysym.sym);
             menu_stack.back().menu_items.back().changeName(filename);
         } else if (e.key.keysym.sym == SDLK_RETURN) {
-            saveState("/root/Documents/" + filename + ".txt");
+            saveState(menu_stack.back().path_to_save + filename + ".txt");
             menu_stack.pop_back();
             filename = "";
         } else if (e.key.keysym.sym == SDLK_ESCAPE) {
@@ -341,8 +345,10 @@ void Game::getFileNameInput(SDL_Event e) {
 void Game::setLoadMenuItems(std::string name) {
     load_menu.menu_items.clear();
     load_menu.addElement(*new MenuItem("Select a game to be load", Blue, false, true));
-    load_menu.addElement(*new MenuItem("SDAF", Blue, true, true));
-    load_menu.addElement(*new MenuItem("TEST", Blue, true, true));
+    for (fs::directory_iterator itr(name); itr!=fs::directory_iterator(); ++itr)
+        if (fs::is_regular_file(itr->status()))
+            load_menu.addElement(*new MenuItem(itr->path().filename().string(), Blue, true, true));
+
     load_menu.actual_element = 1;
 }
 
