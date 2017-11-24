@@ -119,6 +119,7 @@ void Player::render(SDL_Renderer* renderer, const Vec2& cameraPos){
     SDL_Rect dst;
     dst.x = window_width / 2;
     dst.y = window_height/2;
+
     dst.w = tile_size;
     dst.h = tile_size;
     auto sprite_set = this->getSpriteSet();

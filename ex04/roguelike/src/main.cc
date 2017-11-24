@@ -53,9 +53,10 @@ int main(int, char* []) {
 
     game.init();
 
+
     while (game.isRunning()) {
         game.mainLoop();
     }
 
-    return EXIT_SUCCESS;
+        return EXIT_SUCCESS;
 }

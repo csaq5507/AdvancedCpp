@@ -32,8 +32,9 @@ void Enemy::update() {
             this->fast=false;
         }
         this->sprite_set->update_texture(this->direction);
+        move();
+
     }
-    move();
 
     if (is_on_player()) {
         player->damage(1000);
