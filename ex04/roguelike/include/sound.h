@@ -28,6 +28,9 @@ private:
     int walk_channel;
     int musik_channel;
 
+
+    bool music;
+    bool sound;
     sounds();
 
 public:
@@ -44,8 +47,10 @@ public:
 
 
     void play_attack_sound(const char* filename);
-    void play_musik();
-    void stop_musik();
+    void play_music();
+    void stop_music();
+    void toggle_music();
+    void toggle_sound();
     void toggle_walk(bool walk);
 };
 

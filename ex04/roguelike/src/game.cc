@@ -36,7 +36,7 @@ Game::Game() {
     wave = 1;
     game_over_sprite = resource_loader->loadSpriteSet("gameover.png");
 
-    sounds::getInstance().play_musik();
+    sounds::getInstance().play_music();
 
 
     filename = "";
@@ -47,6 +47,7 @@ Game::Game() {
     main_menu.addElement(*new MenuItem("Resume", Gray, false, true));;
     main_menu.addElement(*new MenuItem("Load Game", Blue, true, true));;
     main_menu.addElement(*new MenuItem("Save Game", Gray, false, true));;
+    main_menu.addElement(*new MenuItem("Settings", Blue, true, true));;
     main_menu.addElement(*new MenuItem("Exit", Blue, true, true));
     main_menu.renderer = renderer;
     main_menu.actual_element = 0;
@@ -56,7 +57,11 @@ Game::Game() {
     save_menu.addElement(*new MenuItem(filename, Blue, false, false));
     save_menu.renderer = renderer;
     save_menu.actual_element = -1; // No element selected
-
+    settings_menu.name="Settings";
+    settings_menu.addElement(*new MenuItem("Enable/Disable Music",Blue,true,true));
+    settings_menu.addElement(*new MenuItem("Enable/Disable Sound",Blue,true,true));
+    settings_menu.renderer=renderer;
+    settings_menu.actual_element=0;
     load_menu.name = "Load menu";
     load_menu.addElement(*new MenuItem("Select a game to be load", Blue, false, true));
     load_menu.renderer = renderer;
@@ -151,6 +156,8 @@ void Game::addEvent(SDL_Event e) {
                         menu_stack.push_back(load_menu);
                     } else if (action == "Save Game") {
                         menu_stack.push_back(save_menu);
+                    } else if (action == "Settings") {
+                        menu_stack.push_back(settings_menu);
                     } else if (action == "Exit") {
                         running = false;
                         INFO("Received 'quit' signal.");
@@ -160,6 +167,14 @@ void Game::addEvent(SDL_Event e) {
                     // and start game
                     loadState(menu_stack.back().path_to_save + action);
                     menu_stack.clear();
+                } else if (menu_stack.back().name == "Settings") {
+                    if(action=="Enable/Disable Music"){
+                        sounds::getInstance().toggle_music();
+                    } else
+                    {
+                        sounds::getInstance().toggle_sound();
+
+                    }
                 }
             }
         }

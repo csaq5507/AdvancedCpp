@@ -25,7 +25,8 @@ class Game {
     SDL_Color Gray = {128, 128, 128};
     std::vector<Menu> menu_stack;
     Menu main_menu;
-    Menu save_menu;
+	Menu save_menu;
+	Menu settings_menu;
     Menu load_menu;
 
     std::shared_ptr<SpriteSet> game_over_sprite;
