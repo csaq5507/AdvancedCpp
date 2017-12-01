@@ -32,11 +32,11 @@ public:
 		return (m_ptr != rawIterator.getConstPtr());
 	}
 
-	RandomAccessIterator<IteratorType>& operator+=(const ptrdiff_t& movement) {
+	RandomAccessIterator<IteratorType>& operator+=(const int& movement) {
 		m_ptr += movement;
 		return (*this);
 	}
-	RandomAccessIterator<IteratorType>& operator-=(const ptrdiff_t& movement) { 
+	RandomAccessIterator<IteratorType>& operator-=(const int& movement) {
 		m_ptr -= movement;
 		return (*this);
 	}
@@ -47,24 +47,24 @@ public:
 	RandomAccessIterator<IteratorType>& operator--() {
 		--m_ptr;return (*this);
 	}
-	RandomAccessIterator<IteratorType> operator++(ptrdiff_t) {
+	RandomAccessIterator<IteratorType> operator++(int) {
 		auto temp(*this);
 		++m_ptr;
 		return temp;
 	}
-	RandomAccessIterator<IteratorType> operator--(ptrdiff_t) {
+	RandomAccessIterator<IteratorType> operator--(int ) {
 		auto temp(*this);
 		--m_ptr;
 		return temp;
 	}
-	RandomAccessIterator<IteratorType> operator+(const ptrdiff_t& movement) {
+	RandomAccessIterator<IteratorType> operator+(const int& movement) {
 		auto oldPtr = m_ptr;
 		m_ptr += movement;
 		auto temp(*this);
 		m_ptr = oldPtr;
 		return temp;
 	}
-	RandomAccessIterator<IteratorType> operator-(const ptrdiff_t& movement) { 
+	RandomAccessIterator<IteratorType> operator-(const int& movement) {
 		auto oldPtr = m_ptr;
 		m_ptr -= movement;
 		auto temp(*this);
@@ -72,7 +72,7 @@ public:
 		return temp;
 	}
 
-	ptrdiff_t operator-(const RandomAccessIterator<IteratorType>& rawIterator) {
+	int operator-(const RandomAccessIterator<IteratorType>& rawIterator) {
 		return std::distance(rawIterator.getPtr(), this->getPtr());
 	}
 
@@ -106,7 +106,7 @@ class MyVector {
 	RandomAccessIterator<T> it;
 
 public:
-	using value_type = typename T;
+	using value_type = T;
 
 	MyVector() : capacity(defaultSize), container(new T[capacity]), it(container) {}
 	MyVector(unsigned n) : capacity(n), container(new T[capacity]), it(container) {}

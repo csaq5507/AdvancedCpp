@@ -7,7 +7,7 @@ Area::Area() {
 	areaSize = 0;  //stored in the area file, always considered square
 }
 
-bool Area::load(ResourceLoader& resourceLoader, std::string filename) {
+bool Area::load(ResourceLoader& resourceLoader, std::string filename,Game & game) {
 	mapList.clear();
     filename="resources/maps/"+filename;
 	auto stream = std::ifstream(filename, std::ifstream::in);
@@ -23,7 +23,7 @@ bool Area::load(ResourceLoader& resourceLoader, std::string filename) {
 		std::stringstream ss(line);
 		for (int x = 0; x < areaSize; x++) {
 			std::getline(ss, line,' ');
-			Map map;
+			Map map(game);
 			if (map.load(line) == false) return false;
 			map.sprideSet = spride;
 			mapList.push_back(map);

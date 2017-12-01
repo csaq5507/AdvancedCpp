@@ -46,14 +46,14 @@ public:
 		return (*this);
 	}
 
-	BidirecIterator<IteratorType> operator++(ptrdiff_t) {
+	BidirecIterator<IteratorType> operator++(int) {
 		auto temp(*this);
 		prev_ptr = current_ptr;
 		current_ptr = current_ptr->Next();
 		return temp;
 	}
 
-	BidirecIterator<IteratorType> operator--(ptrdiff_t) {
+	BidirecIterator<IteratorType> operator--(int) {
 		auto temp(*this);
 		current_ptr = prev_ptr;
 		prev_ptr = current_ptr->Prev();
@@ -97,10 +97,11 @@ class MyBidirecListNode {
 		if (head->next) { head->next->prev = toInsert.get(); }
 		head->next = toInsert;
 	}
-public:
-	using value_type = typename T;
 
-	MyBidirecListNode(T element) { elemt = element; }
+public:
+	using value_type = T;
+
+	MyBidirecListNode(T element) { elemt = element; next = nullptr; prev = nullptr;}
 	~MyBidirecListNode() {}
 
 	void push_front(T element) {
@@ -111,7 +112,11 @@ public:
 	}
 
 	void push_back(T element) {
-
+		std::shared_ptr<MyBidirecListNode<T>> insertBlock {new MyBidirecListNode<T>{element}};
+		insertBlock->prev=this->end().getPtr();
+		MyBidirecListNode<T>* tmp = this;
+		while (tmp->next) { tmp = tmp->next.get(); }
+		tmp->next=insertBlock;
 	}
 
 	BidirecIterator<MyBidirecListNode<T>> begin() {

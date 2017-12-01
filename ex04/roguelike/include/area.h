@@ -14,7 +14,7 @@ private:
 
 public:
 	Area();
-	bool load(ResourceLoader& resourceLoader, std::string filename);
+	bool load(ResourceLoader& resourceLoader, std::string filename, Game & game);
 	void render(SDL_Renderer* rendere, Vec2 cameraPos);
 
 };

@@ -42,12 +42,12 @@ class Game {
     int wave;
 	//invariant is that the first element is the player
 	//we need to change that, the whole structor is still messy
-	std::list<std::shared_ptr<Entity>> entities;
 
   public:
 	//timer must be serializeable/deserializable
 	static ChronoTimer timer;
 	Logic logic;
+	std::list<std::shared_ptr<Entity>> entities;
 
     std::list<std::shared_ptr<Entity>> dead_entities;
     Game();
@@ -100,7 +100,7 @@ class Game {
     void getFileNameInput(SDL_Event e);
     void setLoadMenuItems();
     void setLoadMenuItems(std::string path);
-
+	bool is_someone_on_pos(Vec2 pos);
 };
 
 #endif  // ROGUELIKE_GAME_H_

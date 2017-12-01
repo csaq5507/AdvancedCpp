@@ -12,6 +12,7 @@ void printElem(T i) {
 int main(void) {
 	MyVector<int> test;
 	MyBidirecListNode<int> testList{ 2 };
+	MyBidirecListNode<int> testList2{ 2 };
 
 	auto iter = testList.begin();
 	{
@@ -20,6 +21,7 @@ int main(void) {
 		for (int i = 0; i < size; i++) {
 			tmp.push_back(i);
 			testList.push_front(i);
+			testList2.push_back(i);
 		}
 		test = tmp;
 	}
@@ -30,9 +32,11 @@ int main(void) {
 	for (auto it = testList.begin(); it != testList.end(); ++it) {
 		std::cout << (*it).GetVal() << " ";
 	}
+	std::cout << std::endl;
 
 	std::for_each(testList.begin(), testList.end(), [](MyBidirecListNode<int>& v) -> void {	std::cout << v.GetVal() << " ";});
 	std::cout << std::endl;
 
-	std::getchar();
+	std::for_each(testList2.begin(), testList2.end(), [](MyBidirecListNode<int>& v) -> void {	std::cout << v.GetVal() << " ";});
+	std::cout << std::endl;
 }

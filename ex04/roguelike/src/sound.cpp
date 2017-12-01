@@ -24,7 +24,6 @@ void sounds::play_music()
 {
     if(musik_chunk==NULL)
         musik_chunk = Mix_LoadWAV(MUSIK);
-
      musik_channel=Mix_PlayChannel(-1, musik_chunk, -1);
 }
 

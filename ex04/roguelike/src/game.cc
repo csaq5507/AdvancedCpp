@@ -89,7 +89,7 @@ Game::~Game() {
 void Game::init() {
 	//Load map
 	current_area = "1.area";
-	area.load(*resource_loader, current_area);
+	area.load(*resource_loader, current_area,*this);
 	//load logic map
 	logic.load(area);
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
@@ -305,7 +305,7 @@ void Game::loadState(std::string filename) {
 	game_over_bool = readLineAndConvertToInt(file);
 	std::getline(file, line);
 	current_area = line;
-	area.load(this->getResourceLoader(), current_area);
+	area.load(this->getResourceLoader(), current_area,*this);
 	logic.load(area);
 	wave = readLineAndConvertToInt(file);
 	
@@ -365,3 +365,6 @@ void Game::setLoadMenuItems(std::string name) {
     load_menu.actual_element = 1;
 }
 
+bool Game::is_someone_on_pos(Vec2 pos) {
+
+}

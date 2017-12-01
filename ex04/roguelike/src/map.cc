@@ -2,7 +2,7 @@
 #include "map.h"
 #include "utils/logging.h"
 
-Map::Map() {};
+Map::Map(Game &game) : game(game) {};
 
 bool Map::load(std::string filename) {
 	tileList.clear();
@@ -59,9 +59,22 @@ void Map::render(SDL_Renderer* renderer, Vec2 mapOffset) {
 				continue;
 			}
 
-			int TilesetX = (tileList[tileToRenderId].tile_id % TileTextWidth) * tile_size;
-			int TilesetY = (tileList[tileToRenderId].tile_id / TileTextHeight) * tile_size;
-	
+
+			int TilesetX =
+					(tileList[tileToRenderId].tile_id % TileTextWidth) *
+					tile_size;
+			int TilesetY =
+					(tileList[tileToRenderId].tile_id / TileTextHeight) *
+					tile_size;
+			if(tileList[tileToRenderId].tile_id == 3 ){
+                for(auto& entity : game.entities) {
+                    if(entity->getPos().x==x && entity->getPos().y==y)
+                    {
+
+                    }
+                }
+            }
+
 			SDL_Rect DestR;
 
 			DestR.x = mapOffset.x + (x * tile_size);
