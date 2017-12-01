@@ -9,7 +9,38 @@ void printElem(T i) {
 	std::cout << i << " ";
 }
 
+class foo
+{
+public:
+	double a;
+	foo() : a(0) {}
+	foo(double c) : a(c) {}
+	~foo(){}
+
+};
+class bar
+{
+public:
+	std::string a;
+	bar() : a(" ") {}
+	bar(std::string c) : a(c) {}
+	~bar(){}
+
+};
+
 int main(void) {
+	MyVector<foo> lol;
+	lol.push_back(foo(3));
+	for (auto it = lol.begin(); it != lol.end(); ++it) {
+		std::cout << (*it).a << " ";
+	}
+	std::cout << std::endl;
+	MyVector<bar> lol2;
+	lol2.push_back(bar("hi"));
+	for (auto it = lol2.begin(); it != lol2.end(); ++it) {
+		std::cout << (*it).a << " ";
+	}
+	std::cout << std::endl;
 	MyVector<int> test;
 	MyBidirecListNode<int> testList{ 2 };
 	MyBidirecListNode<int> testList2{ 2 };
