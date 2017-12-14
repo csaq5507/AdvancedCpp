@@ -67,13 +67,13 @@ void Enemy::get_player_direction() {
     float diff_y = (float)(position_player.y - pos.y);
     float diff_x = (float)(position_player.x - pos.x);
     if (diff_y == 0) {
-        this->direction = diff_x<0?Direction::west:Direction::east;
+        this->direction = diff_x<0 ? Direction::west : Direction::east;
     } else if (diff_x == 0) {
-        this->direction = diff_y<0?Direction::north:Direction::south;
+        this->direction = diff_y<0 ? Direction::north : Direction::south;
     } else if (abs(diff_y) <= abs(diff_x)) {
-        this->direction = diff_y<0?Direction::north:Direction::south;
+        this->direction = diff_y<0 ? Direction::north : Direction::south;
     } else {
-        this->direction = diff_x<0?Direction::west:Direction::east;
+        this->direction = diff_x<0 ? Direction::west : Direction::east;
     }
 }
 

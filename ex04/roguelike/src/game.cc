@@ -57,11 +57,13 @@ Game::Game() {
     save_menu.addElement(*new MenuItem(filename, Blue, false, false));
     save_menu.renderer = renderer;
     save_menu.actual_element = -1; // No element selected
+
     settings_menu.name="Settings";
     settings_menu.addElement(*new MenuItem("Enable Disable Music",Blue,true,true));
     settings_menu.addElement(*new MenuItem("Enable Disable Sound",Blue,true,true));
     settings_menu.renderer=renderer;
     settings_menu.actual_element=0;
+
     load_menu.name = "Load menu";
     load_menu.addElement(*new MenuItem("Select a game to be load", Blue, false, true));
     load_menu.renderer = renderer;
@@ -97,6 +99,7 @@ void Game::init() {
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
 	Camera::CameraControl.SetTarget(player);
     spawn_enemies();
+    game_over_bool = false;
 }
 
 void Game::clearGame() {
@@ -326,7 +329,6 @@ void Game::loadState(std::string filename) {
 			entities.push_back(enemy);
 		}
 	}
-    Camera::CameraControl.mode = TARGET_MODE_CENTER;
     Camera::CameraControl.SetTarget(p);
 
 }
