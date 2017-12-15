@@ -1,16 +1,26 @@
-The game does not have any goal yet because its like a infinite game, if u survive the first wave, a sevcond spawns and so on. For a "goal" an additional game mechanism is needed
+#### Goal ####
+
+The game does not have any goal yet because its like a infinite game,
+if u survive the first wave, a sevcond spawns and so on. For a "goal" 
+an additional game mechanism is needed.
 -> For example adding a highscore would give the game a goal.
+-> or a Boss after x waves
 
 
-Another mechanism would be an inventory for weapons and a additional view which shows the
-life points etc
+#### Additional Game mecanisms ####
+-> be an inventory for weapons and other items like health portions
+-> additional view which shows the life points, inventory etc...
+-> attacks for enemies
+-> special attacs for example with magic (u need mana)
 
+#### Game state ####
 At the moment the game is nice to play but without any goal it becomes boring at some
 point.
 The above described points would make the game more interesting. Also changing the graphical
 interface (background, walls, aniamations) would increase the fun factor.
 
-Future tasks:
+
+#### Outline ####
 - Change graphic layout (1 task for a week)
 - Inventory (1 task for a week)
 - Adding additional informations view (1 task for a week)
