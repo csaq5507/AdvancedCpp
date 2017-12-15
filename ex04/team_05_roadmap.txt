@@ -14,10 +14,11 @@ an additional game mechanism is needed.
 -> special attacs for example with magic (u need mana)
 
 #### Game state ####
-At the moment the game is nice to play but without any goal it becomes boring at some
-point.
-The above described points would make the game more interesting. Also changing the graphical
-interface (background, walls, aniamations) would increase the fun factor.
+At the moment the game is nice to play but without any goal it becomes 
+boring at some point.
+The above described points would make the game more interesting. Also 
+changing the graphical interface (background, walls, aniamations) would 
+increase the fun factor.
 
 
 #### Outline ####
