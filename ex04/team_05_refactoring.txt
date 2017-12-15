@@ -1,15 +1,24 @@
-- The speed of each entity was a bit messy so we had to refactore it. each entity had his own clock to wait between the update/walk function call, now this is unified in the entyty class
+#### Already Refactored ###
 
--   The move function initially took the distance to move and the direction, after the refactoring every entity got a direction so the move function only needs a distance now. Some visual bugs with the sprites got fixed by this.
+- The speed of each entity was a bit messy so we had to refactore it. each 
+  entity had his own clock to wait between the update/walk function call, now 
+  this is unified in the entyty class
 
-- Weapons got their own class with some attributes, initialli there was a weapon enum with 3 elements and every function regarding to weapons contained a switch(weapon){ case Weapon::flint....
+-   The move function initially took the distance to move and the direction, 
+  after the refactoring every entity got a direction so the move function only
+  needs a distance now. Some visual bugs with the sprites got fixed by this.
 
-- the player input(event handler) was a mess and got refactored.. watch(diff 16: https://github.com/csaq5507/AdvancedCpp/commit/3b08a6b394153b81467cbd2625d133c1b1dbd90d#diff-16)
+- Weapons got their own class with some attributes, initialli there was a weapon 
+  enum with 3 elements and every function regarding to weapons contained a 
+  switch(weapon){ case Weapon::flint....
+
+- the player input(event handler) was a mess and got refactored.. watch(diff 16: 
+  https://github.com/csaq5507/AdvancedCpp/commit/3b08a6b394153b81467cbd2625d133c1b1dbd90d#diff-16)
 
 - a lot of small refactor steps.
 
 
 
-Additional refactor steps(to do)
+#### Additional refactor steps(to do) ####
 
 - the event handler probaly needs more refactoring(if user inputs increases)
