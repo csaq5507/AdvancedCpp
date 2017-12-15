@@ -1,5 +1,7 @@
-The game does not have any goal yet. For this an additional game mechanism is needed
+The game does not have any goal yet because its like a infinite game, if u survive the first wave, a sevcond spawns and so on. For a "goal" an additional game mechanism is needed
 -> For example adding a highscore would give the game a goal.
+
+
 Another mechanism would be an inventory for weapons and a additional view which shows the
 life points etc
 
@@ -12,3 +14,6 @@ Future tasks:
 - Change graphic layout (1 task for a week)
 - Inventory (1 task for a week)
 - Adding additional informations view (1 task for a week)
+- Highscore (1 task for a week)
+- more different enemies and/or boss enemies (1 task for a week)
+- different weapons (1/2 task for a week)
