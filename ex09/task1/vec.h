@@ -19,12 +19,20 @@ class Vec {
 private:
     std::array<int, N> _data;
 
+
 public:
 
-    Vec(): _data() {
+    int x=-1;
+    int y=-1;
+    int z=-1;
+
+    Vec() : _data() {
         for (int i = 0; i < N; ++i) {
             _data[i] = 0;
         }
+        if(N>0) x=_data[0];
+        if(N>1) y=_data[1];
+        if(N>2) z=_data[2];
     }
 
     template<typename...T2, typename std::enable_if<sizeof...(T2) == N - 1, int>::type = 0>
@@ -35,6 +43,9 @@ public:
         for (int i = 1; i < N; ++i) {
             _data[i] = init[i-1];
         }
+        if(N>0) x=_data[0];
+        if(N>1) y=_data[1];
+        if(N>2) z=_data[2];
     }
 
     int& operator[] (const int index)
