@@ -16,6 +16,7 @@
 #include "sprite_set.h"
 #include "utils/chrono_timer.h"
 #include "menu.h"
+#include "entities/pickable_items.h"
 
 class Game {
     bool running = true;
@@ -49,7 +50,8 @@ class Game {
 	Logic logic;
 	std::list<std::shared_ptr<Entity>> entities;
 
-    std::list<std::shared_ptr<Entity>> dead_entities;
+	std::list<std::shared_ptr<Entity>> dead_entities;
+
     Game();
 	bool saveState(std::string filename);
 	void loadState(std::string filename);

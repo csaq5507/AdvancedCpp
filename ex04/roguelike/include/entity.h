@@ -63,6 +63,12 @@ public:
 		return r;
 	}
 
+    template<typename CheckType>
+    bool isInstanceOf() {
+        return (dynamic_cast<CheckType *>(this) != nullptr);
+    }
+
+
     bool equals(const Entity* other);
 	virtual void serialize(std::fstream& f);
 };

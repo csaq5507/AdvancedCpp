@@ -1,6 +1,7 @@
 #include <fstream>
 #include "map.h"
 #include "utils/logging.h"
+#include "game.h"
 
 Map::Map(Game &game) : game(game) {};
 

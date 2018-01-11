@@ -14,6 +14,10 @@ Vec2 Vec2::operator+(const Vec2& rhs) const {
     return Vec2({this->x+rhs.x, this->y+rhs.y});
 }
 
+bool Vec2::operator==(const Vec2& other) const {
+    return this->x==other.x && this->y==other.y;
+}
+
 std::string to_string(const Vec2& v) {
     std::string s{"Vec2{"};
     s += std::to_string(v.x);

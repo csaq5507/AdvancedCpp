@@ -10,6 +10,7 @@ class Player : public Entity {
 private:
 	std::vector<Weapon> equipedWeapons{ Weapon::Melee(), Weapon::Flint(), Weapon::Pumpgun()};
 	int weaponIndex = 0;
+	std::vector<Entity> inventory;
 
 public:
     Player(Game &game, Vec2 pos);

@@ -8,16 +8,18 @@
 #include "sprite_set.h"
 #include "entities/projectile.h"
 #include "sound.h"
+#include "entities/pickable_items.h"
 
 
 const std::string playerTextFileName = "player.png";
 
-Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName,10.0) {
+Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName,10.0), inventory() {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
+
 }
 
-Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTextFileName, hp,10.0) {
+Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTextFileName, hp,10.0),inventory() {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
 }
@@ -82,6 +84,24 @@ void Player::update() {
 
     }
     this->sprite_set->update_texture(this->direction);
+    for(auto & ent : game.entities)
+    {
+        if(ent->getPos() == this->getPos())
+        {
+            if(ent->isInstanceOf<Enemy>())
+            {
+                damage(1000);
+            } else if (ent->isInstanceOf<pickable_item>())
+            {
+                auto item = dynamic_cast<pickable_item>(ent);
+                if(dynamic_cast<Weapon>(item.item) != nullptr)
+                {
+                    this->equipedWeapons.push_back(dynamic_cast<Weapon>(item.item));
+                }
+                game.entities.remove(ent);
+            }
+        }
+    }
 
 }
 

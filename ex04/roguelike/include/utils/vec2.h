@@ -15,6 +15,7 @@ class Vec2 {
 
     Vec2& operator+=(const Vec2& rhs);
     Vec2 operator+(const Vec2& rhs) const;
+    bool operator==(const Vec2& other) const;
 };
 
 std::string to_string(const Vec2& v);
