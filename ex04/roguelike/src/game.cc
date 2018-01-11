@@ -94,7 +94,14 @@ void Game::init() {
 	area.load(*resource_loader, current_area,*this);
 	//load logic map
 	logic.load(area);
+    
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
+    entities.push_back(std::make_shared<pickable_item<Weapon>>(*this,
+                                                                Vec2(10,10),
+                                                                Weapon::Flint()));
+    entities.push_back(std::make_shared<pickable_item<Weapon>>(*this,
+                                                                Vec2(20,10),
+                                                                Weapon::Pumpgun()));
 	auto player = entities.front();
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
 	Camera::CameraControl.SetTarget(player);
@@ -297,9 +304,6 @@ void Game::spawn_enemies() {
                                         50 * wave)
         );
     }
-    entities.push_back(std::make_shared<pickable_item<Weapon> >(*this,
-                                                       Vec2(10,10),
-                                                       Weapon::Flint()));
 
     wave++;
 }

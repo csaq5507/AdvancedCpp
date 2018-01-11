@@ -21,9 +21,10 @@ public:
 
     void render(SDL_Renderer* renderer, const Vec2& cameraPos){
         SDL_Rect dst;
-        dst.x = window_width / 2;
-        dst.y = window_height/2;
-
+        //The camera vector points to the lef upper vertex where we start render
+        //hence we need to offset the position of the enemys to render them in the correnct pixel coordinates
+        dst.x = (this->getPos().x * tile_size) - cameraPos.x;
+        dst.y = (this->getPos().y * tile_size) - cameraPos.y;
         dst.w = tile_size;
         dst.h = tile_size;
         auto sprite_set = this->getSpriteSet();
