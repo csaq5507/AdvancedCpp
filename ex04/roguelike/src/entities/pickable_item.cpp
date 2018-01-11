@@ -3,15 +3,13 @@
 //
 
 #include "entities/pickable_items.h"
-
 template <class Item>
-
-void pickable_item::update() {
+void pickable_item<Item>::update() {
 
 }
 
-
-void pickable_item::render(SDL_Renderer* renderer, const Vec2& cameraPos){
+template <class Item>
+void pickable_item<Item>::render(SDL_Renderer* renderer, const Vec2& cameraPos){
     SDL_Rect dst;
     dst.x = window_width / 2;
     dst.y = window_height/2;
@@ -23,10 +21,11 @@ void pickable_item::render(SDL_Renderer* renderer, const Vec2& cameraPos){
                    sprite_set->getRect(), &dst);
 }
 
-void pickable_item::serialize(std::fstream& f) {
+template <class Item>
+void pickable_item<Item>::serialize(std::fstream& f) {
 }
 
-//convention type was already read
-pickable_item pickable_item::deserialize(std::fstream& f, Game& game) {
+template <class Item>
+pickable_item<Item> pickable_item<Item>::deserialize(std::fstream& f, Game& game) {
     return nullptr;
 }

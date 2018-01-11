@@ -13,8 +13,7 @@ class pickable_item : public Entity {
 public:
     Item item;
 
-    template <class Item>
-    pickable_item(Game &game, Vec2 pos, Item item) : Entity(game, pos, what.sprite_set()), item(what) { }
+    pickable_item(Game &game, Vec2 pos, Item what) : Entity(game, pos, what.sprite_set()), item(what) { }
 
     void update() override;
 

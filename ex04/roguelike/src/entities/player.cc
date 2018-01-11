@@ -91,13 +91,12 @@ void Player::update() {
             if(ent->isInstanceOf<Enemy>())
             {
                 damage(1000);
-            } else if (ent->isInstanceOf<pickable_item>())
+            } else if (ent->isInstanceOf<pickable_item<Weapon> >())
             {
-                auto item = dynamic_cast<pickable_item>(ent);
-                if(dynamic_cast<Weapon>(item.item) != nullptr)
-                {
-                    this->equipedWeapons.push_back(dynamic_cast<Weapon>(item.item));
-                }
+                auto item = dynamic_cast<pickable_item<Weapon>*>(&(*ent));
+
+                    this->equipedWeapons.push_back(item->item);
+
                 game.entities.remove(ent);
             }
         }
