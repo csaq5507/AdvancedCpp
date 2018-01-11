@@ -15,13 +15,26 @@ public:
 
     pickable_item(Game &game, Vec2 pos, Item what) : Entity(game, pos, what.getSpriteSet()), item(what) { }
 
-    void update() override;
+    void update() override {
 
-    void render(SDL_Renderer* renderer, const Vec2& cameraPos);
+    }
 
-    void damage(int hp) override;
+    void render(SDL_Renderer* renderer, const Vec2& cameraPos){
+        SDL_Rect dst;
+        dst.x = window_width / 2;
+        dst.y = window_height/2;
 
-    void serialize(std::fstream& f);
-    static pickable_item deserialize(std::fstream& f, Game& game);
+        dst.w = tile_size;
+        dst.h = tile_size;
+        auto sprite_set = this->getSpriteSet();
+        SDL_RenderCopy(renderer, sprite_set->getTexture(),
+                       sprite_set->getRect(), &dst);
+    }
+
+    void serialize(std::fstream& f) {
+    }
+    static pickable_item deserialize(std::fstream& f, Game& game){
+        return nullptr;
+    }
 };
 #endif //ADVANCEDCPP_PICKABLE_ITEMS_H
