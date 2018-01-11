@@ -296,6 +296,10 @@ void Game::spawn_enemies() {
                                         50 * wave)
         );
     }
+    entities.push_back(std::make_shared<pickable_item>(*this,
+                                                       Vec2(10,10),
+                                                       Weapon::Flint()));
+
     wave++;
 }
 

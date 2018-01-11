@@ -8,7 +8,8 @@
 
 class Player : public Entity {
 private:
-	std::vector<Weapon> equipedWeapons{ Weapon::Melee(), Weapon::Flint(), Weapon::Pumpgun()};
+    /* Weapon::Flint(), Weapon::Pumpgun() */
+	std::vector<Weapon> equipedWeapons{ Weapon::Melee()};
 	int weaponIndex = 0;
 	std::vector<Entity> inventory;
 
@@ -28,6 +29,7 @@ public:
 	static Player deserialize(std::fstream& f, Game& game);
     int getWeaponIndex();
     int getHP();
+    bool isWeaponAvailable(WeaponTextType weapon);
 };
 
 #endif  // ROGUELIKE_ENTITIES_PLAYER_H_

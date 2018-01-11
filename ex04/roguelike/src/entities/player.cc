@@ -7,6 +7,7 @@
 #include <vector>
 #include "sprite_set.h"
 #include "entities/projectile.h"
+#include "weapon.h"
 #include "sound.h"
 #include "entities/pickable_items.h"
 
@@ -48,10 +49,14 @@ void Player::update() {
                     this->weaponIndex = 0;
                     break;
                 case SDLK_2:
-                    this->weaponIndex = 1;
+                    if(isWeaponAvailable(WeaponTextType::flint)) {
+                        this->weaponIndex = 1;
+                    }
                     break;
                 case SDLK_3:
-                    this->weaponIndex = 2;
+                    if(isWeaponAvailable(WeaponTextType::pumpgun)) {
+                        this->weaponIndex = 2;
+                    }
                     break;
                 case SDLK_LSHIFT:
                     this->fast=true;
@@ -104,6 +109,15 @@ void Player::update() {
         }
     }
 
+}
+
+bool Player::isWeaponAvailable(WeaponTextType weapon) {
+    for (auto& w : equipedWeapons) {
+        if (weapon == w.GetTexType()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Player::attack() {
