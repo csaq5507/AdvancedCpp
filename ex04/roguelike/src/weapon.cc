@@ -42,6 +42,8 @@ std::vector<Vec2> Weapon::GetHitedFields(Direction d) {
 
 Weapon Weapon::Melee() {
 	Weapon w;
+	w.sprite_set_filename = "sword.png";
+
 	w.relativeHitFields.push_back(Vec2{ 1, -1 });
 	w.relativeHitFields.push_back(Vec2{ 1, 0 });
 	w.relativeHitFields.push_back(Vec2{ 1, 1 });
@@ -59,6 +61,7 @@ Weapon Weapon::Flint() {
 	w.dmg = 50;
 	w.reloadTimeInMs = 100;
 	w.type = flint;
+	
 	return w;
 }
 

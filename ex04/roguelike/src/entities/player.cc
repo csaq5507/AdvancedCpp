@@ -18,7 +18,7 @@ const std::string playerTextFileName = "player.png";
 Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName,10.0), inventory() {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
-    
+
 
 }
 
@@ -104,9 +104,9 @@ void Player::update() {
                 auto item = dynamic_cast<pickable_item<Weapon>*>(&(*ent));
 
 
-                    this->equipedWeapons.push_back(item->item);
+                this->equipedWeapons.push_back(item->item);
 
-                game.entities.remove(ent);
+                item->damage(100000);
             }
         }
     }
