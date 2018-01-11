@@ -31,6 +31,8 @@ class Game {
     Menu load_menu;
 
     std::shared_ptr<SpriteSet> game_over_sprite;
+    std::shared_ptr<SpriteSet> weapon_sprite;
+    std::shared_ptr<SpriteSet> life_sprite;
 	std::unique_ptr<ResourceLoader> resource_loader;
     std::list<SDL_Event> events;
     SDL_Window* window = nullptr;

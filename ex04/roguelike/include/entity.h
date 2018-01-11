@@ -71,7 +71,6 @@ public:
 
     bool equals(const Entity* other);
 	virtual void serialize(std::fstream& f);
-    int getHP();
 };
 
 

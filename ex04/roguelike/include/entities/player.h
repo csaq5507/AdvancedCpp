@@ -26,6 +26,8 @@ public:
 
 	void serialize(std::fstream& f);
 	static Player deserialize(std::fstream& f, Game& game);
+    int getWeaponIndex();
+    int getHP();
 };
 
 #endif  // ROGUELIKE_ENTITIES_PLAYER_H_

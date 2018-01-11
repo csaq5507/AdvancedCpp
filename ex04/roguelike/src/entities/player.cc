@@ -90,8 +90,9 @@ void Player::update() {
         {
             if(ent->isInstanceOf<Enemy>())
             {
-                damage(1000);
-            } else if (ent->isInstanceOf<pickable_item<Weapon> >())
+                damage(1);
+            }
+            else if (ent->isInstanceOf<pickable_item<Weapon> >())
             {
                 auto item = dynamic_cast<pickable_item<Weapon>*>(&(*ent));
 
@@ -184,4 +185,12 @@ Player Player::deserialize(std::fstream& f, Game& game) {
 	p.weaponIndex = weaponI;
 	p.movement_speed = speed;
 	return p;
+}
+
+int Player::getWeaponIndex() {
+    return this->weaponIndex;
+}
+
+int Player::getHP() {
+    return this->hp;
 }

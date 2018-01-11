@@ -210,7 +210,10 @@ void renderGameOver(SDL_Renderer* renderer, std::shared_ptr<SpriteSet> game_over
 }
 
 void Game::renderHud(SDL_Renderer* renderer) {
-    auto player=entities.front();
+    auto player= dynamic_cast<Player*>(&(*entities.front()));
+
+    /* Render life points */
+    life_sprite = resource_loader->loadSpriteSet("heart.png");
     TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
     SDL_Surface* SurfaceMessage;
     SDL_Texture* Message;
@@ -223,6 +226,35 @@ void Game::renderHud(SDL_Renderer* renderer) {
     Message_rect.w = 100;
     Message_rect.h = 100;
     SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+    SDL_Rect life;
+    SDL_QueryTexture(life_sprite->getTexture(), nullptr, nullptr, &life.w, &life.h);
+    life.x = 250;
+    life.y = 100;
+    life.w = 100;
+    life.h = 100;
+    SDL_RenderCopy(renderer, life_sprite->getTexture(),
+                   life_sprite->getRect(), &life);
+
+
+
+    /* Render actual weapon */
+    if (player->getWeaponIndex() == 0) {
+        weapon_sprite = resource_loader->loadSpriteSet("sword.png");
+    } else if (player->getWeaponIndex() == 1) {
+        weapon_sprite = resource_loader->loadSpriteSet("pistol.png");
+    } else if (player->getWeaponIndex() == 2) {
+        weapon_sprite = resource_loader->loadSpriteSet("shotgun.png");
+    }
+
+    SDL_Rect dst;
+    SDL_QueryTexture(weapon_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
+    dst.x = 400;
+    dst.y = 100;
+    dst.w = 100;
+    dst.h = 100;
+    SDL_RenderCopy(renderer, weapon_sprite->getTexture(),
+                   weapon_sprite->getRect(), &dst);
 }
 
 void Game::renderFrame() {
@@ -235,9 +267,11 @@ void Game::renderFrame() {
     }
     if(game_over_bool){
 		renderGameOver(renderer, game_over_sprite);
+    } else {
+        renderHud(renderer);
     }
 
-    renderHud(renderer);
+
 
 //Don't forget too free your surface and texture
     SDL_RenderPresent(renderer);
