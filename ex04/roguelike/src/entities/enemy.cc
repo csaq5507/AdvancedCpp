@@ -36,9 +36,6 @@ void Enemy::update() {
 
     }
 
-    if (is_on_player()) {
-        player->damage(1000);
-    }
 }
 
 

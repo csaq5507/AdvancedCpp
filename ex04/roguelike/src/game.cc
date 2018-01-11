@@ -190,7 +190,8 @@ void Game::clearEvents() {
 void Game::updateEntities() {
     for (auto& entity : entities) {
         entity->update();
-        if(entity->is_dead()) dead_entities.push_back(entity);
+        if(entity->is_dead())
+            dead_entities.push_back(entity);
     }
 
     for(auto &ent : dead_entities) {
@@ -296,7 +297,7 @@ void Game::spawn_enemies() {
                                         50 * wave)
         );
     }
-    entities.push_back(std::make_shared<pickable_item>(*this,
+    entities.push_back(std::make_shared<pickable_item<Weapon> >(*this,
                                                        Vec2(10,10),
                                                        Weapon::Flint()));
 

@@ -10,6 +10,7 @@
 #include "weapon.h"
 #include "sound.h"
 #include "entities/pickable_items.h"
+#include "weapon.h"
 
 
 const std::string playerTextFileName = "player.png";
@@ -17,6 +18,7 @@ const std::string playerTextFileName = "player.png";
 Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName,10.0), inventory() {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
+    
 
 }
 
@@ -109,6 +111,7 @@ void Player::update() {
         }
     }
 
+
 }
 
 bool Player::isWeaponAvailable(WeaponTextType weapon) {
@@ -141,7 +144,8 @@ void Player::attack() {
     }
 	auto hitten_fields = weapon.GetHitedFields(this->direction);
 	for (auto& vec : hitten_fields) {
-		vec.x += this->pos.x;
+		vec.
+                x += this->pos.x;
 		vec.y = this->pos.y - vec.y;
 		projectiles.push_back(std::make_shared<Projectile>(game, vec, weapon.GetTexType(), this->direction));
 	}

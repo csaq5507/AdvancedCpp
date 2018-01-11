@@ -6,7 +6,9 @@
 #include "enviorment_variables.h"
 #include "utils/vec2.h"
 #include "utils/chrono_timer.h"
+#include "sprite_set.h"
 #include <cmath>
+#include <memory>
 
 enum WeaponTextType { melee, flint, pumpgun };
 static constexpr double factor = M_PI / 180;
@@ -17,6 +19,8 @@ class Weapon {
 	long reloadTimeInMs;
 	int dmg;
 	WeaponTextType type;
+	std::string sprite_set_filename;
+
 public:
 
 	Weapon() : lastShotAt(0) {};
@@ -29,6 +33,10 @@ public:
 	bool readyToShoot();
 	void updateShotTimer();
 	WeaponTextType GetTexType();
+	std::string getSpriteSet() {
+		return sprite_set_filename;
+	}
+
 };
 
 
