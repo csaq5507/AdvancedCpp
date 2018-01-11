@@ -90,3 +90,7 @@ void Entity::serialize(std::fstream& f) {
 	f << hp << std::endl;
 	f << direction << std::endl;
 }
+
+int Entity::getHP() {
+    return this->hp;
+}

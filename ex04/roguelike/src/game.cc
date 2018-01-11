@@ -199,6 +199,7 @@ void Game::updateEntities() {
     if(entities.size()==1)
         spawn_enemies();
 }
+
 void renderGameOver(SDL_Renderer* renderer, std::shared_ptr<SpriteSet> game_over_sprite) {
 	SDL_Rect dst;
 	SDL_QueryTexture(game_over_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
@@ -206,6 +207,22 @@ void renderGameOver(SDL_Renderer* renderer, std::shared_ptr<SpriteSet> game_over
 	dst.y = window_height / 2 - (dst.h / 2);
 	SDL_RenderCopy(renderer, game_over_sprite->getTexture(),
 		game_over_sprite->getRect(), &dst);
+}
+
+void Game::renderHud(SDL_Renderer* renderer) {
+    auto player=entities.front();
+    TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
+    SDL_Surface* SurfaceMessage;
+    SDL_Texture* Message;
+    SDL_Rect Message_rect;
+    auto hp = player->getHP();
+    SurfaceMessage = TTF_RenderText_Solid(Sans, std::to_string(hp).c_str(), {255, 0, 0});
+    Message = SDL_CreateTextureFromSurface(renderer, SurfaceMessage);
+    Message_rect.x = 100;
+    Message_rect.y = 100;
+    Message_rect.w = 100;
+    Message_rect.h = 100;
+    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
 }
 
 void Game::renderFrame() {
@@ -219,6 +236,8 @@ void Game::renderFrame() {
     if(game_over_bool){
 		renderGameOver(renderer, game_over_sprite);
     }
+
+    renderHud(renderer);
 
 //Don't forget too free your surface and texture
     SDL_RenderPresent(renderer);

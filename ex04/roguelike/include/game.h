@@ -103,6 +103,7 @@ class Game {
     void setLoadMenuItems();
     void setLoadMenuItems(std::string path);
 	bool is_someone_on_pos(Vec2 pos);
+	void renderHud(SDL_Renderer* renderer);
 };
 
 #endif  // ROGUELIKE_GAME_H_

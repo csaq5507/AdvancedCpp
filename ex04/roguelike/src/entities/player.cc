@@ -95,6 +95,7 @@ void Player::update() {
             {
                 auto item = dynamic_cast<pickable_item<Weapon>*>(&(*ent));
 
+
                     this->equipedWeapons.push_back(item->item);
 
                 game.entities.remove(ent);
