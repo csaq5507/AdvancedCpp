@@ -97,7 +97,7 @@ void Player::update() {
         {
             if(ent->isInstanceOf<Enemy>())
             {
-                damage(1);
+                damage(1000);
             }
             else if (ent->isInstanceOf<pickable_item<Weapon> >())
             {
