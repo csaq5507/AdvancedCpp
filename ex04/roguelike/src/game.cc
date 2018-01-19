@@ -9,6 +9,9 @@
 #include "sound.h"
 
 #include <boost/filesystem.hpp>
+#include "Grenade.h"
+#include "Potion.h"
+
 namespace fs = boost::filesystem;
 
 ChronoTimer Game::timer{ "Game time" };
@@ -96,21 +99,17 @@ void Game::init() {
 	logic.load(area);
 
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
-    entities.push_back(std::make_shared<pickable_item<Weapon>>(*this,
-                                                                Vec2(10,50),
-                                                                Weapon::Flint()));
-    entities.push_back(std::make_shared<pickable_item<Weapon>>(*this,
-                                                                Vec2(70,90),
-                                                                Weapon::Pumpgun()));
+
 	auto player = entities.front();
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
 	Camera::CameraControl.SetTarget(player);
     spawn_enemies();
+    spawn_items();
     game_over_bool = false;
 }
 
 void Game::clearGame() {
-    wave = 0;
+    wave = 1;
     entities.clear();
 }
 
@@ -263,6 +262,51 @@ void Game::renderHud(SDL_Renderer* renderer) {
     dst.h = 100;
     SDL_RenderCopy(renderer, weapon_sprite->getTexture(),
                    weapon_sprite->getRect(), &dst);
+
+    for( auto& item : player->get_inventory())
+    {
+        if(item== nullptr)
+            continue;
+        if(item->isInstanceOf<pickable_item<Potion> >())
+        {
+
+            auto it = dynamic_cast<pickable_item<Potion>*>(&(*item));
+            auto potion = it->item;
+            SDL_Rect dst;
+            switch(potion.type){
+                case PotionType::health:
+                    potion_sprite = resource_loader->loadSpriteSet("health.png");
+                    dst.x = 500;
+                    break;
+                case PotionType::speed:
+                    potion_sprite = resource_loader->loadSpriteSet("speed.png");
+                    dst.x = 600;
+                    break;
+                case PotionType::strength:
+                    potion_sprite = resource_loader->loadSpriteSet("strength.png");
+                    dst.x = 700;
+                    break;
+
+            }
+            SDL_QueryTexture(potion_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
+            dst.y = 100;
+            dst.w = 100;
+            dst.h = 100;
+            SDL_RenderCopy(renderer, potion_sprite->getTexture(),
+                           potion_sprite->getRect(), &dst);
+        } else if(item->isInstanceOf<pickable_item<Grenade> >()){
+            grenade_sprite = resource_loader->loadSpriteSet("grenade.jpg");
+            SDL_Rect dst;
+            SDL_QueryTexture(grenade_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
+            dst.x = 800;
+            dst.y = 100;
+            dst.w = 100;
+            dst.h = 100;
+            SDL_RenderCopy(renderer, grenade_sprite->getTexture(),
+                           grenade_sprite->getRect(), &dst);
+        }
+    }
+
 }
 
 void Game::renderFrame() {
@@ -283,6 +327,72 @@ void Game::renderFrame() {
 
 //Don't forget too free your surface and texture
     SDL_RenderPresent(renderer);
+}
+
+
+void Game::spawn_items() {
+
+    auto player=entities.front();
+    //ToDo check if enemy is generated on wall or not
+
+    for (int i = 0; i < 10; i++) {
+        int pos_x=get_int_random(0, map_width * 3);
+        int pos_y=get_int_random(0, map_width * 3);
+
+        if(abs(pos_x-player->getPos().x) < 3 || abs(pos_y-player->getPos().y) < 3) {
+            i--;
+            continue;
+        }
+        if(i==0)
+        entities.push_back(std::make_shared<pickable_item<Weapon>>(*this,
+                                                                   Vec2(pos_x,pos_y),
+                                                                   Weapon::Flint()));
+        if(i==1)
+            entities.push_back(std::make_shared<pickable_item<Weapon>>(*this,
+                                                                       Vec2(pos_x,pos_y),
+                                                                       Weapon::Pumpgun()));
+        if(i>1)
+        {
+            int choose = get_int_random(0,4);
+            switch(choose) {
+                case 0:
+                    entities.push_back(
+                            std::make_shared<pickable_item<Potion>>(*this,
+                                                                    Vec2(pos_x,
+                                                                         pos_y),
+                                                                    Potion(PotionType::health,
+                                                                           100.0)));
+                    break;
+                case 1:
+                    entities.push_back(
+                            std::make_shared<pickable_item<Potion>>(*this,
+                                                                    Vec2(pos_x,
+                                                                         pos_y),
+                                                                    Potion(PotionType::speed,
+                                                                           5.0)));
+                    break;
+                case 2:
+                    entities.push_back(
+                            std::make_shared<pickable_item<Potion>>(*this,
+                                                                    Vec2(pos_x,
+                                                                         pos_y),
+                                                                    Potion(PotionType::strength,
+                                                                           3.0)));
+                    break;
+                case 3:
+                    entities.push_back(
+                            std::make_shared<pickable_item<Grenade>>(*this,
+                                                                     Vec2(pos_x,
+                                                                          pos_y),
+                                                                     Grenade()));
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
+
 }
 
 void Game::spawn_enemies() {

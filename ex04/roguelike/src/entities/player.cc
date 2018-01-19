@@ -5,6 +5,8 @@
 #include "enviorment_variables.h"
 #include "game.h"
 #include <vector>
+#include "Potion.h"
+#include "Grenade.h"
 #include "sprite_set.h"
 #include "entities/projectile.h"
 #include "weapon.h"
@@ -15,16 +17,21 @@
 
 const std::string playerTextFileName = "player.png";
 
-Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName,10.0), inventory() {
+Player::Player(Game& game, Vec2 pos) : Entity(game, pos, playerTextFileName,10.0), inventory(5) {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
-
+    equipedWeapons[0] = std::make_shared<Weapon>(Weapon::Melee());
+    equipedWeapons[1] = nullptr;
+    equipedWeapons[2] = nullptr;
 
 }
 
-Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTextFileName, hp,10.0),inventory() {
+Player::Player(Game& game, Vec2 pos, const int hp) : Entity(game, pos, playerTextFileName, hp,10.0),inventory(5) {
     sprite_set->set_texture_map({2,1,0,3});
     sprite_set->update_texture(Direction::south);
+    equipedWeapons[0] = std::make_shared<Weapon>(Weapon::Melee());
+    equipedWeapons[1] = nullptr;
+    equipedWeapons[2] = nullptr;
 }
 
 
@@ -63,6 +70,18 @@ void Player::update() {
                 case SDLK_LSHIFT:
                     this->fast=true;
                     break;
+                case SDLK_g:
+                    throw_grenade();
+                    break;
+                case SDLK_s:
+                    use_potion(PotionType::strength);
+                    break;
+                case SDLK_h:
+                    use_potion(PotionType::health);
+                    break;
+                case SDLK_f:
+                    use_potion(PotionType::speed);
+                    break;
             }
             if(e.key.keysym.sym == SDLK_UP ||
                e.key.keysym.sym == SDLK_RIGHT ||
@@ -97,16 +116,29 @@ void Player::update() {
         {
             if(ent->isInstanceOf<Enemy>())
             {
-                damage(1000);
+                damage(1);
             }
             else if (ent->isInstanceOf<pickable_item<Weapon> >())
             {
                 auto item = dynamic_cast<pickable_item<Weapon>*>(&(*ent));
+                auto wep=item->item;
+                if(wep.getSpriteSet() == "shotgun.png")
+                    this->equipedWeapons[2] = std::make_shared<Weapon>(wep);
+                else
+                    this->equipedWeapons[1] = std::make_shared<Weapon>(wep);
 
-
-                this->equipedWeapons.push_back(item->item);
 
                 item->damage(100000);
+            } else if(&(*ent) == this || ent->isInstanceOf<Projectile>())
+                continue;
+            else {
+                if(inventory_space<5)
+                {
+                    this->inventory[inventory_space++] = ent;
+                    ent->damage(10000);
+                }
+                else
+                    std::cout<<"inventory Full"<<std::endl;
             }
         }
     }
@@ -116,19 +148,71 @@ void Player::update() {
 
 bool Player::isWeaponAvailable(WeaponTextType weapon) {
     for (auto& w : equipedWeapons) {
-        if (weapon == w.GetTexType()) {
+        if(w== nullptr) continue;
+        if (weapon == w->GetTexType()) {
             return true;
         }
     }
     return false;
 }
+void Player::throw_grenade() {
+    int i=0;
+    for(auto& ent : this->get_inventory())
+    {
+        if (ent->isInstanceOf<pickable_item<Grenade> >())
+        {
+            auto item = dynamic_cast<pickable_item<Grenade>*>(&(*ent));
+            auto grenade = item->item;
+            std::vector<std::shared_ptr<Entity> > projectiles=std::vector<std::shared_ptr<Entity> >();
+            auto hitten_fields = grenade.GetHitedFields(this->direction);
+            for (auto& vec : hitten_fields) {
+                vec.x += this->pos.x;
+                vec.y = this->pos.y - vec.y;
+                projectiles.push_back(std::make_shared<Projectile>(game, vec, WeaponTextType::flint, this->direction));
+            }
+            game.do_damage(grenade.get_damage() * strength,hitten_fields,this);
+            game.add_projectile(projectiles);
+            inventory.erase(inventory.begin()+i);
+            return;
+        }
+            i++;
+    }
+}
+void Player::use_potion(PotionType type) {
+    int i=0;
+    for(auto& ent : this->get_inventory())
+    {
+        if (ent->isInstanceOf<pickable_item<Potion> >())
+        {
+            auto item = dynamic_cast<pickable_item<Potion>*>(&(*ent));
+            auto potion = item->item;
+            if(potion.type!=type)
+                continue;
+            switch(potion.type){
+                case PotionType::health:
+                    this->hp+=potion.amount;
+                    break;
+                case PotionType::speed:
+                    this->movement_speed += potion.amount;
+                    break;
+                case PotionType::strength:
+                    this->strength=potion.amount;
+                    break;
+            }
+            inventory.erase(inventory.begin()+i);
+            return;
+        }
+        i++;
 
+    }
+}
 void Player::attack() {
     std::vector<std::shared_ptr<Entity> > projectiles=std::vector<std::shared_ptr<Entity> >();
 
 	auto& weapon = this->equipedWeapons[this->weaponIndex];
-	if (!weapon.readyToShoot()) return;
-	weapon.updateShotTimer();
+    if(weapon== nullptr) return;
+	if (!weapon->readyToShoot()) return;
+	weapon->updateShotTimer();
     switch (this->weaponIndex)
     {
         case 0:
@@ -142,14 +226,14 @@ void Player::attack() {
             sounds::getInstance().play_attack_sound(sounds::PUMPGUN_SOUND);
             break;
     }
-	auto hitten_fields = weapon.GetHitedFields(this->direction);
+	auto hitten_fields = weapon->GetHitedFields(this->direction);
 	for (auto& vec : hitten_fields) {
 		vec.
                 x += this->pos.x;
 		vec.y = this->pos.y - vec.y;
-		projectiles.push_back(std::make_shared<Projectile>(game, vec, weapon.GetTexType(), this->direction));
+		projectiles.push_back(std::make_shared<Projectile>(game, vec, weapon->GetTexType(), this->direction));
 	}
-    game.do_damage(weapon.GetDmg(),hitten_fields,this);
+    game.do_damage(weapon->GetDmg() * strength,hitten_fields,this);
     game.add_projectile(projectiles);
 }
 

@@ -2,9 +2,12 @@
 // Created by ivan on 10/11/17.
 //
 
+#include <chrono>
 #include "utils/random.h"
 
-std::default_random_engine rnd;
+unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();
+
+std::default_random_engine rnd (seed1);
 
 
 int get_int_random(int from, int to)

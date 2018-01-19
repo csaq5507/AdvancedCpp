@@ -31,7 +31,10 @@ class Game {
     Menu load_menu;
 
     std::shared_ptr<SpriteSet> game_over_sprite;
-    std::shared_ptr<SpriteSet> weapon_sprite;
+	std::shared_ptr<SpriteSet> weapon_sprite;
+	std::shared_ptr<SpriteSet> potion_sprite;
+	std::shared_ptr<SpriteSet> potion2_sprite;
+	std::shared_ptr<SpriteSet> grenade_sprite;
     std::shared_ptr<SpriteSet> life_sprite;
 	std::unique_ptr<ResourceLoader> resource_loader;
     std::list<SDL_Event> events;
@@ -98,6 +101,7 @@ class Game {
     }
 
     void spawn_enemies();
+    void spawn_items();
     void do_damage(int hp, std::vector<Vec2> points, Entity * damage_dealer);
     void add_projectile(std::vector<std::shared_ptr<Entity> > projectiles);
     void game_over();
