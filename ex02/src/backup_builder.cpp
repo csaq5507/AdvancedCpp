@@ -59,4 +59,3 @@ fs::path backup_builder::patch(const fs::path file_to_backup, std::vector<unsign
     }
     return current_version;
 }
-
