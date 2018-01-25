@@ -218,7 +218,6 @@ void Player::attack() {
         case 0:
             sounds::getInstance().play_attack_sound(sounds::MELEE_SOUND);
             break;
-
         case 1:
             sounds::getInstance().play_attack_sound(sounds::FLINT_SOUND);
             break;

@@ -1,0 +1,13 @@
+template
+    in class vcs_utility for function difference
+    for split function in DGrpah
+    for split function stage_file_entry
+
+
+== operator for class stage_file_entry
+
+<< operator for DGraph
+
+constexpr for variable delimiter in DGraph
+
+use of decltype at stage_file_entry.cpp in function StageFileEntry::getTimeStamp

@@ -218,7 +218,7 @@ void renderGameOver(SDL_Renderer* renderer, std::shared_ptr<SpriteSet> game_over
 
 void Game::renderHud(SDL_Renderer* renderer) {
     auto player= dynamic_cast<Player*>(&(*entities.front()));
-
+    /**********************/
     /* Render life points */
     life_sprite = resource_loader->loadSpriteSet("heart.png");
     TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
@@ -245,6 +245,7 @@ void Game::renderHud(SDL_Renderer* renderer) {
 
 
 
+    /************************/
     /* Render actual weapon */
     if (player->getWeaponIndex() == 0) {
         weapon_sprite = resource_loader->loadSpriteSet("sword.png");
