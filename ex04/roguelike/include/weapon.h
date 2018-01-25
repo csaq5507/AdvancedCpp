@@ -20,10 +20,11 @@ class Weapon {
 	int dmg;
 	WeaponTextType type;
 	std::string sprite_set_filename;
+	int consumes_ammo;
 
 public:
 
-	Weapon() : lastShotAt(0) {};
+	Weapon() : lastShotAt(0), consumes_ammo(0) {};
 
 	static Weapon Melee();
 	static Weapon Flint();
@@ -32,6 +33,7 @@ public:
 	int GetDmg();
 	bool readyToShoot();
 	void updateShotTimer();
+	int ammo_consumption() {return consumes_ammo; };
 	WeaponTextType GetTexType();
 	std::string getSpriteSet() {
 		return sprite_set_filename;

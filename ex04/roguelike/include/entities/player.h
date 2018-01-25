@@ -14,10 +14,15 @@ private:
 	std::vector<std::shared_ptr<Entity>> inventory = std::vector<std::shared_ptr<Entity>>(5);
 	int inventory_space = 0;
 	int weaponIndex = 0;
-	double strength = 1;
+	int ammo = 100;
 
 public:
-    Player(Game &game, Vec2 pos);
+	double strength = 1;
+	long long strength_timer;
+	double added_movement_speed = 0.0;
+	long long fast_timer;
+
+	Player(Game &game, Vec2 pos);
     Player(Game &game, Vec2 pos, const int hp);
 
     void update() override;
@@ -34,6 +39,7 @@ public:
 	static Player deserialize(std::fstream& f, Game& game);
     int getWeaponIndex();
     int getHP();
+    int getammo(){return ammo;}
 	std::vector<std::shared_ptr<Entity>> get_inventory(){ return inventory; }
     bool isWeaponAvailable(WeaponTextType weapon);
 };

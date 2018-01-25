@@ -13,7 +13,7 @@ Grenade::Grenade()
         }
     }
     dmg = 50;
-    sprite_set_filename = "grenade.jpg";
+    sprite_set_filename = "grenade.png";
 }
 
 

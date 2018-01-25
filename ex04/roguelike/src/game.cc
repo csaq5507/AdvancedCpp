@@ -100,11 +100,12 @@ void Game::init() {
 
     entities.push_back(std::make_shared<Player>(*this, Vec2{5, 5}));
 
+
+
 	auto player = entities.front();
 	Camera::CameraControl.mode = TARGET_MODE_CENTER;
 	Camera::CameraControl.SetTarget(player);
     spawn_enemies();
-    spawn_items();
     game_over_bool = false;
 }
 
@@ -218,7 +219,35 @@ void renderGameOver(SDL_Renderer* renderer, std::shared_ptr<SpriteSet> game_over
 
 void Game::renderHud(SDL_Renderer* renderer) {
     auto player= dynamic_cast<Player*>(&(*entities.front()));
-    /**********************/
+
+    if(player->strength != 1)
+    {
+        SDL_Rect dst;
+        strong_sprite = resource_loader->loadSpriteSet("strong.png");
+
+        SDL_QueryTexture(strong_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
+        dst.x = 700;
+        dst.y = 0;
+        dst.w = 100;
+        dst.h = 100;
+        SDL_RenderCopy(renderer, strong_sprite->getTexture(),
+                       strong_sprite->getRect(), &dst);
+    }
+
+    if(player->added_movement_speed != 0.0)
+    {
+        SDL_Rect dst;
+        fast_sprite = resource_loader->loadSpriteSet("fast.png");
+
+        SDL_QueryTexture(fast_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
+        dst.x = 600;
+        dst.y = 0;
+        dst.w = 100;
+        dst.h = 100;
+        SDL_RenderCopy(renderer, fast_sprite->getTexture(),
+                       fast_sprite->getRect(), &dst);
+    }
+/**********************/
     /* Render life points */
     life_sprite = resource_loader->loadSpriteSet("heart.png");
     TTF_Font* Sans = TTF_OpenFont("resources/fonts/sunvalley.ttf", 112); //this opens a font style and sets a size
@@ -243,6 +272,28 @@ void Game::renderHud(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, life_sprite->getTexture(),
                    life_sprite->getRect(), &life);
 
+    /* Render life points */
+    potion2_sprite = resource_loader->loadSpriteSet("ammo.png");
+    SDL_Surface* SurfaceMessage2;
+    SDL_Texture* Message2;
+    SDL_Rect Message_rect2;
+    auto ammo = player->getammo();
+    SurfaceMessage2 = TTF_RenderText_Solid(Sans, std::to_string(ammo).c_str(), {255, 0, 0});
+    Message2 = SDL_CreateTextureFromSurface(renderer, SurfaceMessage2);
+    Message_rect2.x = 1000;
+    Message_rect2.y = 100;
+    Message_rect2.w = 100;
+    Message_rect2.h = 100;
+    SDL_RenderCopy(renderer, Message2, NULL, &Message_rect2);
+
+    SDL_Rect ammos;
+    SDL_QueryTexture(potion2_sprite->getTexture(), nullptr, nullptr, &ammos.w, &ammos.h);
+    ammos.x = 1100;
+    ammos.y = 100;
+    ammos.w = 100;
+    ammos.h = 100;
+    SDL_RenderCopy(renderer, potion2_sprite->getTexture(),
+                   potion2_sprite->getRect(), &ammos);
 
 
     /************************/
@@ -264,6 +315,7 @@ void Game::renderHud(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, weapon_sprite->getTexture(),
                    weapon_sprite->getRect(), &dst);
 
+
     for( auto& item : player->get_inventory())
     {
         if(item== nullptr)
@@ -271,8 +323,10 @@ void Game::renderHud(SDL_Renderer* renderer) {
         if(item->isInstanceOf<pickable_item<Potion> >())
         {
 
+
             auto it = dynamic_cast<pickable_item<Potion>*>(&(*item));
             auto potion = it->item;
+            if(potion.type==PotionType::ammo) continue;
             SDL_Rect dst;
             switch(potion.type){
                 case PotionType::health:
@@ -296,7 +350,7 @@ void Game::renderHud(SDL_Renderer* renderer) {
             SDL_RenderCopy(renderer, potion_sprite->getTexture(),
                            potion_sprite->getRect(), &dst);
         } else if(item->isInstanceOf<pickable_item<Grenade> >()){
-            grenade_sprite = resource_loader->loadSpriteSet("grenade.jpg");
+            grenade_sprite = resource_loader->loadSpriteSet("grenade.png");
             SDL_Rect dst;
             SDL_QueryTexture(grenade_sprite->getTexture(), nullptr, nullptr, &dst.w, &dst.h);
             dst.x = 800;
@@ -307,6 +361,7 @@ void Game::renderHud(SDL_Renderer* renderer) {
                            grenade_sprite->getRect(), &dst);
         }
     }
+
 
 }
 
@@ -387,7 +442,14 @@ void Game::spawn_items() {
                                                                           pos_y),
                                                                      Grenade()));
                     break;
-                default:
+                case 4:
+
+                    entities.push_back(
+                            std::make_shared<pickable_item<Potion>>(*this,
+                                                                    Vec2(pos_x,
+                                                                         pos_y),
+                                                                    Potion(PotionType::ammo,
+                                                                           50.0)));
                     break;
             }
 
@@ -415,6 +477,7 @@ void Game::spawn_enemies() {
                                         50 * wave)
         );
     }
+    spawn_items();
 
     wave++;
 }

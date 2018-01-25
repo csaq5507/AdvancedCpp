@@ -5,7 +5,7 @@
 #ifndef ADVANCEDCPP_POTION_H
 #define ADVANCEDCPP_POTION_H
 
-enum PotionType { health, strength, speed };
+enum PotionType { health, strength, speed, ammo };
 
 class Potion
 {
@@ -23,6 +23,10 @@ public:
                 break;
             case PotionType::strength:
                 sprite_set_filename = "strength.png";
+                break;
+
+            case PotionType::ammo:
+                sprite_set_filename = "ammo2.png";
                 break;
             }
     }

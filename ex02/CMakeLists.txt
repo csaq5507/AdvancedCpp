@@ -7,6 +7,10 @@ project(VCS)
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
+set(CMAKE_MODULE_PATH
+        ${CMAKE_MODULE_PATH}
+        ${PROJECT_SOURCE_DIR}/cmake)
+
 set(BENCHMARK_ENABLE_TESTING OFF)
 
 
@@ -24,8 +28,6 @@ ENDIF()
 FIND_PACKAGE( Boost COMPONENTS program_options REQUIRED )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
-include(ConfigGBench)
-add_subdirectory(${PROJECT_SOURCE_DIR}/bench/)
 
 aux_source_directory(src/ SRC_LIST)
 

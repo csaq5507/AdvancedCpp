@@ -13,10 +13,10 @@
 using namespace std;
 namespace fs = std::experimental::filesystem;
 
-const std::string vcs_dir_name(".vcs_info_dir");
-const std::string user_files_dir_name("user_file_dir");
-const std::string stage_file_name("staged_files.txt");
-const std::string serialized_graph_file_name("serialized_graph.txt");
+constexpr auto vcs_dir_name = ".vcs_info_dir";
+constexpr auto user_files_dir_name = "user_file_dir";
+constexpr auto stage_file_name = "staged_files.txt";
+constexpr auto serialized_graph_file_name = "serialized_graph.txt";
 
 enum file_status {
 	modified,
@@ -41,7 +41,8 @@ bool Vcs::is_vcs_initialized() {
 }
 	
 bool Vcs::init_vcs() {
-	if (is_vcs_initialized()) return false;
+	if (is_vcs_initialized())
+        return false;
 	create_directory(vcs_root_dir);
 	create_directory(user_file_dir);
 	DGraph g{};
@@ -49,7 +50,7 @@ bool Vcs::init_vcs() {
 	create_directory(vcs_root_dir / fs::path(std::to_string(g.root_node)));
 	std::ofstream f(vcs_root_dir / serialized_graph_file_name);
 	g.serialize(f);
-	graph=g;
+	graph = g;
 	return true;
 }
 
@@ -67,14 +68,16 @@ vector<StagedFileEntry> getStagedFilesEntry(fs::path& f) {
 }
 
 void Vcs::commit(std::string commitMsg){
-	if (!is_vcs_initialized()) return;	
+	if (!is_vcs_initialized())
+        return;
 	backup_builder b(root_work_dir);
 
 	std::vector<fs::path> allFiles = getAllFiles();
 	vector<fs::path> modified = getModifiedFiles();
 	vector<fs::path> added = getAddedFiles();
 	vector<StagedFileEntry> prevEntries = getPrevStagedFiles();
-	if (modified.empty() && added.empty()) return;
+	if (modified.empty() && added.empty())
+        return;
 
 	//Update graph
 	auto oldVersion = graph.root_node;

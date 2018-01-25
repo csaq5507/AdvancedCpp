@@ -54,6 +54,7 @@ Weapon Weapon::Melee() {
 }
 Weapon Weapon::Flint() {
 	Weapon w;
+	w.consumes_ammo = 1;
 	w.sprite_set_filename = "pistol.png";
 	for (int i = 1; i <= 20;i++) {
 		w.relativeHitFields.push_back(Vec2({ i,0 }));
@@ -67,6 +68,8 @@ Weapon Weapon::Flint() {
 
 Weapon Weapon::Pumpgun() {
 	Weapon w;
+	w.consumes_ammo = 5;
+
 	w.sprite_set_filename = "shotgun.png";
 	for (int i = 1;i <= 8;i++)
 		w.relativeHitFields.push_back(Vec2({ i,0 }));

@@ -35,7 +35,9 @@ class Game {
 	std::shared_ptr<SpriteSet> potion_sprite;
 	std::shared_ptr<SpriteSet> potion2_sprite;
 	std::shared_ptr<SpriteSet> grenade_sprite;
-    std::shared_ptr<SpriteSet> life_sprite;
+	std::shared_ptr<SpriteSet> life_sprite;
+	std::shared_ptr<SpriteSet> fast_sprite;
+	std::shared_ptr<SpriteSet> strong_sprite;
 	std::unique_ptr<ResourceLoader> resource_loader;
     std::list<SDL_Event> events;
     SDL_Window* window = nullptr;

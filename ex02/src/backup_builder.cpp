@@ -9,9 +9,12 @@ backup_builder::backup_builder(const fs::path root_path) {
     this->vcs_info_dir = this->root_path / std::string(".vcs_info_dir");
     this->user_files = this->vcs_info_dir / std::string("user_file_dir");
     this->temp_path = this->vcs_info_dir / std::string("temp");
-    if(!fs::exists(vcs_info_dir)) create_directory(vcs_info_dir);
-    if(!fs::exists(user_files)) create_directory(user_files);
-    if(!fs::exists(temp_path)) create_directory(temp_path);
+    if(!fs::exists(vcs_info_dir))
+        create_directory(vcs_info_dir);
+    if(!fs::exists(user_files))
+        create_directory(user_files);
+    if(!fs::exists(temp_path))
+        create_directory(temp_path);
 }
 
 fs::path backup_builder::create_path(const fs::path path, bool is_file) {

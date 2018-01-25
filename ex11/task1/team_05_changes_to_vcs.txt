@@ -1,0 +1,33 @@
+we "improved" by:
+
+- using templates
+    in class vcs_utility for function difference
+    for split function in DGrpah
+    for split function stage_file_entry
+
+- operator overloading
+To check if to stage file entries are the same we had some id and a function to
+compare them.
+Now we added the functions
+        bool operator==(const StagedFileEntry &other) const;
+        bool operator==(const std::experimental::filesystem::path &path) const;
+to make comparisions
+
+
+For the graph we had a function print_to which we replaced with the function
+        friend std::ostream &operator<<(std::ostream &os, const DGraph &m);
+
+- proper variable declaration
+ for example
+    -"unsigned" instead of always using "int"
+    - constexpr if possible
+
+- decltype keyword
+In the function StageFileEntry::getTimeStamp we had to use the declaration for
+the time which we now replaced with
+the function decltype()
+
+
+###############################
+We all agree that our programming skills have improved, some more some less,
+depending on the skills we've already had.

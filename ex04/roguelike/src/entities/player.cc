@@ -131,18 +131,47 @@ void Player::update() {
                 item->damage(100000);
             } else if(&(*ent) == this || ent->isInstanceOf<Projectile>())
                 continue;
-            else {
-                if(inventory_space<5)
-                {
-                    this->inventory[inventory_space++] = ent;
+            else if(ent->isInstanceOf<pickable_item<Potion>>()){
+                auto item = dynamic_cast<pickable_item<Potion>*>(&(*ent));
+                auto poti=item->item;
+                if(poti.type==PotionType::ammo) {
+                    this->ammo += poti.amount;
                     ent->damage(10000);
                 }
-                else
-                    std::cout<<"inventory Full"<<std::endl;
+                else {
+                    if (inventory_space < 5) {
+                        this->inventory[inventory_space++] = ent;
+                        ent->damage(10000);
+                    } else
+                        std::cout << "inventory Full" << std::endl;
+                }
+            } else {
+
+                if (inventory_space < 5) {
+                    this->inventory[inventory_space++] = ent;
+                    ent->damage(10000);
+                } else
+                    std::cout << "inventory Full" << std::endl;
             }
         }
     }
 
+
+    const auto tensecs = 10000;
+    const auto elapsed = Game::timer.get_elapsed_time();
+
+    if(added_movement_speed != 0.0)
+    {
+        if(fast_timer + tensecs < elapsed)
+
+            added_movement_speed=0.0;
+    }
+
+    if(strength != 1.0)
+    {
+        if(strength_timer + tensecs < elapsed)
+            strength=1.0;
+    }
 
 }
 
@@ -155,13 +184,13 @@ bool Player::isWeaponAvailable(WeaponTextType weapon) {
     }
     return false;
 }
-void Player::throw_grenade() {
+                    void Player::throw_grenade() {
     int i=0;
     for(auto& ent : this->get_inventory())
     {
         if (ent->isInstanceOf<pickable_item<Grenade> >())
         {
-            auto item = dynamic_cast<pickable_item<Grenade>*>(&(*ent));
+            auto item =         dynamic_cast<pickable_item<Grenade>*>(&(*ent));
             auto grenade = item->item;
             std::vector<std::shared_ptr<Entity> > projectiles=std::vector<std::shared_ptr<Entity> >();
             auto hitten_fields = grenade.GetHitedFields(this->direction);
@@ -193,10 +222,12 @@ void Player::use_potion(PotionType type) {
                     this->hp+=potion.amount;
                     break;
                 case PotionType::speed:
-                    this->movement_speed += potion.amount;
+                    this->added_movement_speed = potion.amount;
+                    fast_timer = Game::timer.get_elapsed_time();
                     break;
                 case PotionType::strength:
-                    this->strength=potion.amount;
+                    this->strength = potion.amount;
+                    strength_timer = Game::timer.get_elapsed_time();
                     break;
             }
             inventory.erase(inventory.begin()+i);
@@ -213,6 +244,11 @@ void Player::attack() {
     if(weapon== nullptr) return;
 	if (!weapon->readyToShoot()) return;
 	weapon->updateShotTimer();
+    this->ammo-=weapon->ammo_consumption();
+    if(ammo<0) {
+        this->ammo += weapon->ammo_consumption();
+        return;
+    }
     switch (this->weaponIndex)
     {
         case 0:
@@ -232,6 +268,8 @@ void Player::attack() {
 		vec.y = this->pos.y - vec.y;
 		projectiles.push_back(std::make_shared<Projectile>(game, vec, weapon->GetTexType(), this->direction));
 	}
+
+
     game.do_damage(weapon->GetDmg() * strength,hitten_fields,this);
     game.add_projectile(projectiles);
 }
