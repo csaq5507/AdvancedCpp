@@ -1,8 +1,18 @@
 #pragma once
 #ifdef  __PLUGIN__CONTROLL_API
-#define _API_EVENT __declspec(dllimport)
+	#ifdef _WIN32
+		#define _API_EVENT __declspec(dllimport)
+	#else
+		#define _API_EVENT
+	#endif
 #else
-#define _API_EVENT __declspec(dllexport)
+
+	#ifdef _WIN32
+		#define _API_EVENT __declspec(dllexport)
+	#else
+		#define _API_EVENT __attribute__((visibility("default")))
+	#endif
+
 #endif
 
 #include "ExecutableEvent.h"
